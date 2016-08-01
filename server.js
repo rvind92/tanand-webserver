@@ -6,8 +6,6 @@ var bcrypt = require('bcrypt');
 
 var app = express();
 var PORT = process.env.PORT || 3030;
-var todos = [];
-var todoNextId = 1;
 
 app.use(bodyParser.json());
 
