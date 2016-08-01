@@ -3,9 +3,16 @@ var bodyParser = require('body-parser');
 var _ = require('underscore');
 var db = require('./db.js');
 var bcrypt = require('bcrypt');
+var middleware = require('./middleware')(db);
+var firebase = require('firebase');
 
 var app = express();
 var PORT = process.env.PORT || 3030;
+
+// firebase.initializeApp({
+// 	serviceAccount: "",
+// 	databaseURL: "https://tanand-demo.firebaseio.com/"
+// });
 
 app.use(bodyParser.json());
 
@@ -46,6 +53,21 @@ app.post('/users/login', function(request, response) {
 	});
 });
 
-app.listen(PORT, function() {
-	console.log('Server has started at ' + PORT + '!');
+// app.post('/billion', function(request, response) {
+// 	var body = _.pick(request.body, 'time');
+
+// 	db.single_power.create(body).then(function(billion) {response.j})
+// });
+
+app.use(express.static(__dirname + '/public'));
+
+db.sequelize.sync().then(function() {
+	app.listen(PORT, function() {
+		console.log('Express listening on port ' + PORT + '!');
+	});
 });
+
+
+
+
+
