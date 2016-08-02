@@ -54,11 +54,16 @@ app.post('/users/login', function(request, response) {
 });
 
 app.post('/billion', function(request, response) {
-	var content = _.where(request.body.devices, {
+	var content1 = _.where(request.body.devices, {
 		model: "SG3010-T2"
 	});
 
-	content = content[0];
+	var content2 = _.where(request.body.devices, {
+		model: "SG3030"
+	});
+
+	content1 = content1[0];
+	content2 = content2[0];
 	var timestamp = request.body.time;
 
 	// var devices = _.pick(content, 'devices');
@@ -67,12 +72,20 @@ app.post('/billion', function(request, response) {
 	// 	model: "SG3010-T2"
 	// });
 
-	var contentPick = _.pick(content, 'mac', 'voltage', 'current', 'activepower', 'mainenergy');
+	var contentPick1 = _.pick(content1, 'mac', 'voltage', 'current', 'activepower', 'mainenergy');
+	var contentPick2 = _.pick(content2, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3');
 
-	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick));
+	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick1));
+	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick2));
 
-	db.single_power.create(contentPick).then(function(single_power) {
+	db.single_power.create(contentPick1).then(function(single_power) {
 		response.json(single_power.toJSON());
+	}, function(e) {
+		response.status(400).json(e);
+	});
+
+	db.triple_power.create(contentPick2).then(function(triple_power) {
+		response.json(triple_power.toJSON());
 	}, function(e) {
 		response.status(400).json(e);
 	});

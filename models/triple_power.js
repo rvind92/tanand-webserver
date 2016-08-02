@@ -1,24 +1,21 @@
-var bcrypt = require('bcrypt');
-var _ = require('underscore');
-
 module.exports = function(sequelize, DataTypes) {
-	var triple_power = sequelize.define('triple_power', {
-		deviceId: {
+	return sequelize.define('triple_power', {
+		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			primaryKey: true
 		},
-		ap: {
+		activepower: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		ap2: {
+		activepower2: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		ap3: {
+		activepower3: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
@@ -38,27 +35,32 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			unique: false
 		},
-		volt: {
+		voltage: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		volt2: {
+		voltage2: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		volt3: {
+		voltage3: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		powerFactor: {
+		mainenergy: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
 		},
-		mainEnergy: {
+		mainenergy2: {
+			type: DataTypes.FLOAT,
+			allowNull: false,
+			unique: false
+		},
+		mainenergy3: {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
