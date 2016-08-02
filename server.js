@@ -2,7 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 var db = require('./db.js');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var middleware = require('./middleware')(db);
 var firebase = require('firebase');
 
@@ -53,15 +53,38 @@ app.post('/users/login', function(request, response) {
 	});
 });
 
-// app.post('/billion', function(request, response) {
-// 	var body = _.pick(request.body, 'time');
+app.post('/billion', function(request, response) {
+	var content = _.where(request.body.devices, {
+		model: "SG3010-T2"
+	});
 
-// 	db.single_power.create(body).then(function(billion) {response.j})
-// });
+	content = content[0];
+	var timestamp = request.body.time;
+
+	// var devices = _.pick(content, 'devices');
+	// var listDevices = devices['devices'];
+	// var singlePower = _.where(listDevices, {
+	// 	model: "SG3010-T2"
+	// });
+
+	var contentPick = _.pick(content, 'mac', 'voltage', 'current', 'activepower', 'mainenergy');
+
+	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick));
+
+	db.single_power.create(contentPick).then(function(single_power) {
+		response.json(single_power.toJSON());
+	}, function(e) {
+		response.status(400).json(e);
+	});
+});
+
+app.post('/3_billion', function(request, response) {
+	var body = _.pick(request.body, 'time');
+});
 
 app.use(express.static(__dirname + '/public'));
 
-db.sequelize.sync().then(function() {
+db.sequelize.sync({force: true}).then(function() {
 	app.listen(PORT, function() {
 		console.log('Express listening on port ' + PORT + '!');
 	});

@@ -1,37 +1,25 @@
-var bcrypt = require('bcrypt');
-var _ = require('underscore');
-
 module.exports = function(sequelize, DataTypes) {
-	var single_power = sequelize.define('single_power', {
-		deviceId: {
+	return sequelize.define('single_power', {
+		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			primaryKey: true
 		},
-		ap: {
-			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+		voltage: {
+			type: DataTypes.STRING,
+			allowNull: false
 		},
 		current: {
-			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+			type: DataTypes.STRING,
+			allowNull: false
 		},
-		volt: {
-			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+		activepower: {
+			type: DataTypes.STRING,
+			allowNull: false
 		},
-		powerFactor: {
-			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
-		},
-		mainEnergy: {
-			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+		mainenergy: {
+			type: DataTypes.STRING,
+			allowNull: false
 		}
 	});
 };
