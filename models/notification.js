@@ -1,8 +1,5 @@
-var bcrypt = require('bcrypt');
-var _ = require('underscore');
-
 module.exports = function(sequelize, DataTypes) {
-	var notification = sequelize.define('notification', {
+	return sequelize.define('notification', {
 		alertId: {
 			type: DataTypes.STRING,
 			allowNull: false,

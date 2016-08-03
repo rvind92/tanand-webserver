@@ -1,28 +1,21 @@
-var bcrypt = require('bcrypt');
-var _ = require('underscore');
-
 module.exports = function(sequelize, DataTypes) {
-	var temp_humid = sequelize.define('temp_humid', {
-		deviceId: {
+	return sequelize.define('temp_humid', {
+		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			primaryKey: true,
-			unique: true
+			primaryKey: true
 		},
 		temperature: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-			unique: false
+			type: DataTypes.FLOAT,
+			allowNull: false
 		},
 		humidity: {
 			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+			allowNull: false
 		},
-		battery: {
+		BatteryVoltage: {
 			type: DataTypes.FLOAT,
-			allowNull: false,
-			unique: false
+			allowNull: false
 		}
 	});
 };

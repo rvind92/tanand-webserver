@@ -6,19 +6,19 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true
 		},
 		voltage: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		current: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		activepower: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		},
 		mainenergy: {
-			type: DataTypes.STRING,
+			type: DataTypes.FLOAT,
 			allowNull: false
 		}
 	});
