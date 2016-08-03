@@ -75,8 +75,10 @@ app.post('/billion', function(request, response) {
 	var contentPick1 = _.pick(content1, 'mac', 'voltage', 'current', 'activepower', 'mainenergy');
 	var contentPick2 = _.pick(content2, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3');
 
-	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick1));
-	console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick2));
+	console.log(contentPick2);
+
+	// console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick1));
+	// console.log('PRINT IT DAMN IT ' + JSON.stringify(contentPick2));
 
 	db.single_power.create(contentPick1).then(function(single_power) {
 		response.json(single_power.toJSON());
