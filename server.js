@@ -86,10 +86,10 @@ app.post('/billion', function(request, response) {
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage');
 
-	console.log('PRINT IT DAMN IT - SPM: ' + JSON.stringify(spm));
-	console.log('PRINT IT DAMN IT - TPM: ' + JSON.stringify(tpm));
-	console.log('PRINT IT DAMN IT - TS1: ' + JSON.stringify(ts1));
-	console.log('PRINT IT DAMN IT - TS2: ' + JSON.stringify(ts2));
+	console.log('PRINT IT DAMN IT - SPM: ' + spm);
+	// console.log('PRINT IT DAMN IT - TPM: ' + JSON.stringify(tpm));
+	// console.log('PRINT IT DAMN IT - TS1: ' + JSON.stringify(ts1));
+	// console.log('PRINT IT DAMN IT - TS2: ' + JSON.stringify(ts2));
 
 	db.single_power.create(spm).then(function(single_power) {
 		response.status(200).send();
