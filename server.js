@@ -74,22 +74,27 @@ app.post('/billion', function(request, response) {
 		model: "SG110-TSA"
 	});
 
+	var time = request.body.time;
+
 	singlePowerMeterObject = singlePowerMeter[0];
 	triplePowerMeterObject = triplePowerMeter[0];
 	temperatureSensorObject1 = temperatureSensor1[0];
 	temperatureSensorObject2 = temperatureSensor2[0];
 
-	var timestamp = request.body.time;
+	singlePowerMeterObject.timestamp = time;
+	triplePowerMeterObject.timestamp = time;
+	temperatureSensorObject1.timestamp = time;
+	temperatureSensorObject2.timestamp = time;
 
-	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy');
-	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3');
-	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage');
-	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage');
+	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp');
+	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp');
+	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
+	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
-	console.log('PRINT IT DAMN IT - SPM: ' + spm);
-	// console.log('PRINT IT DAMN IT - TPM: ' + JSON.stringify(tpm));
-	// console.log('PRINT IT DAMN IT - TS1: ' + JSON.stringify(ts1));
-	// console.log('PRINT IT DAMN IT - TS2: ' + JSON.stringify(ts2));
+	console.log('PRINT IT DAMN IT - SPM: ' + JSON.stringify(spm));
+	console.log('PRINT IT DAMN IT - TPM: ' + JSON.stringify(tpm));
+	console.log('PRINT IT DAMN IT - TS1: ' + JSON.stringify(ts1));
+	console.log('PRINT IT DAMN IT - TS2: ' + JSON.stringify(ts2));
 
 	db.single_power.create(spm).then(function(single_power) {
 		response.status(200).send();
@@ -114,10 +119,6 @@ app.post('/billion', function(request, response) {
 	}, function(e) {
 		response.status(400).json(e);
 	});
-});
-
-app.post('/3_billion', function(request, response) {
-	var body = _.pick(request.body, 'time');
 });
 
 // app.get('/get_singlephase_readings/:id', function(request, response) {

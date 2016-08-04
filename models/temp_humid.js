@@ -16,6 +16,11 @@ module.exports = function(sequelize, DataTypes) {
 		BatteryVoltage: {
 			type: DataTypes.FLOAT,
 			allowNull: false
+		},
+		timestamp: {
+			type: DataTypes.BIGINT,
+			allowNull: false,
+			primaryKey: true
 		}
 	});
 };

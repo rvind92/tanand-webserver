@@ -1,32 +1,37 @@
-
-// cake('f')
-// func_a = function(d) {
-// 	process.stdout.write(d + ' ');
-// }
-
-// func_b = function(e) {
-// 	process.stdout.write(e);
-// }
-
-// function work(func1, func2, k, l) {
-// 	func1(k) + func2(l);
-// }
-
-var weak = function() {
-	console.log('hello');
+var jsonData = {
+   "version": "1.1",
+   "devices": [
+      {
+         "mac": "000D6F0000758858",
+         "model": "SG3010-T2"
+      },
+      {
+         "mac": "00124B0007306285",
+         "model": "SG110-A"
+      },
+      {
+         "mac": "00124B00094E89B3",
+         "model": "SG110-TSA"
+      },
+      {
+         "mac": "000D6F0003E69466",
+         "model": "SG3030"
+      }
+   ]
 }
 
-// work(func_a, func_b, 'Hello', 'Aravind');
-function veal(weak2) {
-	console.log(weak2);
-}
+console.log(jsonData);
 
-veal(weak);
+jsonDevices = jsonData.devices;
+
+console.log(jsonDevices);
+
+jsonDevicesFirst = jsonDevices[0];
+
+console.log(jsonDevicesFirst);
 
 
+time = { "time" : "14013243" }
+jsonDevicesFirst.time = time;
 
-// function eat(function, function, valuie) {
-// 	function(function(valuie));
-// }
-
-// eat(veal())
+console.log(jsonDevicesFirst);

@@ -64,6 +64,11 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.FLOAT,
 			allowNull: false,
 			unique: false
+		},
+		timestamp: {
+			type: DataTypes.BIGINT,
+			allowNull: false,
+			primaryKey: true
 		}
 	});
 };

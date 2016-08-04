@@ -20,6 +20,11 @@ module.exports = function(sequelize, DataTypes) {
 		mainenergy: {
 			type: DataTypes.FLOAT,
 			allowNull: false
+		},
+		timestamp: {
+			type: DataTypes.BIGINT,
+			allowNull: false,
+			primaryKey: true
 		}
 	});
 };
