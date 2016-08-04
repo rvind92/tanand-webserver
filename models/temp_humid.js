@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false
 		},
 		timestamp: {
-			type: DataTypes.BIGINT,
+			type: DataTypes.DATE,
 			allowNull: false,
 			primaryKey: true
 		}

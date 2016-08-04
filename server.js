@@ -5,6 +5,7 @@ var db = require('./db.js');
 var bcrypt = require('bcryptjs');
 var middleware = require('./middleware')(db);
 var firebase = require('firebase');
+var moment = require('moment');
 
 var app = express();
 var PORT = process.env.PORT || 3030;
@@ -74,7 +75,7 @@ app.post('/billion', function(request, response) {
 		model: "SG110-TSA"
 	});
 
-	var time = request.body.time;
+	var time = moment.unix(request.body.time).format("YYYY-MM-DD HH:mm:ss.SSS");
 
 	singlePowerMeterObject = singlePowerMeter[0];
 	triplePowerMeterObject = triplePowerMeter[0];
