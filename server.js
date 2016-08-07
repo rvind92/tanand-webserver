@@ -7,9 +7,6 @@ var middleware = require('./middleware')(db);
 var firebase = require('firebase');
 var moment = require('moment');
 
-var app = express();
-var PORT = process.env.PORT || 3030;
-
 firebase.initializeApp({
 	serviceAccount: {
 		projectId: "tanand-demo",
@@ -18,6 +15,9 @@ firebase.initializeApp({
 	},
 	databaseURL: "https://tanand-demo.firebaseio.com/"
 });
+
+var app = express();
+var PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
 
@@ -94,7 +94,15 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
+	console.log('THIS IS VALUE OF THE OBJECT: ' + JSON.stringify(spm));
+
 	db.single_power.create(spm).then(function(single_power) {
+		var db = firebase.database();
+		var ref = db.ref('testList');
+
+		ref.set({
+			spm
+		});
 		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
@@ -117,6 +125,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	}, function(e) {
 		response.status(400).json(e);
 	});
+
 });
 
 // app.get('/get_singlephase_readings/:id', function(request, response) {
