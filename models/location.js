@@ -5,7 +5,7 @@ module.exports = function(sequelize, DataTypes) {
 			allowNull: false,
 			unique: true
 		},
-		locationId: {
+		site: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			primaryKey: true

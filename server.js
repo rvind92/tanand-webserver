@@ -128,7 +128,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 });
 
-// app.get('/get_singlephase_readings/:id', function(request, response) {
+// app.get('/trending', function(request, response) {
 // 	db.single_power.findByAl
 
 // 	response.json(single_power).send();

@@ -30,4 +30,10 @@ db.command = sequelize.import(__dirname + '/models/command.js');
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+db.location.belongsTo(db.user);
+db.user.hasMany(db.location);
+
+db.floorplan.belongsTo(db.location);
+db.location.hasMany(db.floorplan);
+
 module.exports = db;
