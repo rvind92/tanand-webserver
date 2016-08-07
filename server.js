@@ -58,7 +58,8 @@ app.post('/users/login', function(request, response) {
 	});
 });
 
-app.post('/billion', function(request, response) {
+app.post('/billion', middleware.handleHeader, function(request, response) {
+	
 	var singlePowerMeter = _.where(request.body.devices, {
 		model: "SG3010-T2"
 	});
@@ -75,6 +76,7 @@ app.post('/billion', function(request, response) {
 		model: "SG110-TSA"
 	});
 
+	console.log(request.get('Expect'));
 	var time = moment.unix(request.body.time).format("YYYY-MM-DD HH:mm:ss.SSS");
 
 	singlePowerMeterObject = singlePowerMeter[0];
@@ -91,11 +93,6 @@ app.post('/billion', function(request, response) {
 	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp');
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
-
-	console.log('PRINT IT DAMN IT - SPM: ' + JSON.stringify(spm));
-	console.log('PRINT IT DAMN IT - TPM: ' + JSON.stringify(tpm));
-	console.log('PRINT IT DAMN IT - TS1: ' + JSON.stringify(ts1));
-	console.log('PRINT IT DAMN IT - TS2: ' + JSON.stringify(ts2));
 
 	db.single_power.create(spm).then(function(single_power) {
 		response.status(200).send();

@@ -10,6 +10,14 @@ module.exports = function(db) {
 			}, function() {
 				response.status(401).send();
 			});
+		},
+		handleHeader: function(request, response, next) {
+			if(request.get('Expect') === '100-continue') {
+				response.writeContinue();
+				next();
+			} else {
+				response.status(400).send();
+			}
 		}
 	};
 
