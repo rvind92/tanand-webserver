@@ -105,7 +105,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 			mainenergy: parseFloat(spm.mainenergy),
 			powerfactor: parseFloat(spm.powerfactor),
 			voltage:parseFloat(spm.voltage),
-			status:parseInteger(spm.status)
+			status:parseInt(spm.status)
 		});
 		response.status(200).send();
 	}, function(e) {
