@@ -36,25 +36,24 @@ app.post('/users', function(request, response) {
 	});
 });
 
-app.post('/users/login', function(request, response) {
+app.post('/users/login', middleware.requireAuthentication, function(request, response) {
 	var body = _.pick(request.body, 'email', 'password');
+	var userInstance;
 
-	if(typeof body.email !== 'string' || typeof body.password !== 'string') {
-		return response.status(400).send();
-	}
+	db.user.authenticate(body).then(function(user) {
+		var token = user.generateToken('authentication');
+		userInstance = user;
 
-	db.user.findOne({
-		where: {
-			email: body.email
-		}
-	}).then(function(user) {
-		if(!user || !bcrypt.compareSync(body.password, user.get('password_hash'))) {
-			return response.status(401).send();
-		}
+		return db.token.create({
+			token: token
+		});
 
-		response.json(user.toPublicJSON());
-	}, function(e) {
-		response.status(500).send();
+		var uid = user.email;
+		var customToken = firebase.auth().createCustomToken(uid); 
+	}).then(function(tokenInstance) {
+		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+	}).catch(function() {
+		response.status(401).send();
 	});
 });
 
