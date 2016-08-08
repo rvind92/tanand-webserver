@@ -36,7 +36,7 @@ app.post('/users', function(request, response) {
 	});
 });
 
-app.post('/users/login', middleware.requireAuthentication, function(request, response) {
+app.post('/users/login', function(request, response) {
 	var body = _.pick(request.body, 'email', 'password');
 	var userInstance;
 
