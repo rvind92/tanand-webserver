@@ -30,7 +30,6 @@ jsonDevicesFirst = jsonDevices[0];
 
 console.log(jsonDevicesFirst);
 
-
 time = { "time" : "14013243" }
 jsonDevicesFirst.time = time;
 
