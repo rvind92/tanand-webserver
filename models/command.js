@@ -1,6 +1,6 @@
 module.exports = function(sequelize, DataTypes) {
 	return sequelize.define('command', {
-		deviceId: {
+		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			primary: true
