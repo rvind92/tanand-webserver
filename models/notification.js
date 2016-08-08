@@ -6,12 +6,17 @@ module.exports = function(sequelize, DataTypes) {
 			primaryKey: true,
 			unique: true
 		},
+		timestamp: {
+			type: DataTypes.DATE,
+			allowNull: false,
+			unique: false
+		},
 		message: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: false
 		},
-		device: {
+		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: false

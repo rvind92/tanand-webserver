@@ -1,3 +1,5 @@
+var firebase = require('firebase');
+
 module.exports = function(db) {
 
 	return {
@@ -15,6 +17,13 @@ module.exports = function(db) {
 
 				request.token = tokenInstance;
 				return db.user.findByToken(token);
+
+				firebase.auth().verifyIdToken(idToken).then(function(decodedToken) {
+					var uid = decodedToken.sub;
+
+				}).catch(function(error) {
+					response.status(401).send();
+				});
 
 			}).then(function(user) {
 				request.user = user;
@@ -34,3 +43,4 @@ module.exports = function(db) {
 	};
 
 };
+

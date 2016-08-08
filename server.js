@@ -38,23 +38,22 @@ app.post('/users', function(request, response) {
 
 app.post('/users/login', function(request, response) {
 	var body = _.pick(request.body, 'email', 'password');
+	var userInstance;
 
-	if(typeof body.email !== 'string' || typeof body.password !== 'string') {
-		return response.status(400).send();
-	}
+	db.user.authenticate(body).then(function(user) {
+		var token = user.generateToken('authentication');
+		userInstance = user;
 
-	db.user.findOne({
-		where: {
-			email: body.email
-		}
-	}).then(function(user) {
-		if(!user || !bcrypt.compareSync(body.password, user.get('password_hash'))) {
-			return response.status(401).send();
-		}
+		return db.token.create({
+			token: token
+		});
 
-		response.json(user.toPublicJSON());
-	}, function(e) {
-		response.status(500).send();
+		var uid = user.email;
+		var customToken = firebase.auth().createCustomToken(uid); 
+	}).then(function(tokenInstance) {
+		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
+	}).catch(function() {
+		response.status(401).send();
 	});
 });
 
@@ -89,8 +88,13 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	temperatureSensorObject1.timestamp = time;
 	temperatureSensorObject2.timestamp = time;
 
+<<<<<<< HEAD
 	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp','powerfactor','status');
 	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp','powerfactor','status');
+=======
+	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp', 'powerfactor');
+	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp', 'powerfactor');
+>>>>>>> 779c32d7d8e559ff161b95c3bbf52c5b4115a3ad
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var macID = tpm.mac;

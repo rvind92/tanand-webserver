@@ -1,14 +1,17 @@
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('command', {
+	return sequelize.define('devices', {
 		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,
-			primary: true
+			primaryKey: true
 		},
-		command: {
+		type: {
 			type: DataTypes.STRING,
-			allowNull: false,
-			unique: false
+			allowNull: false
+		},
+		name: {
+			type: DataTypes.STRING,
+			allowNull: false
 		}
 	});
 };

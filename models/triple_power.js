@@ -69,6 +69,10 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.DATE,
 			allowNull: false,
 			primaryKey: true
-		}
+		},
+		powerfactor: {
+			type: DataTypes.FLOAT,
+			allowNull: false
+		},
 	});
 };
