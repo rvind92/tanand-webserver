@@ -89,19 +89,23 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	temperatureSensorObject1.timestamp = time;
 	temperatureSensorObject2.timestamp = time;
 
-	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp');
-	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp');
+	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp','powerfactor','status');
+	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp','powerfactor','status');
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
-
+	var macID = tpm.mac;
 	console.log('THIS IS VALUE OF THE OBJECT: ' + JSON.stringify(spm));
-
+	console.log(JSON.stringify(macID));
 	db.single_power.create(spm).then(function(single_power) {
 		var db = firebase.database();
-		var ref = db.ref('testList');
-
-		ref.set({
-			spm
+		var ref = db.ref('readingPowerList').child("iskl").child(macID);
+		ref.update({
+			activepower: parseFloat(spm.activepower),
+			current:parseFloat(spm.current),
+			mainenergy: parseFloat(spm.mainenergy),
+			powerfactor: parseFloat(spm.powerfactor),
+			voltage:parseFloat(spm.voltage),
+			status:praseInteger(spm.status)
 		});
 		response.status(200).send();
 	}, function(e) {
@@ -110,17 +114,49 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 	db.triple_power.create(tpm).then(function(triple_power) {
 		response.status(200).send();
+		// var db = firebase.database();
+		// var ref = db.ref('readingPowerList').child("iskl").child(macID);
+		// ref.update({
+		// 	activepower: parseFloat(tpm.activepower),
+		// 	activepower2:parseFloat(tpm.activepower2),
+		// 	activepower3:parseFloat(tpm.activepower3),
+		// 	current:parseFloat(tpm.current),
+		// 	current2:parseFloat(tpm.current2),
+		// 	current3:parseFloat(tpm.current3),
+		// 	mainenergy: parseFloat(tpm.mainenergy),
+		// 	mainenergy2:parseFloat(tpm.mainenergy2),
+		// 	mainenergy3:parseFloat(tpm.mainenergy3),
+		// 	powerfactor: parseFloat(tpm.powerfactor),
+		// 	voltage:parseFloat(tpm.voltage),
+		// 	voltage2:parseFloat(tpm.voltage2),
+		// 	voltage3:parseFloat(tpm.voltage3),
+		// 	status:praseInteger(tpm.status)
+		// });
 	}, function(e) {
 		response.status(400).json(e);
 	});
 
 	db.temp_humid.create(ts1).then(function(temp_humid) {
+		var db = firebase.database();
+		var ref = db.ref('readingTempList').child("iskl").child(macID);
+		ref.update({
+			humidity: parseFloat(ts1.humidity),
+			temperature:parseFloat(ts1.temperature),
+		
+		});
 		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
 	});
 
 	db.temp_humid.create(ts2).then(function(temp_humid) {
+		// var db = firebase.database();
+		// var ref = db.ref('readingTempList').child("iskl").child(macID);
+		// ref.update({
+		// 	humidity: parseFloat(ts2.humidity),
+		// 	temperature:parseFloat(ts2.temperature),
+
+		// });
 		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
