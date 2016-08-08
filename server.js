@@ -95,8 +95,6 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
 	var macID = tpm.mac;
-	console.log('THIS IS VALUE OF THE OBJECT: ' + JSON.stringify(spm));
-	console.log(JSON.stringify(macID));
 
 	db.single_power.create(spm).then(function(single_power) {
 		var db = firebase.database();
