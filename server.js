@@ -39,20 +39,24 @@ app.post('/users', function(request, response) {
 app.post('/users/login', function(request, response) {
 	var body = _.pick(request.body, 'email', 'password');
 	var userInstance;
+	var uid = body.email;
+	var customToken = firebase.auth().createCustomToken(uid);
 
 	db.user.authenticate(body).then(function(user) {
-		var token = user.generateToken('authentication');
+		var newToken = user.generateToken('authentication');
+		console.log('THIS IS THE TOKEN: ' + newToken + '\n');
 		userInstance = user;
 
 		return db.token.create({
-			token: token
+			token: newToken
 		});
 
-		var uid = user.email;
-		var customToken = firebase.auth().createCustomToken(uid); 
 	}).then(function(tokenInstance) {
+		response.header('FirebaseToken', customToken);
 		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
-	}).catch(function() {
+		// response.header('FirebaseToken', customToken.get('customToken')).json(userInstance.toPublicJSON());
+	}).catch(function(e) {
+		console.log(e);
 		response.status(401).send();
 	});
 });
@@ -169,6 +173,14 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 // 	response.json(single_power).send();
 // });
+
+app.delete('/users/login', middleware.requireAuthentication, function(request, response) {
+	request.token.destroy().then(function() {
+		response.status(204).send();
+	}).catch(function() {
+		response.status(500).send();
+	});
+});
 
 app.use(express.static(__dirname + '/public'));
 

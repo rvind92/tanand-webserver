@@ -9,7 +9,6 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.STRING,
 			allowNull: false,
 			unique: true,
-			primaryKey: true,
 			validate: {
 				isEmail: true
 			}
@@ -69,8 +68,8 @@ module.exports = function(sequelize, DataTypes) {
 				return new Promise(function(resolve, reject) {
 					try {
 						var decodedJWT = jwt.verify(token, 'qwerty123');
-						var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abdd1234');
-						var tokenData =  JSON.parse(bytes.toString(cryptojs.enc.Utf8));
+						var bytes = cryptojs.AES.decrypt(decodedJWT.token, 'abcd1234');
+						var tokenData = JSON.parse(bytes.toString(cryptojs.enc.Utf8));
 
 						user.findById(tokenData.id).then(function(user) {
 							if(user) {
@@ -79,6 +78,7 @@ module.exports = function(sequelize, DataTypes) {
 								reject();
 							}
 						}, function(e) {
+							console.log(e);
 							reject();
 						});
 					} catch(e) {
@@ -99,7 +99,7 @@ module.exports = function(sequelize, DataTypes) {
 
 				try {
 					var stringData = JSON.stringify({id: this.get('id'), type: type});
-					var encryptedData = cryptojs.AES.encrypt(stringData, 'abdd1234').toString();
+					var encryptedData = cryptojs.AES.encrypt(stringData, 'abcd1234').toString();
 					var token = jwt.sign({
 						token: encryptedData
 					}, 'qwerty123');

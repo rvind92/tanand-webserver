@@ -28,6 +28,7 @@ db.temp_humid = sequelize.import(__dirname + '/models/temp_humid.js');
 db.notification = sequelize.import(__dirname + '/models/notification.js');
 db.command = sequelize.import(__dirname + '/models/command.js');
 db.device = sequelize.import(__dirname + '/models/device.js');
+db.token = sequelize.import(__dirname + '/models/token.js')
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
