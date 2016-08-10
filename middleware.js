@@ -18,12 +18,11 @@ module.exports = function(db) {
 				request.token = tokenInstance;
 				return db.user.findByToken(token);
 
-				firebase.auth().verifyIdToken(idToken).then(function(decodedToken) {
-					var uid = decodedToken.sub;
-
-				}).catch(function(error) {
-					response.status(401).send();
-				});
+				// firebase.auth().verifyIdToken(idToken).then(function(decodedToken) {
+				// 	var uid = decodedToken.sub;
+				// }).catch(function(error) {
+				// 	response.status(401).send();
+				// });
 
 			}).then(function(user) {
 				request.user = user;
