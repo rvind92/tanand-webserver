@@ -172,11 +172,74 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 });
 
-// app.get('/trending', function(request, response) {
-// 	db.single_power.findByAl
+app.get('/trending/:mac', function(request, response) {
 
-// 	response.json(single_power).send();
-// });
+	function createChart_SINGLEPOWER(){
+		var chartData = {};
+	    var json, arrays, time, spobject, spm;
+		var volt = []; var curr = []; var ap = [];
+		var voltdata = []; var currdata = []; var apdata = [];
+
+		db.device.findAll({ include: [{ model: db.singlepower, required: true }]}).then(function(devices){
+			devices.forEach(function(devices){
+				 json = devices.toJSON();
+				 arrays = json.singlepowers;
+
+				for(var i=0; i<arrays.length; i++) {
+					time = moment(json.singlepowers[i].timestamp).unix();
+					spobject = json.singlepowers[i];
+					spobject.timestamp = time;
+					spm = _.pick(spobject, 'voltage', 'current', 'activepower', 'timestamp');
+
+					voltdata.push({
+						"x": spm.timestamp,
+						"y": spm.voltage
+					});
+					currdata.push({
+						"x": spm.timestamp,
+						"y": spm.current
+					})
+					apdata.push({
+						"x": spm.timestamp,
+						"y": spm.activepower
+					})
+				}
+				volt.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : voltdata
+				});
+				curr.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : currdata
+				})
+				ap.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : currdata
+				})
+			});
+			chartData.volt = volt;
+			chartData.current = curr;
+			chartData.activepower = ap;
+			// console.log(JSON.stringify(chartData, null, 2));
+			response.json(chartData);
+		})
+	}
+
+		var params = request.params.mac;
+		if(params === db.device.findAll({where:{mac: params}}).then(function(devices){
+			devices.forEach(function(devices){
+				if(devices.type === 'single power'){
+					createChart_SINGLEPOWER();
+				}
+				else{
+					console.log("FAILED");
+				}
+			})
+		}));
+ });
 
 app.delete('/users/login', middleware.requireAuthentication, function(request, response) {
 	request.token.destroy().then(function() {
