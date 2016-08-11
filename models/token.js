@@ -17,6 +17,11 @@ module.exports = function(sequelize, DataTypes) {
 			}
 		},
 		tokenHash: DataTypes.STRING
+		,
+		iat: {
+			type: DataTypes.BIGINT,
+			allowNull: false
+		}
 	});
 
 };

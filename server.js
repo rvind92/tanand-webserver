@@ -5,6 +5,7 @@ var db = require('./db.js');
 var bcrypt = require('bcryptjs');
 var middleware = require('./middleware')(db);
 var firebase = require('firebase');
+var cryptojs = require('crypto-js');
 var moment = require('moment');
 
 firebase.initializeApp({
@@ -41,6 +42,7 @@ app.post('/users/login', function(request, response) {
 	var userInstance;
 	var uid = body.email;
 	var customToken = firebase.auth().createCustomToken(uid);
+	var tokenTime = parseInt(Date.now() / 1000);
 
 	db.user.authenticate(body).then(function(user) {
 		var newToken = user.generateToken('authentication');
@@ -48,10 +50,12 @@ app.post('/users/login', function(request, response) {
 		userInstance = user;
 
 		return db.token.create({
-			token: newToken
+			token: newToken,
+			iat: tokenTime
 		});
 
 	}).then(function(tokenInstance) {
+		response.header('UnixTime', tokenInstance.get('iat'));
 		response.header('FirebaseToken', customToken);
 		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
 		// response.header('FirebaseToken', customToken.get('customToken')).json(userInstance.toPublicJSON());
@@ -180,6 +184,23 @@ app.delete('/users/login', middleware.requireAuthentication, function(request, r
 	}).catch(function() {
 		response.status(500).send();
 	});
+});
+
+app.get('/users/login', function(request, response) {
+	var requestHeader = request.get('Auth');
+
+	db.token.findOne({
+		tokenHash: cryptojs.MD5(requestHeader).toString()
+	}).then(function(tokenValue) {
+		if(!tokenValue) {
+			console.log('Forbidden\n');
+			response.setHeader('Forbidden', 'true');
+			response.status(403).send();
+		} else {
+			response.setHeader('Forbidden', 'false');
+			response.status(204).send();
+		}
+	})
 });
 
 app.use(express.static(__dirname + '/public'));
