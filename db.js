@@ -38,8 +38,8 @@ db.user.hasMany(db.location);
 db.floorplan.belongsTo(db.location);
 db.location.hasMany(db.floorplan);
 
-// db.device.belongsTo(db.floorplan);
-// db.floorplan.hasMany(db.device);
+db.device.belongsTo(db.floorplan);
+db.floorplan.hasMany(db.device);
 
 db.temp_humid.belongsTo(db.device);
 db.device.hasMany(db.temp_humid);

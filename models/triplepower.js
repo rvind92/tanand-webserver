@@ -74,5 +74,13 @@ module.exports = function(sequelize, DataTypes) {
 			type: DataTypes.FLOAT,
 			allowNull: false
 		},
+		powerfactor2: {
+			type: DataTypes.FLOAT,
+			allowNull: false
+		},
+		powerfactor3: {
+			type: DataTypes.FLOAT,
+			allowNull: false
+		}
 	});
 };
