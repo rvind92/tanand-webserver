@@ -1,5 +1,5 @@
 module.exports = function(sequelize, DataTypes) {
-	return sequelize.define('temp_humid', {
+	return sequelize.define('temphumid', {
 		mac: {
 			type: DataTypes.STRING,
 			allowNull: false,

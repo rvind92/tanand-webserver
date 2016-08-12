@@ -24,7 +24,7 @@ db.location = sequelize.import(__dirname + '/models/location.js');
 db.floorplan = sequelize.import(__dirname + '/models/floorplan.js');
 db.singlepower = sequelize.import(__dirname + '/models/singlepower.js');
 db.triplepower = sequelize.import(__dirname + '/models/triplepower.js');
-db.temp_humid = sequelize.import(__dirname + '/models/temp_humid.js');
+db.temphumid = sequelize.import(__dirname + '/models/temphumid.js');
 db.notification = sequelize.import(__dirname + '/models/notification.js');
 db.command = sequelize.import(__dirname + '/models/command.js');
 db.device = sequelize.import(__dirname + '/models/device.js');
@@ -41,8 +41,8 @@ db.location.hasMany(db.floorplan);
 db.device.belongsTo(db.floorplan);
 db.floorplan.hasMany(db.device);
 
-db.temp_humid.belongsTo(db.device);
-db.device.hasMany(db.temp_humid);
+db.temphumid.belongsTo(db.device);
+db.device.hasMany(db.temphumid);
  
 db.singlepower.belongsTo(db.device);
 db.device.hasMany(db.singlepower);

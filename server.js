@@ -97,30 +97,38 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	temperatureSensorObject2.timestamp = time;
 
 	var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp','powerfactor','status');
-	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp','powerfactor','status');
+	var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp','powerfactor', 'powerfactor2', 'powerfactor3', 'status');
 
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
 	var macID = tpm.mac;
 
-	db.single_power.create(spm).then(function(single_power) {
-		var db = firebase.database();
-		var ref = db.ref('readingPowerList').child("iskl").child(macID);
-		ref.update({
-			activepower: parseFloat(spm.activepower),
-			current:parseFloat(spm.current),
-			mainenergy: parseFloat(spm.mainenergy),
-			powerfactor: parseFloat(spm.powerfactor),
-			voltage:parseFloat(spm.voltage),
-			status:parseInt(spm.status)
+	db.device.findById(spm.mac).then(function(device){
+		db.singlepower.create(spm).then(function(single_power) {
+			var db = firebase.database();
+			var ref = db.ref('readingPowerList').child("iskl").child(macID);
+			ref.update({
+				activepower: parseFloat(spm.activepower),
+				current:parseFloat(spm.current),
+				mainenergy: parseFloat(spm.mainenergy),
+				powerfactor: parseFloat(spm.powerfactor),
+				voltage:parseFloat(spm.voltage),
+				status:parseInt(spm.status)
+			});
+
+			single_power.setDevice(device);
+
+			response.status(200).send();
+		}, function(e) {
+			response.status(400).json(e);
 		});
-		response.status(200).send();
-	}, function(e) {
+	},
+	function(e) {
 		response.status(400).json(e);
 	});
 
-	db.triple_power.create(tpm).then(function(triple_power) {
+	db.triplepower.create(tpm).then(function(triple_power) {
 		response.status(200).send();
 		// var db = firebase.database();
 		// var ref = db.ref('readingPowerList').child("iskl").child(macID);
@@ -144,7 +152,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 		response.status(400).json(e);
 	});
 
-	db.temp_humid.create(ts1).then(function(temp_humid) {
+	db.temphumid.create(ts1).then(function(temp_humid) {
 		var db = firebase.database();
 		var ref = db.ref('readingTempList').child("iskl").child(macID);
 		ref.update({
@@ -157,7 +165,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 		response.status(400).json(e);
 	});
 
-	db.temp_humid.create(ts2).then(function(temp_humid) {
+	db.temphumid.create(ts2).then(function(temp_humid) {
 		// var db = firebase.database();
 		// var ref = db.ref('readingTempList').child("iskl").child(macID);
 		// ref.update({
@@ -217,7 +225,7 @@ app.get('/trending/:mac', function(request, response) {
 				ap.push({
 					"mac" : json.mac,
 					"name": json.name,
-					"data" : currdata
+					"data" : apdata
 				})
 			});
 			chartData.volt = volt;
@@ -228,17 +236,199 @@ app.get('/trending/:mac', function(request, response) {
 		})
 	}
 
-		var params = request.params.mac;
-		if(params === db.device.findAll({where:{mac: params}}).then(function(devices){
+	function createChart_TRIPLEPOWER(){
+		var chartData = {};
+	    var json, arrays, time, spobject, spm;
+		var volt = []; var volt2 = []; var volt3 = [];
+		var curr = []; var curr2 = []; var curr3 = [];
+		var ap = []; var ap2 = []; var ap3 = [];
+		var voltdata = []; var volt2data = []; var volt3data = [];
+		var currdata = []; var curr2data = []; var curr3data = [];
+		var apdata = []; var ap2data = []; var ap3data = []
+
+		db.device.findAll({ include: [{ model: db.triplepower, required: true }]}).then(function(devices){
 			devices.forEach(function(devices){
-				if(devices.type === 'single power'){
-					createChart_SINGLEPOWER();
+				 json = devices.toJSON();
+				 arrays = json.triplepowers;
+
+				for(var i=0; i<arrays.length; i++) {
+					time = moment(json.triplepowers[i].timestamp).unix();
+					tpobject = json.triplepowers[i];
+					tpobject.timestamp = time;
+					tpm = _.pick(spobject, 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'timestamp');
+
+					voltdata.push({
+						"x": tpm.timestamp,
+						"y": tpm.voltage
+					});
+					volt2data.push({
+						"x": tpm.timestamp,
+						"y": tpm.voltage2
+					});
+					volt3data.push({
+						"x": tpm.timestamp,
+						"y": tpm.voltage3
+					});
+					currdata.push({
+						"x": tpm.timestamp,
+						"y": tpm.current
+					});
+					curr2data.push({
+						"x": tpm.timestamp,
+						"y": tpm.current2
+					});
+					curr3data.push({
+						"x": tpm.timestamp,
+						"y": tpm.current3
+					})
+					apdata.push({
+						"x": tpm.timestamp,
+						"y": tpm.activepower
+					});
+					ap2data.push({
+						"x": tpm.timestamp,
+						"y": tpm.activepower2
+					});
+					ap3data.push({
+						"x": tpm.timestamp,
+						"y": tpm.activepower3
+					})
 				}
-				else{
-					console.log("FAILED");
+				volt.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : voltdata
+				});
+				volt2.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : volt2data
+				});
+				volt3.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : volt3data
+				});
+				curr.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : currdata
+				});
+				curr2.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : curr2data
+				});
+				curr3.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : curr3data
+				});
+				ap.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : apdata
+				})
+				ap2.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : ap2data
+				})
+				ap3.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : ap3data
+				})
+			});
+			chartData.volt = volt; chartData.volt2 = volt2; chartData.volt3 = volt3;
+			chartData.current = curr; chartData.current2 = curr2; chartData.current3 = curr3;
+			chartData.activepower = ap; chartData.activepower2 = ap2; chartData.activepower3 = ap3;
+			//console.log(JSON.stringify(chartData, null, 2));
+			response.json(chartData);
+		});
+	}
+
+	function createChart_TEMPHUMID() {
+		var chartData = {};
+	    var json, arrays, time, spobject, spm;
+		var temp = []; var humid = []; var batteryvolt = [];
+		var tempdata = []; var humiddata = []; var batteryvoltdata = [];
+
+		db.device.findAll({ include: [{ model: db.temphumid, required: true }]}).then(function(devices){
+			console.log('THESE ARE THE TEMPHUMID DEVICES: ' + JSON.stringify(devices));
+			devices.forEach(function(devices){
+				 json = devices.toJSON();
+				 arrays = json.temphumids;
+
+				for(var i=0; i<arrays.length; i++) {
+					time = moment(json.temphumids[i].timestamp).unix();
+					tempobject = json.temphumids[i];
+					tempobject.timestamp = time;
+					ts = _.pick(tempobject, 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
+
+					tempdata.push({
+						"x": ts.timestamp,
+						"y": ts.temperature
+					});
+					humiddata.push({
+						"x": ts.timestamp,
+						"y": ts.humidity
+					})
+					batteryvoltdata.push({
+						"x": ts.timestamp,
+						"y": ts.BatteryVoltage
+					})
 				}
-			})
-		}));
+				temp.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : tempdata
+				});
+				humid.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : humiddata
+				})
+				batteryvolt.push({
+					"mac" : json.mac,
+					"name": json.name,
+					"data" : batteryvoltdata
+				})
+			});
+			chartData.temperature = temp;
+			chartData.humidity = humid;
+			chartData.batteryVoltage = batteryvolt;
+			console.log(JSON.stringify(chartData, null, 2));
+			response.json(chartData);
+		});
+	}
+
+	var params = request.params.mac;
+	if(params === db.device.findAll({
+		where: {
+			mac: params
+		}
+	}).then(function(deviceFound) {
+		deviceFound.forEach(function(deviceLooped) {
+			if(deviceLooped.type === 'single power') {
+				createChart_SINGLEPOWER();
+			} else if(deviceLooped.type === 'triple power') {
+				createChart_TRIPLEPOWER();
+			} else if(deviceLooped.type === 'temperature sensor1') {
+				createChart_TEMPHUMID();
+			} else if(deviceLooped.type === 'temperature sensor') {
+				createChart_TEMPHUMID();
+			} else{
+				console.log("FAILED to found!");
+			}
+		}, 
+		function(e) {
+			response.status(400).json(e);
+		});
+	}, 
+	function(e) {
+		response.status(400).json(e);
+	}));
  });
 
 app.delete('/users/login', middleware.requireAuthentication, function(request, response) {
@@ -268,13 +458,13 @@ app.get('/users/login', function(request, response) {
 
 app.use(express.static(__dirname + '/public'));
 
-db.sequelize.sync({force: true}).then(function() {
-	app.listen(PORT, function() {
-		console.log('Express listening on port ' + PORT + '!');
-	});
+db.sequelize.sync({
+		//force: true
+	}).then(function() {
+		app.listen(PORT, function() {
+			console.log('Express listening on port ' + PORT + '!');
+		});
 });
-
-
 
 
 
