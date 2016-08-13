@@ -348,13 +348,31 @@ app.get('/trending/:mac', function(request, response) {
 		});
 	}
 
+	// function createChart_TEMPHUMID(mac_id) {
 	function createChart_TEMPHUMID() {
 		var chartData = {};
 	    var json, arrays, time, spobject, spm;
 		var temp = []; var humid = []; var batteryvolt = [];
 		var tempdata = []; var humiddata = []; var batteryvoltdata = [];
 
-		db.device.findAll({ include: [{ model: db.temphumid, required: true }]}).then(function(devices){
+		// db.temphumid.findAll({
+		// 	where: {
+		// 		'devices.mac' : mac_id
+		// 	},
+		// 	include: [{
+		// 		model: db.device,
+		// 		required: true
+		// 	}]
+		// })
+
+//---------------------------------------------------------------------------------------------------
+
+		db.device.findAll({ 
+			include: [{ 
+				model: db.temphumid, 
+				required: true 
+			}]
+		}).then(function(devices){
 			console.log('THESE ARE THE TEMPHUMID DEVICES: ' + JSON.stringify(devices));
 			devices.forEach(function(devices){
 				 json = devices.toJSON();
@@ -403,32 +421,57 @@ app.get('/trending/:mac', function(request, response) {
 		});
 	}
 
-	var params = request.params.mac;
-	if(params === db.device.findAll({
+	var params = request.params.mac; //retrieve URL parameters from request
+// -----------------------------------------------------------------------------
+
+// 	if(params === db.device.findAll({ //if the parameters(mac) is valid, search the device table and return the associated mac 
+// 		where: {
+// 			mac: params
+// 		}
+// 	}).then(function(deviceFound) {
+// 		console.log('\n1. DEVICE' + JSON.stringify(deviceFound) + '\n');
+// 		deviceFound.forEach(function(deviceLooped) { 
+// 			console.log('\n2. DEVICE: ' + JSON.stringify(deviceLooped) + '\n');//
+// 			if(deviceLooped.type === 'single power') {
+// 				createChart_SINGLEPOWER();
+// 			} else if(deviceLooped.type === 'triple power') {
+// 				createChart_TRIPLEPOWER();
+// 			} else if(deviceLooped.type === 'temperature sensor1') {
+// 				createChart_TEMPHUMID();
+// 			} else if(deviceLooped.type === 'temperature sensor') {
+// 				createChart_TEMPHUMID();
+// 			} else{
+// 				console.log("FAILED to found!");
+// 			}
+// 		}, 
+// 		function(e) {
+// 			response.status(400).json(e);
+// 		});
+// 	}, 
+// 	function(e) {
+// 		response.status(400).json(e);
+// 	}));
+
+// -----------------------------------------------------------------------------
+
+	db.device.findAll({
 		where: {
 			mac: params
 		}
 	}).then(function(deviceFound) {
-		deviceFound.forEach(function(deviceLooped) {
-			if(deviceLooped.type === 'single power') {
-				createChart_SINGLEPOWER();
-			} else if(deviceLooped.type === 'triple power') {
-				createChart_TRIPLEPOWER();
-			} else if(deviceLooped.type === 'temperature sensor1') {
-				createChart_TEMPHUMID();
-			} else if(deviceLooped.type === 'temperature sensor') {
-				createChart_TEMPHUMID();
-			} else{
-				console.log("FAILED to found!");
-			}
-		}, 
-		function(e) {
-			response.status(400).json(e);
-		});
-	}, 
-	function(e) {
+		deviceMac = deviceFound[0];
+		console.log("THE DEVICE: " + JSON.stringify(deviceMac) + '\n');
+
+		if(deviceMac.type === "single power") {
+			createChart_SINGLEPOWER();
+		} else if (deviceMac.type === "triple power") {
+			createChart_TRIPLEPOWER();
+		} else {
+			createChart_TEMPHUMID(deviceMac.mac);
+		}
+	}, function(e) {
 		response.status(400).json(e);
-	}));
+	});
  });
 
 app.delete('/users/login', middleware.requireAuthentication, function(request, response) {
