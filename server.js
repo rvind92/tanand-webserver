@@ -287,7 +287,9 @@ app.get('/trending/:mac', function(request, response) {
 		db.device.findAll({ 
 			include: [{ 
 				model: db.triplepower, 
-				where: {mac : params}, 
+				where: {
+					mac : params
+				}, 
 				required: true 
 			}]
 		}).then(function(devices) {
@@ -461,13 +463,15 @@ app.get('/trending/:mac', function(request, response) {
 			mac: params
 		}
 	}).then(function(deviceFound) {
-		if(deviceMac.type === "single power") {
-			createChart_SINGLEPOWER(deviceMac.mac);
-		} else if (deviceMac.type === "triple power") {
-			createChart_TRIPLEPOWER(deviceMac.mac);
-		} else {
-			createChart_TEMPHUMID(deviceMac.mac);
-		}
+		console.log(JSON.stringify(deviceFound));
+		createChart_SINGLEPOWER();
+		// if(deviceMac.type === "single power") {
+		// 	createChart_SINGLEPOWER(deviceMac.mac);
+		// } else if (deviceMac.type === "triple power") {
+		// 	createChart_TRIPLEPOWER(deviceMac.mac);
+		// } else {
+		// 	createChart_TEMPHUMID(deviceMac.mac);
+		// }
 	}, function(e) {
 		response.status(400).json(e);
 	});
