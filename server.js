@@ -182,13 +182,13 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 app.get('/trending/:mac', function(request, response) {
 
-	function createChart_SINGLEPOWER(){
+	function createChart_SINGLEPOWER(params){
 		var chartData = {};
 	    var json, arrays, time, spobject, spm;
 		var volt = []; var curr = []; var ap = [];
 		var voltdata = []; var currdata = []; var apdata = [];
 
-		db.device.findAll({ include: [{ model: db.singlepower, required: true }]}).then(function(devices){
+		db.device.findAll({ include: [{ model: db.singlepower, where: {mac : params}, required: true }]}).then(function(devices){
 			devices.forEach(function(devices){
 				 json = devices.toJSON();
 				 arrays = json.singlepowers;
@@ -236,7 +236,7 @@ app.get('/trending/:mac', function(request, response) {
 		})
 	}
 
-	function createChart_TRIPLEPOWER(){
+	function createChart_TRIPLEPOWER(params){
 		var chartData = {};
 	    var json, arrays, time, spobject, spm;
 		var volt = []; var volt2 = []; var volt3 = [];
@@ -246,7 +246,7 @@ app.get('/trending/:mac', function(request, response) {
 		var currdata = []; var curr2data = []; var curr3data = [];
 		var apdata = []; var ap2data = []; var ap3data = []
 
-		db.device.findAll({ include: [{ model: db.triplepower, required: true }]}).then(function(devices){
+		db.device.findAll({ include: [{ model: db.triplepower, where: {mac : params}, required: true }]}).then(function(devices){
 			devices.forEach(function(devices){
 				 json = devices.toJSON();
 				 arrays = json.triplepowers;
@@ -348,111 +348,85 @@ app.get('/trending/:mac', function(request, response) {
 		});
 	}
 
-	// function createChart_TEMPHUMID(mac_id) {
-	function createChart_TEMPHUMID() {
-		var chartData = {};
-	    var json, arrays, time, spobject, spm;
-		var temp = []; var humid = []; var batteryvolt = [];
-		var tempdata = []; var humiddata = []; var batteryvoltdata = [];
+	function createChart_TEMPHUMID(params) {
+        var chartData = {};
+        var json, arrays, time, spobject, spm;
+        var temp = []; var humid = []; var batteryvolt = [];
+        var tempdata = []; var humiddata = []; var batteryvoltdata = [];
 
-		// db.temphumid.findAll({
-		// 	where: {
-		// 		'devices.mac' : mac_id
-		// 	},
-		// 	include: [{
-		// 		model: db.device,
-		// 		required: true
-		// 	}]
-		// })
+        db.device.findAll({ include: [{ model: db.temphumid, where: {mac : params}, required: true }]}).then(function(devices){
+            devices.forEach(function(devices){
+                 json = devices.toJSON();
+                 arrays = json.temphumids;
 
-//---------------------------------------------------------------------------------------------------
+                for(var i=0; i<arrays.length; i++) {
+                    time = moment(json.temphumids[i].timestamp).unix();
+                    tempobject = json.temphumids[i];
+                    tempobject.timestamp = time;
+                    ts = _.pick(tempobject, 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
-		db.device.findAll({ 
-			include: [{ 
-				model: db.temphumid, 
-				required: true 
-			}]
-		}).then(function(devices){
-			console.log('THESE ARE THE TEMPHUMID DEVICES: ' + JSON.stringify(devices));
-			devices.forEach(function(devices){
-				 json = devices.toJSON();
-				 arrays = json.temphumids;
-
-				for(var i=0; i<arrays.length; i++) {
-					time = moment(json.temphumids[i].timestamp).unix();
-					tempobject = json.temphumids[i];
-					tempobject.timestamp = time;
-					ts = _.pick(tempobject, 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
-
-					tempdata.push({
-						"x": ts.timestamp,
-						"y": ts.temperature
-					});
-					humiddata.push({
-						"x": ts.timestamp,
-						"y": ts.humidity
-					})
-					batteryvoltdata.push({
-						"x": ts.timestamp,
-						"y": ts.BatteryVoltage
-					})
-				}
-				temp.push({
-					"mac" : json.mac,
-					"name": json.name,
-					"data" : tempdata
-				});
-				humid.push({
-					"mac" : json.mac,
-					"name": json.name,
-					"data" : humiddata
-				})
-				batteryvolt.push({
-					"mac" : json.mac,
-					"name": json.name,
-					"data" : batteryvoltdata
-				})
-			});
-			chartData.temperature = temp;
-			chartData.humidity = humid;
-			chartData.batteryVoltage = batteryvolt;
-			console.log(JSON.stringify(chartData, null, 2));
-			response.json(chartData);
-		});
-	}
+                    tempdata.push({
+                        "x": ts.timestamp,
+                        "y": ts.temperature
+                    });
+                    humiddata.push({
+                        "x": ts.timestamp,
+                        "y": ts.humidity
+                    })
+                    batteryvoltdata.push({
+                        "x": ts.timestamp,
+                        "y": ts.BatteryVoltage
+                    })
+                }
+                temp.push({
+                    "mac" : json.mac,
+                    "name": json.name,
+                    "data" : tempdata
+                });
+                humid.push({
+                    "mac" : json.mac,
+                    "name": json.name,
+                    "data" : humiddata
+                })
+                batteryvolt.push({
+                    "mac" : json.mac,
+                    "name": json.name,
+                    "data" : batteryvoltdata
+                })
+            });
+            chartData.temperature = temp;
+            chartData.humidity = humid;
+            chartData.batteryVoltage = batteryvolt;
+            console.log(JSON.stringify(chartData, null, 2));
+            response.json(chartData);
+        });
+}
 
 	var params = request.params.mac; //retrieve URL parameters from request
-// -----------------------------------------------------------------------------
 
-// 	if(params === db.device.findAll({ //if the parameters(mac) is valid, search the device table and return the associated mac 
-// 		where: {
-// 			mac: params
-// 		}
-// 	}).then(function(deviceFound) {
-// 		console.log('\n1. DEVICE' + JSON.stringify(deviceFound) + '\n');
-// 		deviceFound.forEach(function(deviceLooped) { 
-// 			console.log('\n2. DEVICE: ' + JSON.stringify(deviceLooped) + '\n');//
-// 			if(deviceLooped.type === 'single power') {
-// 				createChart_SINGLEPOWER();
-// 			} else if(deviceLooped.type === 'triple power') {
-// 				createChart_TRIPLEPOWER();
-// 			} else if(deviceLooped.type === 'temperature sensor1') {
-// 				createChart_TEMPHUMID();
-// 			} else if(deviceLooped.type === 'temperature sensor') {
-// 				createChart_TEMPHUMID();
-// 			} else{
-// 				console.log("FAILED to found!");
-// 			}
-// 		}, 
-// 		function(e) {
-// 			response.status(400).json(e);
-// 		});
-// 	}, 
-// 	function(e) {
-// 		response.status(400).json(e);
-// 	}));
-
-// -----------------------------------------------------------------------------
+	// if(params === db.device.findAll({ //if the parameters(mac) is valid, search the device table and return the associated mac 
+	// 	where: {
+	// 		mac: params
+	// 	}
+	// }).then(function(deviceFound) {
+	// 	deviceFound.forEach(function(deviceLooped) { 
+	// 		if(deviceLooped.type === 'single power') {
+	// 			createChart_SINGLEPOWER();
+	// 		} else if(deviceLooped.type === 'triple power') {
+	// 			createChart_TRIPLEPOWER();
+	// 		} else if(deviceLooped.type === 'temperature sensor1') {
+	// 			createChart_TEMPHUMID();
+	// 		} else if(deviceLooped.type === 'temperature sensor') {
+	// 			createChart_TEMPHUMID();
+	// 		} else{
+	// 			console.log("FAILED to found!");
+	// 		}
+	// 	}, function(e) {
+	// 		response.status(400).json(e);
+	// 	});
+	// }, function(e) {
+	// 	response.status(400).json(e);
+	// }));
 
 	db.device.findAll({
 		where: {
@@ -463,9 +437,9 @@ app.get('/trending/:mac', function(request, response) {
 		console.log("THE DEVICE: " + JSON.stringify(deviceMac) + '\n');
 
 		if(deviceMac.type === "single power") {
-			createChart_SINGLEPOWER();
+			createChart_SINGLEPOWER(deviceMac.mac);
 		} else if (deviceMac.type === "triple power") {
-			createChart_TRIPLEPOWER();
+			createChart_TRIPLEPOWER(deviceMac.mac);
 		} else {
 			createChart_TEMPHUMID(deviceMac.mac);
 		}
