@@ -100,11 +100,11 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	if(singlePowerMeterObject) {
 		singlePowerMeterObject.timestamp = time;
 		var spm = _.pick(singlePowerMeterObject, 'mac', 'voltage', 'current', 'activepower', 'mainenergy', 'timestamp','powerfactor','status');
-		var macID = spm.mac;
+		var spmID = spm.mac;
 
 		db.singlepower.create(spm).then(function(single_power) {
 			var db = firebase.database();
-			var ref = db.ref('readingPowerList').child("iskl").child(macID);
+			var ref = db.ref('readingPowerList').child("iskl").child(spmID);
 			ref.update({
 				activepower: parseFloat(spm.activepower),
 				current:parseFloat(spm.current),
@@ -128,11 +128,11 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	if(triplePowerMeterObject) {
 		triplePowerMeterObject.timestamp = time;
 		var tpm = _.pick(triplePowerMeterObject, 'mac', 'voltage', 'voltage2', 'voltage3', 'current', 'current2', 'current3', 'activepower', 'activepower2', 'activepower3', 'mainenergy', 'mainenergy2', 'mainenergy3', 'timestamp','powerfactor', 'powerfactor2', 'powerfactor3', 'status');
-		var macID = tpm.mac;
+		var tpmID = tpm.mac;
 
 		db.triplepower.create(tpm).then(function(triple_power) {
 			var db = firebase.database();
-			var ref = db.ref('readingPowerList').child("iskl").child(macID);
+			var ref = db.ref('readingPowerList').child("iskl").child(tpmID);
 			// ref.update({
 			// 	activepower: parseFloat(tpm.activepower),
 			// 	activepower2:parseFloat(tpm.activepower2),
@@ -164,11 +164,11 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	if(temperatureSensorObject1) {
 		temperatureSensorObject1.timestamp = time;
 		var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
-		var macID = ts1.mac;
+		var ts1ID = ts1.mac;
 
 		db.temphumid.create(ts1).then(function(temp_humid1) {
 			var db = firebase.database();
-			var ref = db.ref('readingTempList').child("iskl").child(macID);
+			var ref = db.ref('readingTempList').child("iskl").child(ts1ID);
 			ref.update({
 				humidity: parseFloat(ts1.humidity),
 				temperature:parseFloat(ts1.temperature),
@@ -188,11 +188,11 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	if(temperatureSensorObject2) {
 		temperatureSensorObject2.timestamp = time;
 		var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
-		var macID = ts2.mac;
+		var ts2ID = ts2.mac;
 
 		db.temphumid.create(ts2).then(function(temp_humid2) {
 			var db = firebase.database();
-			var ref = db.ref('readingTempList').child("iskl").child(macID);
+			var ref = db.ref('readingTempList').child("iskl").child(ts2ID);
 			// ref.update({
 			// 	humidity: parseFloat(ts2.humidity),
 			// 	temperature:parseFloat(ts2.temperature),
@@ -211,20 +211,28 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 });
 
-app.get('/trending/:mac', middleware.requireAuthentication, function(request, response) {
+app.get('/trending/:mac', function(request, response) {
 
-	function createChart_SINGLEPOWER(params){
+	function createChart_SINGLEPOWER(params) {
 		var chartData = {};
 		var json, arrays, time, spobject, spm;
 		var volt = []; var curr = []; var ap = [];
 		var voltdata = []; var currdata = []; var apdata = [];
 
-		db.device.findAll({ include: [{ model: db.singlepower, where: {mac : params}, required: true }]}).then(function(devices){
-			devices.forEach(function(devices){
+		db.device.findAll({
+			include: [{ 
+				model: db.singlepower, 
+				where: {
+					mac : params
+				},
+				required: true 
+			}]
+		}).then(function(devices) {
+			devices.forEach(function(devices) {
 				json = devices.toJSON();
 				arrays = json.singlepowers;
 
-				for(var i=0; i<arrays.length; i++) {
+				for(var i = 0; i < arrays.length; i++) {
 					time = moment(json.singlepowers[i].timestamp).unix();
 					spobject = json.singlepowers[i];
 					spobject.timestamp = time;
@@ -237,11 +245,11 @@ app.get('/trending/:mac', middleware.requireAuthentication, function(request, re
 					currdata.push({
 						"x": spm.timestamp,
 						"y": spm.current
-					})
+					});
 					apdata.push({
 						"x": spm.timestamp,
 						"y": spm.activepower
-					})
+					});
 				}
 				volt.push({
 					"mac" : json.mac,
@@ -262,9 +270,8 @@ app.get('/trending/:mac', middleware.requireAuthentication, function(request, re
 			chartData.volt = volt;
 			chartData.current = curr;
 			chartData.activepower = ap;
-			// console.log(JSON.stringify(chartData, null, 2));
 			response.json(chartData);
-		})
+		});
 	}
 
 	function createChart_TRIPLEPOWER(params){
@@ -277,12 +284,18 @@ app.get('/trending/:mac', middleware.requireAuthentication, function(request, re
 		var currdata = []; var curr2data = []; var curr3data = [];
 		var apdata = []; var ap2data = []; var ap3data = []
 
-		db.device.findAll({ include: [{ model: db.triplepower, where: {mac : params}, required: true }]}).then(function(devices){
-			devices.forEach(function(devices){
+		db.device.findAll({ 
+			include: [{ 
+				model: db.triplepower, 
+				where: {mac : params}, 
+				required: true 
+			}]
+		}).then(function(devices) {
+			devices.forEach(function(devices) {
 				json = devices.toJSON();
 				arrays = json.triplepowers;
 
-				for(var i=0; i<arrays.length; i++) {
+				for(var i = 0; i < arrays.length; i++) {
 					time = moment(json.triplepowers[i].timestamp).unix();
 					tpobject = json.triplepowers[i];
 					tpobject.timestamp = time;
@@ -374,9 +387,9 @@ app.get('/trending/:mac', middleware.requireAuthentication, function(request, re
 			chartData.volt = volt; chartData.volt2 = volt2; chartData.volt3 = volt3;
 			chartData.current = curr; chartData.current2 = curr2; chartData.current3 = curr3;
 			chartData.activepower = ap; chartData.activepower2 = ap2; chartData.activepower3 = ap3;
-			//console.log(JSON.stringify(chartData, null, 2));
-			response.json(chartData);
-		});
+					//console.log(JSON.stringify(chartData, null, 2));
+					response.json(chartData);
+				});
 	}
 
 	function createChart_TEMPHUMID(params) {
@@ -448,9 +461,6 @@ app.get('/trending/:mac', middleware.requireAuthentication, function(request, re
 			mac: params
 		}
 	}).then(function(deviceFound) {
-		deviceMac = deviceFound[0];
-		console.log("THE DEVICE: " + JSON.stringify(deviceMac) + '\n');
-
 		if(deviceMac.type === "single power") {
 			createChart_SINGLEPOWER(deviceMac.mac);
 		} else if (deviceMac.type === "triple power") {
