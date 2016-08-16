@@ -68,27 +68,32 @@ app.post('/users/login', function(request, response) {
 app.post('/billion', middleware.handleHeader, function(request, response) {
 
 	var requestBody = request.body;
+	var time = moment.unix(requestBody.time).format("YYYY-MM-DD HH:mm:ss.SSS");
+	var billion = _.pick(requestBody, 'mac', 'model', 'wanip');
+	billion.timestamp = time;
 
-	// var billion = _.pick(requestBody, '')
+	db.device.create(billion).then(function(device) {
+		response.status(200).send();
+	});
 	
-	var singlePowerMeter = _.where(request.body.devices, {
+	var singlePowerMeter = _.where(requestBody.devices, {
 		model: "SG3010-T2"
 	});
 
-	var triplePowerMeter = _.where(request.body.devices, {
+	var triplePowerMeter = _.where(requestBody.devices, {
 		model: "SG3030"
 	});
 
-	var temperatureSensor1 = _.where(request.body.devices, {
+	var temperatureSensor1 = _.where(requestBody.devices, {
 		model: "SG110-A"
 	});
 
-	var temperatureSensor2 = _.where(request.body.devices, {
+	var temperatureSensor2 = _.where(requestBody.devices, {
 		model: "SG110-TSA"
 	});
 
 	console.log(request.get('Expect'));
-	var time = moment.unix(request.body.time).format("YYYY-MM-DD HH:mm:ss.SSS");
+	
 
 	singlePowerMeterObject = singlePowerMeter[0];
 	triplePowerMeterObject = triplePowerMeter[0];
@@ -106,36 +111,39 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 	var ts1 = _.pick(temperatureSensorObject1, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 	var ts2 = _.pick(temperatureSensorObject2, 'mac', 'temperature', 'humidity', 'BatteryVoltage', 'timestamp');
 
+	console.log(JSON.stringify(billion));
+	console.log(JSON.stringify(spm));
+	console.log(JSON.stringify(tpm));
+	console.log(JSON.stringify(ts1));
+	console.log(JSON.stringify(ts2));
+
 	var macID = tpm.mac;
-
-	db.device.findById(spm.mac).then(function(device){
-		db.singlepower.create(spm).then(function(single_power) {
-			var db = firebase.database();
-			var ref = db.ref('readingPowerList').child("iskl").child(macID);
-			ref.update({
-				activepower: parseFloat(spm.activepower),
-				current:parseFloat(spm.current),
-				mainenergy: parseFloat(spm.mainenergy),
-				powerfactor: parseFloat(spm.powerfactor),
-				voltage:parseFloat(spm.voltage),
-				status:parseInt(spm.status)
-			});
-
-			single_power.setDevice(device);
-
-			response.status(200).send();
-		}, function(e) {
-			response.status(400).json(e);
+		
+	db.singlepower.create(spm).then(function(single_power) {
+		var db = firebase.database();
+		var ref = db.ref('readingPowerList').child("iskl").child(macID);
+		ref.update({
+			activepower: parseFloat(spm.activepower),
+			current:parseFloat(spm.current),
+			mainenergy: parseFloat(spm.mainenergy),
+			powerfactor: parseFloat(spm.powerfactor),
+			voltage:parseFloat(spm.voltage),
+			status:parseInt(spm.status)
 		});
-	},
-	function(e) {
+
+		return single_power;
+		response.status(200).send();
+	}, function(e) {
 		response.status(400).json(e);
+	}).then(function(single_power_instance) {
+		db.device.findById(billion.mac).then(function(billionDevice) {
+			single_power_instance.setDevice(billionDevice);
+		});
 	});
 
 	db.triplepower.create(tpm).then(function(triple_power) {
-		response.status(200).send();
-		// var db = firebase.database();
-		// var ref = db.ref('readingPowerList').child("iskl").child(macID);
+		var db = firebase.database();
+		var ref = db.ref('readingPowerList').child("iskl").child(macID);
 		// ref.update({
 		// 	activepower: parseFloat(tpm.activepower),
 		// 	activepower2:parseFloat(tpm.activepower2),
@@ -150,36 +158,53 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 		// 	voltage:parseFloat(tpm.voltage),
 		// 	voltage2:parseFloat(tpm.voltage2),
 		// 	voltage3:parseFloat(tpm.voltage3),
-		// 	status:praseInteger(tpm.status)
+		// 	status:parseInt(tpm.status)
 		// });
+
+		return triple_power;
+		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
+	}).then(function(triple_power_instance) {
+		db.device.findById(billion.mac).then(function(billionDevice) {
+			triple_power_instance.setDevice(billionDevice);
+		});
 	});
 
-	db.temphumid.create(ts1).then(function(temp_humid) {
+	db.temphumid.create(ts1).then(function(temp_humid1) {
 		var db = firebase.database();
 		var ref = db.ref('readingTempList').child("iskl").child(macID);
 		ref.update({
 			humidity: parseFloat(ts1.humidity),
 			temperature:parseFloat(ts1.temperature),
-		
 		});
+
+		return temp_humid1;
 		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
+	}).then(function(temphumid1_instance) {
+		db.device.findById(billion.mac).then(function(billionDevice) {
+			temphumid1_instance.setDevice(billionDevice);
+		});
 	});
 
-	db.temphumid.create(ts2).then(function(temp_humid) {
-		// var db = firebase.database();
-		// var ref = db.ref('readingTempList').child("iskl").child(macID);
+	db.temphumid.create(ts2).then(function(temp_humid2) {
+		var db = firebase.database();
+		var ref = db.ref('readingTempList').child("iskl").child(macID);
 		// ref.update({
 		// 	humidity: parseFloat(ts2.humidity),
 		// 	temperature:parseFloat(ts2.temperature),
-
 		// });
+
+		return temp_humid2;
 		response.status(200).send();
 	}, function(e) {
 		response.status(400).json(e);
+	}).then(function(temphumid2_instance) {
+		db.device.findById(billion.mac).then(function(billionDevice) {
+			temphumid2_instance.setDevice(billionDevice);
+		});
 	});
 
 });
@@ -480,7 +505,7 @@ app.get('/users/login', function(request, response) {
 app.use(express.static(__dirname + '/public'));
 
 db.sequelize.sync({
-		//force: true
+		force: true
 	}).then(function() {
 		app.listen(PORT, function() {
 			console.log('Express listening on port ' + PORT + '!');
