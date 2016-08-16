@@ -66,6 +66,10 @@ app.post('/users/login', function(request, response) {
 });
 
 app.post('/billion', middleware.handleHeader, function(request, response) {
+
+	var requestBody = request.body;
+
+	// var billion = _.pick(requestBody, '')
 	
 	var singlePowerMeter = _.where(request.body.devices, {
 		model: "SG3010-T2"
