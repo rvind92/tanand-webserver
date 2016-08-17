@@ -252,17 +252,17 @@ app.get('/trending/:mac', function(request, response) {
 					});
 				}
 				volt.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : voltdata
 				});
 				curr.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : currdata
 				})
 				ap.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : apdata
 				})
@@ -341,47 +341,47 @@ app.get('/trending/:mac', function(request, response) {
 					})
 				}
 				volt.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : voltdata
 				});
 				volt2.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : volt2data
 				});
 				volt3.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : volt3data
 				});
 				curr.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : currdata
 				});
 				curr2.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : curr2data
 				});
 				curr3.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : curr3data
 				});
 				ap.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : apdata
 				})
 				ap2.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : ap2data
 				})
 				ap3.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : ap3data
 				})
@@ -389,9 +389,8 @@ app.get('/trending/:mac', function(request, response) {
 			chartData.volt = volt; chartData.volt2 = volt2; chartData.volt3 = volt3;
 			chartData.current = curr; chartData.current2 = curr2; chartData.current3 = curr3;
 			chartData.activepower = ap; chartData.activepower2 = ap2; chartData.activepower3 = ap3;
-					//console.log(JSON.stringify(chartData, null, 2));
-					response.json(chartData);
-				});
+			response.json(chartData);
+		});
 	}
 
 	function createChart_TEMPHUMID(params) {
@@ -433,17 +432,17 @@ app.get('/trending/:mac', function(request, response) {
 					});
 				}
 				temp.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : tempdata
 				});
 				humid.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : humiddata
 				});
 				batteryvolt.push({
-					"mac" : json.mac,
+					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : batteryvoltdata
 				});
@@ -458,23 +457,13 @@ app.get('/trending/:mac', function(request, response) {
 
 	var params = request.params.mac; //retrieve URL parameters from request
 
-	db.device.findAll({
-		where: {
-			mac: params
-		}
-	}).then(function(deviceFound) {
-		console.log(JSON.stringify(deviceFound));
-		createChart_SINGLEPOWER();
-		// if(deviceMac.type === "single power") {
-		// 	createChart_SINGLEPOWER(deviceMac.mac);
-		// } else if (deviceMac.type === "triple power") {
-		// 	createChart_TRIPLEPOWER(deviceMac.mac);
-		// } else {
-		// 	createChart_TEMPHUMID(deviceMac.mac);
-		// }
-	}, function(e) {
-		response.status(400).json(e);
-	});
+	if(params === '000D6F0000758858') {
+		createChart_SINGLEPOWER(params);
+	} else if(params === '000D6F0003E69466') {
+		createChart_TRIPLEPOWER(params);
+	} else {
+		createChart_TEMPHUMID(params);
+	}
 });
 
 app.delete('/users/login', middleware.requireAuthentication, function(request, response) {
