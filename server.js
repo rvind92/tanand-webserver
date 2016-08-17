@@ -251,6 +251,9 @@ app.get('/trending/:mac', function(request, response) {
 						"y": spm.activepower
 					});
 				}
+				volt = [];
+				curr = [];
+				ap = [];
 				volt.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
@@ -260,17 +263,21 @@ app.get('/trending/:mac', function(request, response) {
 					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : currdata
-				})
+				});
 				ap.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : apdata
-				})
+				});
+				voltdata = [];
+				currdata = [];
+				apdata = [];
 			});
 			chartData.volt = volt;
 			chartData.current = curr;
 			chartData.activepower = ap;
 			response.json(chartData);
+			chartData = {};
 		});
 	}
 
@@ -340,6 +347,15 @@ app.get('/trending/:mac', function(request, response) {
 						"y": tpm.activepower3
 					})
 				}
+				volt = [];
+				curr = [];
+				ap = [];
+				volt2 = [];
+				curr2 = [];
+				ap2 = [];
+				volt3 = [];
+				curr3 = [];
+				ap3 = [];
 				volt.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
@@ -374,22 +390,32 @@ app.get('/trending/:mac', function(request, response) {
 					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : apdata
-				})
+				});
 				ap2.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : ap2data
-				})
+				});
 				ap3.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
 					"data" : ap3data
-				})
+				});
+				voltdata = [];
+				currdata = [];
+				apdata = [];
+				volt2data = [];
+				curr2data = [];
+				ap2data = [];
+				vol3tdata = [];
+				curr3data = [];
+				ap3data = [];
 			});
 			chartData.volt = volt; chartData.volt2 = volt2; chartData.volt3 = volt3;
 			chartData.current = curr; chartData.current2 = curr2; chartData.current3 = curr3;
 			chartData.activepower = ap; chartData.activepower2 = ap2; chartData.activepower3 = ap3;
 			response.json(chartData);
+			chartData = {};
 		});
 	}
 
@@ -431,6 +457,9 @@ app.get('/trending/:mac', function(request, response) {
 						"y": ts.BatteryVoltage
 					});
 				}
+				temp = [];
+				humid = [];
+				batteryvolt = [];
 				temp.push({
 					"mac" : arrays[0].mac,
 					"name": json.name,
@@ -446,12 +475,16 @@ app.get('/trending/:mac', function(request, response) {
 					"name": json.name,
 					"data" : batteryvoltdata
 				});
+				tempdata = [];
+				humiddata = [];
+				batteryvoltdata = [];
 			});
 			chartData.temperature = temp;
 			chartData.humidity = humid;
 			chartData.batteryVoltage = batteryvolt;
 			console.log(JSON.stringify(chartData, null, 2));
 			response.json(chartData);
+			chartData = {};
 		});
 	}
 
