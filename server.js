@@ -58,7 +58,6 @@ app.post('/users/login', function(request, response) {
 		response.header('UnixTime', tokenInstance.get('iat'));
 		response.header('FirebaseToken', customToken);
 		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
-		// response.header('FirebaseToken', customToken.get('customToken')).json(userInstance.toPublicJSON());
 	}).catch(function(e) {
 		console.log(e);
 		response.status(401).send();
@@ -68,6 +67,14 @@ app.post('/users/login', function(request, response) {
 app.post('/billion', middleware.handleHeader, function(request, response) {
 
 	var requestBody = request.body;
+	var site;
+	if(requestBody.wanip === '192.168.0.199') {
+		site = 'iskl'
+	} /* else if(requestBody.wanip === '192.168.0.199') {
+		site = 'tanandtech'
+	} else {
+		site = 'majuantara'
+	} */
 	var time = moment.unix(requestBody.time).format("YYYY-MM-DD HH:mm:ss.SSS");
 	var billion = _.pick(requestBody, 'mac', 'model', 'wanip');
 	billion.timestamp = time;
@@ -104,7 +111,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 		db.singlepower.create(spm).then(function(single_power) {
 			var db = firebase.database();
-			var ref = db.ref('readingPowerList').child("iskl").child(spmID);
+			var ref = db.ref('readingPowerList').child(site).child(spmID);
 			ref.update({
 				activepower: parseFloat(spm.activepower),
 				current:parseFloat(spm.current),
@@ -132,23 +139,23 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 		db.triplepower.create(tpm).then(function(triple_power) {
 			var db = firebase.database();
-			var ref = db.ref('readingPowerList').child("iskl").child(tpmID);
-			// ref.update({
-			// 	activepower: parseFloat(tpm.activepower),
-			// 	activepower2:parseFloat(tpm.activepower2),
-			// 	activepower3:parseFloat(tpm.activepower3),
-			// 	current:parseFloat(tpm.current),
-			// 	current2:parseFloat(tpm.current2),
-			// 	current3:parseFloat(tpm.current3),
-			// 	mainenergy: parseFloat(tpm.mainenergy),
-			// 	mainenergy2:parseFloat(tpm.mainenergy2),
-			// 	mainenergy3:parseFloat(tpm.mainenergy3),
-			// 	powerfactor: parseFloat(tpm.powerfactor),
-			// 	voltage:parseFloat(tpm.voltage),
-			// 	voltage2:parseFloat(tpm.voltage2),
-			// 	voltage3:parseFloat(tpm.voltage3),
-			// 	status:parseInt(tpm.status)
-			// });
+			var ref = db.ref('readingPowerList').child(site).child(tpmID);
+			ref.update({
+				activepower: parseFloat(tpm.activepower),
+				activepower2:parseFloat(tpm.activepower2),
+				activepower3:parseFloat(tpm.activepower3),
+				current:parseFloat(tpm.current),
+				current2:parseFloat(tpm.current2),
+				current3:parseFloat(tpm.current3),
+				mainenergy: parseFloat(tpm.mainenergy),
+				mainenergy2:parseFloat(tpm.mainenergy2),
+				mainenergy3:parseFloat(tpm.mainenergy3),
+				powerfactor: parseFloat(tpm.powerfactor),
+				voltage:parseFloat(tpm.voltage),
+				voltage2:parseFloat(tpm.voltage2),
+				voltage3:parseFloat(tpm.voltage3),
+				status:parseInt(tpm.status)
+			});
 
 			return triple_power;
 			response.status(200).send();
@@ -168,7 +175,7 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 		db.temphumid.create(ts1).then(function(temp_humid1) {
 			var db = firebase.database();
-			var ref = db.ref('readingTempList').child("iskl").child(ts1ID);
+			var ref = db.ref('readingTempList').child(site).child(ts1ID);
 			ref.update({
 				humidity: parseFloat(ts1.humidity),
 				temperature:parseFloat(ts1.temperature),
@@ -192,11 +199,11 @@ app.post('/billion', middleware.handleHeader, function(request, response) {
 
 		db.temphumid.create(ts2).then(function(temp_humid2) {
 			var db = firebase.database();
-			var ref = db.ref('readingTempList').child("iskl").child(ts2ID);
-			// ref.update({
-			// 	humidity: parseFloat(ts2.humidity),
-			// 	temperature:parseFloat(ts2.temperature),
-			// });
+			var ref = db.ref('readingTempList').child(site).child(ts2ID);
+			ref.update({
+				humidity: parseFloat(ts2.humidity),
+				temperature:parseFloat(ts2.temperature),
+			});
 
 			return temp_humid2;
 			response.status(200).send();
