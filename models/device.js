@@ -17,14 +17,6 @@ module.exports = function(sequelize, DataTypes) {
 		model: {
 			type: DataTypes.STRING,
 			allowNull: false
-		},
-		type: {
-			type: DataTypes.STRING,
-			allowNull: true
-		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: true
 		}
 	});
 };
