@@ -21,6 +21,7 @@ var app = express();
 var PORT = process.env.PORT || 3030;
 
 app.use(bodyParser.json());
+app.use(bodyParser.text());
 
 app.get('/', function(request, response) {
 	response.send('Tanand Web Server Root');
@@ -529,6 +530,20 @@ app.get('/users/login', function(request, response) {
 			response.status(204).send();
 		}
 	})
+});
+
+app.post('/adc', function(request, response) {
+	var aq = parseFloat(request.body);
+	var round = Math.round(aq*1e3) / 1e3;
+	console.log('AFTER ROUND: ' + round);
+
+	var db = firebase.database();
+	var ref = db.ref("pm25sensor").child('iskl').child('mac');
+	ref.update({
+		density: round
+	});
+
+	response.status(200).send();
 });
 
 app.use(express.static(__dirname + '/public'));
