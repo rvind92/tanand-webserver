@@ -40,6 +40,7 @@ app.post('/users', function(request, response) {
 
 app.post('/users/login', function(request, response) {
 	var body = _.pick(request.body, 'email', 'password');
+	console.log(JSON.stringify(body));
 	var userInstance;
 	var uid = body.email;
 	var customToken = firebase.auth().createCustomToken(uid);
@@ -56,6 +57,7 @@ app.post('/users/login', function(request, response) {
 		});
 
 	}).then(function(tokenInstance) {
+		response.header('Access-Control-Expose-Headers', 'FirebaseToken');
 		response.header('UnixTime', tokenInstance.get('iat'));
 		response.header('FirebaseToken', customToken);
 		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());
