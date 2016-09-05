@@ -1,14 +1,34 @@
-<center>
+<div id="register" class="tab-pane fade in active" style="text-align:center;">
+    <h3>Register</h3>
+    <br/>
+    <br/>
     <form>
-        <p>Email: <input type="text" name="email" ng-model="form.email" /></p>
-        
-        <p>Password: <input type="password" name="password" ng-model="form.password" /></p>
-        
-        <button type="submit" ng-click="onCreateUser()">Submit</button>
-        
-        <button type="reset">Clear</button>
-    </form>
-    
-<pre> {{ form | json }} </pre>
-    
-</center>
+        <label>Email: </label>
+        <br/><input type="text" name="email" ng-model="form.email" />
+        <br/>
+        <br/>
+        <label>Password: </label>
+        <br/><input type="password" name="password" ng-model="form.password" />
+        <br/>
+        <br/>
+        <br/>
+        <label style="margin-right:10px;">User Type: </label>
+           <select name="usertype" style="width:175px; height:30px; border-radius: 5px">
+               <option value ="Tanand Staff">Tanand Staff
+               </option>
+               <option value="Maju Antara">Maju Antara</option>
+               <option value="ISKL">ISKL</option>
+           </select>
+        <br/>
+        <br/>
+        <br/>
+       
+       <button type="submit" ng-click="onCreateUser()" class="btn btn-success" style="margin-right: 20px">Submit
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+   </form>
+   
+</div>

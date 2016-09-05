@@ -1,0 +1,58 @@
+<div id="editDelete" class="tab-pane fade in active" style="text-align:center;">
+  <h3>Edit / Delete</h3>
+  <div style="padding: 25px"></div>
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+        <div class="input-group-addon"><i class="fa fa-search"></i></div>
+        <input type="text" class="form-control" placeholder="Search da Building" ng-model="searchBuilding">
+      </div>      
+    </div>
+  </form>
+
+  <table class="table table-bordered table-striped">
+
+    <thead>
+      <tr>
+        <td>
+          <a href="" ng-click="sortType = 'buildinglist'; sortReverse = !sortReverse">
+            Building List
+            <span ng-show="sortType == 'buildinglist' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'buildinglist' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+        <td>
+          <a href="" ng-click="sortType = 'floorplanlist'; sortReverse = !sortReverse">
+            Floorplan List
+            <span ng-show="sortType == 'floorplanlist' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'floorplanlist' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+        <td>
+          <a href="" ng-click="sortType = 'sensorlist'; sortReverse = !sortReverse">
+            Sensor List 
+            <span ng-show="sortType == 'sensorlist' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'sensorlist' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+        <td>
+          <a href="" ng-click="sortType = 'sensorname'; sortReverse = !sortReverse">
+            Sensor Name
+            <span ng-show="sortType == 'sensorname' && !sortReverse" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'sensorname' && sortReverse" class="fa fa-caret-up"></span>
+          </a>
+        </td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="roll in table | orderBy:sortType:sortReverse | filter:searchBuilding">
+        <td>{{ roll.buildinglist }}</td>
+        <td>{{ roll.floorplanlist }}</td>
+        <td>{{ roll.sensorlist }}</td>
+        <td>{{ roll.sensorname }}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>

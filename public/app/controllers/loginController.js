@@ -4,7 +4,7 @@
         
         var firebaseToken;
         
-        $scope.onSubmit = function() {
+        $scope.onLogin = function() {
             
             webServiceFactory.postCredentials($scope.form).then(function(response) {
                 $cookieStore.put('userEmail', $scope.form.email);

@@ -1,14 +1,30 @@
-<center>
+<div style = " text-align: center;">
+    <h2>Login</h2>
+    <br/>
+    <br/>
     <form>
-        <p>Email: <input type="text" name="email" ng-model="form.email" /></p>
-        
-        <p>Password: <input type="password" name="password" ng-model="form.password" /></p>
-        
-        <button type="submit" ng-click="onSubmit()">Submit</button>
-        
-        <button type="reset">Clear</button>
+    <label style ="">Email :</label>
+    <br/>     
+    <input type="text" ng-model="form.email" name="email" >
+    <br/>
+    <br/>
+    <label>Password : </label>
+    <br/>
+    <input type="password" ng-model="form.password" name="password">
+    <br/>
+    <br/>
+    <centre><input type="checkbox">Remember me</centre>
+    <br/>
+    <br/>
+    <br/>
+    <button class="btn btn-success" ng-click="onLogin()" type="submit" style="margin-right:20px">Login 
+        <span class="glyphicon glyphicon-ok-circle"></span>
+    </button> 
+    <button class="btn btn-danger" type="reset" style="margin-left:20px">Cancel
+        <span class="glyphicon glyphicon-remove-circle"></span>
+    </button>
     </form>
+
+<!-- <pre> {{ form | json }} </pre> -->
     
-<pre> {{ form | json }} </pre>
-    
-</center>
+</div>

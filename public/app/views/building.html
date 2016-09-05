@@ -1,0 +1,31 @@
+<div id="building" class="tab-pane fade in active" style="text-align:center;">
+    <h3>Add Building</h3>
+    <br/>
+    <br/>
+    <form ng-submit="">
+        <label>Site: </label><br/>
+        <select name="site" style="width:175px; height:30px; border-radius: 5px">
+            <option>site 1</option>
+            <option>site 2</option>
+            <option>site 3</option>
+            <option>site 4</option>
+        </select>
+        <br/>
+        <br/>
+        <label>New Building ID: </label><br/>
+        <input type="text" name="buildingID" placeholder="Building ID" style="text-align:center; width:200px;" ng-model="building.buildingID">
+        <br/>
+        <br/>
+        <label>New Building Name: </label><br/>
+        <input type="text",name="buildingName" placeholder="Building Name" style="text-align:center; width:200px;" ng-model="building.buildingName">
+        <br/>
+        <br/>
+        <br/>
+        <button type="submit" class="btn btn-success" style="margin-right: 20px">Submit
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+    </form>
+</div>
