@@ -6,8 +6,8 @@
         var userPassword = $cookieStore.get('userPassword');
         
         var user = {
-            userEmail,
-            userPassword
+            email: userEmail,
+            password: userPassword
         }
         
         $scope.logout = function() {

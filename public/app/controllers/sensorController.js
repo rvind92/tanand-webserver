@@ -1,6 +1,6 @@
 (function() {
     
-    var SensorController = function ($scope, fireFactory) {
+    var SensorController = function ($scope, firebaseFactory) {
         
     }
     

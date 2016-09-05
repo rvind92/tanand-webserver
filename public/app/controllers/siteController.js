@@ -1,29 +1,28 @@
 (function() {
     
-    var SiteController = function($scope, fireFactory) {
+    var SiteController = function($scope, firebaseFactory) {
         
-        var site = $scope.site;
-        var siteKey = (site.replace(/ /g, '').toLowerCase());
-        var address = $scope.address;
-        var lat = $scope.lat;
-        var lng = $scope.lng;
-        
-        function init() {
-            fireFactory.setSite(siteKey, address, lat, lng, site)
-                .then(function() {
-                $scope.site = "";
-                $scope.address = "";
-                $scope.lat = "";
-                $scope.lng = "";
+        $scope.onSiteSubmit = function() {
+            
+            var siteName = $scope.site;
+            var siteKey = (site.replace(/ /g, '').toLowerCase());
+            var siteAddress = $scope.address;
+            var siteLat = $scope.lat;
+            var siteLng = $scope.lng;
+            
+            firebaseFactory.setSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
+                alert(siteName + 'successfully added!');
+                $scope.site = '';
+                $scope.address = '';
+                $scope.lat = '';
+                $scope.lng = '';
             }, function() {
-                alert('Unable to perform action at the moment');
+                alert('This function cannot be performed at the moment!');
             });
         }
-        
-        init();
     }
     
-    SiteController.$inject = ['$scope', 'fireFactory'];
+    SiteController.$inject = ['$scope', 'firebaseFactory'];
     
     angular.module('tanandApp').controller('SiteController', SiteController);
     

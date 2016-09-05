@@ -1,28 +1,28 @@
 <div id="site" class="tab-pane fade in active" style="text-align:center;">
     <h2><b>ADD SITE</b></h2>
     <br>
-    <form ng-submit="submit()">
+    <form>
         
         <p><label>New Site: </label><br/>
-            <input type="text" name="site" ng-model="site" placeholder="New Site" style="text-align:center; width:200px;" required></p>
-        {{ site }}
+            <input type="text" name="site" ng-model="form.site" placeholder="New Site" style="text-align:center; width:200px;" required></p>
+        {{ form.site }}
         <p>
             <label>Latitude: </label><br/>
-            <input type="text" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" ng-model="latitude">
+            <input type="text" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" ng-model="form.latitude">
         </p>
-        {{ latitude }}
+        {{ form.latitude }}
         <p>
             <label>Longitude: </label><br/>
-            <input type="text" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" ng-model="longitude">
+            <input type="text" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" ng-model="form.longitude">
         </p>
-        {{ longitude }}
+        {{ form.longitude }}
         <p>
             <label>Address: </label><br/>
-            <input type="text",name="address" placeholder="Address" style="text-align:center; width:200px;" ng-model="address">
+            <input type="text",name="address" placeholder="Address" style="text-align:center; width:200px;" ng-model="form.address">
         </p>
-        {{ address }}
+        {{ form.address }}
         
-        <button type="submit" class="btn btn-success" style="margin-right: 20px">Submit
+        <button type="submit" ng-click="onSiteSubmit()" class="btn btn-success" style="margin-right: 20px">Submit
             <span class="glyphicon glyphicon-ok"></span>
         </button>
         

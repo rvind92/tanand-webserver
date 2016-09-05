@@ -1,5 +1,13 @@
 (function() {
     
+    var fbconfig = {
+        apiKey: "AIzaSyDfluu9dqHObXjxgyHOlGoxd7tOupzUYH4",
+        authDomain: "tanand-demo.firebaseapp.com",
+        databaseURL: "https://tanand-demo.firebaseio.com",
+        storageBucket: "tanand-demo.appspot.com",
+    };
+    firebase.initializeApp(fbconfig);
+    
     var app = angular.module('tanandApp', ['ngRoute', 'ngCookies']);
     
     app.config(function($routeProvider) {

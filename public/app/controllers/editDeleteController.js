@@ -1,6 +1,6 @@
 (function() {
     
-    var EditDeleteController = function($scope, fireFactory) {
+    var EditDeleteController = function($scope, firebaseFactory) {
         
     }
     

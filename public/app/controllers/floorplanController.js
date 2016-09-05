@@ -1,6 +1,6 @@
 (function() {
     
-    var FloorplanController = function($scope, fireFactory) {
+    var FloorplanController = function($scope, firebaseFactory) {
         
     }
     
