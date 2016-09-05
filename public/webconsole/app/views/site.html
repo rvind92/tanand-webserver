@@ -1,0 +1,34 @@
+<div id="site" class="tab-pane fade in active" style="text-align:center;">
+    <h2><b>ADD SITE</b></h2>
+    <br>
+    <form ng-submit="submit()">
+        
+        <p><label>New Site: </label><br/>
+            <input type="text" name="site" ng-model="site" placeholder="New Site" style="text-align:center; width:200px;" required></p>
+        {{ site }}
+        <p>
+            <label>Latitude: </label><br/>
+            <input type="text" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" ng-model="latitude">
+        </p>
+        {{ latitude }}
+        <p>
+            <label>Longitude: </label><br/>
+            <input type="text" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" ng-model="longitude">
+        </p>
+        {{ longitude }}
+        <p>
+            <label>Address: </label><br/>
+            <input type="text",name="address" placeholder="Address" style="text-align:center; width:200px;" ng-model="address">
+        </p>
+        {{ address }}
+        
+        <button type="submit" class="btn btn-success" style="margin-right: 20px">Submit
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        
+        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        
+    </form>
+</div>
