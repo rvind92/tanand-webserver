@@ -2,34 +2,29 @@
     <h3>Add Floorplan</h3>
     <br/>
     <br/>
-    <form ng-submit="">
+    <form>
+
         <label>Site List: </label><br/>
-        <select name="siteList" style="width:175px; height:30px; border-radius: 5px">
-            <option>site 1</option>
-            <option>site 2</option>
-            <option>site 3</option>
-            <option>site 4</option>
+        <<select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site">
+        <option ng-repeat="option in site.availableOptions" value="{{option.name}}" ng-selected="updateBuildingSelect(option.name)">{{option.name}}</option>
         </select>
         <br/>
 
         <br/>
         <label>Building Name List: </label><br/>
-        <select name="buildingNameList" style="width:175px; height:30px; border-radius: 5px">
-            <option>building 1</option>
-            <option>building 2</option>
-            <option>building 3</option>
-            <option>building 4</option>
+        <select name="building" style="width:200px; height:30px; border-radius: 5px" ng-model="form.building">
+            <option ng-repeat="option in building.availableOptions" value="{{option.name}}">{{option.name}}</option>
         </select>
         <br/>
 
         <br/>
         <label>New Floorplan ID: </label><br/>
-        <input type="text",name="floorplanID" placeholder="Floorplan ID" style="text-align:center; width:200px;" ng-model="floorplan.floorplanID">
+        <input type="text" name="floorplanID" placeholder="Floorplan ID" style="text-align:center; width:200px;" ng-model="form.floorplanid">
         <br/>
 
         <br/>
         <label>New Floorplan Name: </label><br/>
-        <input type="text",name="floorplanName" placeholder="Floorplan Name" style="text-align:center; width:200px;" ng-model="floorplan.floorplanName">
+        <input type="text" name="floorplanName" placeholder="Floorplan Name" style="text-align:center; width:200px;" ng-model="form.floorplanname">
         <br/>
         <br/>
         <br/>
@@ -44,7 +39,7 @@
         <br/>
         
         <br/>
-        <button type="submit" class="btn btn-success" style="margin-right: 20px">Submit
+        <button type="submit" ng-click="onBFloorplanCreate()" class="btn btn-success" style="margin-right: 20px">Submit
             <span class="glyphicon glyphicon-ok"></span>
         </button>
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel

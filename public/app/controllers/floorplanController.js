@@ -2,6 +2,47 @@
     
     var FloorplanController = function($scope, firebaseFactory) {
 
+        var sites = [];
+        var buildings = [];
+
+        var sitesLoaded = firebase.database().ref('locationList/');
+        sitesLoaded.on('value', function(snapshot) {
+            snapshot.forEach(function(siteKey) {
+                sites.push({
+                    name: siteKey.key
+                });
+            });
+            console.log('This is: ' + JSON.stringify(sites));
+
+        }, function() {
+            alert('No site(s) available at the moment.');
+        });
+
+        $scope.site = {
+            site : null,
+            availableOptions: sites
+        };
+
+        // $scope.updateBuildingSelect = function(option.name) {
+        //     console.log(value + ' has been selected!');
+        //     var buildingsLoaded = firebase.database().ref('locationList/').child(value);
+        //     buildingsLoaded.on('value', function(snapshot) {
+        //         snapshot.forEach(function(buildingKey) {
+        //             buildings.push({
+        //                 name: buildingKey.key
+        //             });
+        //         });
+        //         console.log('This is: ' + JSON.stringify(buildings));
+        //     }, function(e) {
+        //         alert('No building(s) available at the moment.');
+        //     });
+
+        //     $scope.building = {
+        //         site: null,
+        //         availableOptions: buildings
+        //     };
+        // }
+
     	$scope.loadFile = function ($input) {
             if ($input.files && $input.files[0]) {
                 var reader = new FileReader();
@@ -22,6 +63,24 @@
         $scope.reset = function(){
             document.getElementById('blah').src = "";
         };
+
+        // $scope.onFloorplanCreate = function() {
+
+        //     var floorObj = $scope.form;
+
+        //     var siteKey = floorObj.site;
+        //     var buildKey = floorObj.building;
+        //     var floorId = floorObj.floorplanid;
+        //     var floorName = floorObj.floorplanname;
+        //     var floorUrl;
+
+        //     firebaseFactory.setFloorplan(siteKey, buildKey, floorid, floorname, floorUrl).then(function() {
+        //         alert(floorname + ' successfully added!');
+        //     }, function(e) {
+        //         alert('This function cannot be performed at the moment!');
+        //     });
+
+        // }
 
     }
 

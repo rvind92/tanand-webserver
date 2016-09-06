@@ -1,6 +1,6 @@
 (function() {
 	
-	var BuildingController = function ($scope, firebaseFactory) {
+	var BuildingController = function($scope, firebaseFactory) {
 
 		var sites = [];
 
@@ -33,7 +33,7 @@
 			var buildName = buildObj.buildingname;
 
 			firebaseFactory.setBuilding(siteKey, buildKey, buildName).then(function() {
-				alert(buildName + 'successfully added!');
+				alert(buildName + ' successfully added!');
 			}, function(e) {
 				alert('This function cannot be performed at the moment!');
 			});
