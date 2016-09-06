@@ -2,30 +2,35 @@
     <h3>Add Building</h3>
     <br/>
     <br/>
-    <form ng-submit="">
+    <form>
+
+        <p>
         <label>Site: </label><br/>
-        <select name="site" style="width:175px; height:30px; border-radius: 5px">
-            <option>site 1</option>
-            <option>site 2</option>
-            <option>site 3</option>
-            <option>site 4</option>
+        <select name="site" id="site" ng-model="form.site" style="width:175px; height:30px; border-radius: 5px">
+            <option ng-repeat="option in form.site" value=" {{option.id}} ">site 1</option>
         </select>
-        <br/>
-        <br/>
+        </p>
+        <br>
+
+        <p>
         <label>New Building ID: </label><br/>
-        <input type="text" name="buildingID" placeholder="Building ID" style="text-align:center; width:200px;" ng-model="building.buildingID">
-        <br/>
-        <br/>
+        <input type="text" ng-model="form.buildingid" name="buildingID" placeholder="Building ID" style="text-align:center; width:200px;">
+        </p>
+        <br>
+
+        <p>
         <label>New Building Name: </label><br/>
-        <input type="text",name="buildingName" placeholder="Building Name" style="text-align:center; width:200px;" ng-model="building.buildingName">
+        <input type="text" ng-model="form.buildingname" name="buildingName" placeholder="Building Name" style="text-align:center; width:200px;">
+        </p>
+        <br>
+
         <br/>
-        <br/>
-        <br/>
-        <button type="submit" class="btn btn-success" style="margin-right: 20px">Submit
+        <button type="submit" ng-click="onBuildingCreate()" class="btn btn-success" style="margin-right: 20px">Submit
             <span class="glyphicon glyphicon-ok"></span>
         </button>
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
             <span class="glyphicon glyphicon-remove"></span>
         </button>
+        
     </form>
 </div>

@@ -4,31 +4,27 @@
     <form>
         
         <p><label>New Site: </label><br/>
-            <input type="text" name="site" ng-model="form.site" placeholder="New Site" style="text-align:center; width:200px;" required></p>
+            <input type="text" ng-model="form.site" name="site" placeholder="New Site" style="text-align:center; width:200px;" required autocomplete="off"></p>
         {{ form.site }}
         <p>
             <label>Latitude: </label><br/>
-            <input type="text" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" ng-model="form.latitude">
+            <input type="text" ng-model="form.latitude" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" autocomplete="off">
         </p>
         {{ form.latitude }}
         <p>
             <label>Longitude: </label><br/>
-            <input type="text" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" ng-model="form.longitude">
+            <input type="text" ng-model="form.longitude" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" autocomplete="off">
         </p>
         {{ form.longitude }}
         <p>
             <label>Address: </label><br/>
-            <input type="text",name="address" placeholder="Address" style="text-align:center; width:200px;" ng-model="form.address">
+            <input type="text" ng-model="form.address" name="address" placeholder="Address" style="text-align:center; width:200px;" autocomplete="off">
         </p>
         {{ form.address }}
         
-        <button type="submit" ng-click="onSiteSubmit()" class="btn btn-success" style="margin-right: 20px">Submit
-            <span class="glyphicon glyphicon-ok"></span>
-        </button>
+        <button type="submit" ng-click="onSiteSubmit()" class="btn btn-success" style="margin-right: 20px">Submit<span class="glyphicon glyphicon-ok"></span></button>
         
-        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
-            <span class="glyphicon glyphicon-remove"></span>
-        </button>
+        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel<span class="glyphicon glyphicon-remove"></span></button>
         
     </form>
 </div>

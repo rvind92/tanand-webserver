@@ -1,21 +1,35 @@
 (function() {
-    
+
     var SiteController = function($scope, firebaseFactory) {
-        
+
         $scope.onSiteSubmit = function() {
-            
-            var siteName = $scope.site;
-            var siteKey = (site.replace(/ /g, '').toLowerCase());
-            var siteAddress = $scope.address;
-            var siteLat = $scope.lat;
-            var siteLng = $scope.lng;
+
+            var siteObj = $scope.form;
+
+            console.log();
+
+            var siteName = siteObj.site;
+            var siteKey = (siteName.replace(/ /g, '').toLowerCase());
+            var siteAddress = siteObj.address;
+            var siteLat = parseFloat(siteObj.latitude);
+            var siteLng = parseFloat(siteObj.longitude);
+
+            var filterFloat = function (value) {
+                if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
+                    .test(value))
+                    return Number(value);
+                return NaN;
+            }
+
+            console.log(siteName);
+            console.log(siteKey);
+            console.log(siteAddress);
+            console.log(filterFloat(siteLat));
+            console.log(filterFloat(siteLng));
             
             firebaseFactory.setSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
                 alert(siteName + 'successfully added!');
-                $scope.site = '';
-                $scope.address = '';
-                $scope.lat = '';
-                $scope.lng = '';
+                $scope.form = '';
             }, function() {
                 alert('This function cannot be performed at the moment!');
             });

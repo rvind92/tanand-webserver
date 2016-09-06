@@ -2,64 +2,56 @@
     
     var firebaseFactory = function() {
         
-        var firebase = {};
+        var firebaseFunc = {};
         
-        firebase.setSite = function(siteKey, siteAddress, siteLat, siteLng, siteName) {
+        firebaseFunc.setSite = function(siteKey, siteAddress, siteLat, siteLng, siteName) {
             const rootRef = firebase.database().ref();
-            var siteRef = rootRef.child('locationList');
+            var siteRef = rootRef.child('locationList').child(siteKey);
             return siteRef.set({
-                siteKey: {
-                    address: siteAddress,
-                    lat: siteLat,
-                    lng: siteLng,
-                    name: siteName
-                }
+                address: siteAddress,
+                lat: siteLat,
+                lng: siteLng,
+                name: siteName
             });
         };
         
-        firebase.setBuilding = function(siteKey, buildingKey, buildingName) {
+        firebaseFunc.setBuilding = function(siteKey, buildingKey, buildingName) {
             const rootRef = firebase.database().ref().child('buildingList');
-            var buildingRef = rootRef.child(siteKey);
+            var buildingRef = rootRef.child(siteKey).(buildingKey);
             return buildingRef.set({
-                buildingKey: {
-                    name: buildingName
-                }
+                name: buildingName
             });
         };
         
-        firebase.setFloorplan = function(siteKey, buildingKey, floorplanKey, floorplanImgUrl, floorplanName) {
+        firebaseFunc.setFloorplan = function(siteKey, buildingKey, floorplanKey, floorplanImgUrl, floorplanName) {
             const rootRef = firebase.database().ref().child('buildingList').child(siteKey).child(buildingKey);
-            var floorplanRef = rootRef.child('floorplan');
+            var floorplanRef = rootRef.child('floorplan').child(floorplanKey);
             return floorplanRef.set({
-                floorplanKey: {
-                    fpImg: floorplanImgUrl,
-                    name: floorplanName
-                }
+                fpImg: floorplanImgUrl,
+                name: floorplanName
             });
         };
         
-        firebase.setSensor = function(siteKey, floorplanKey, deviceKey, deviceName, deviceType, xDevice, yDevice) {
+        firebaseFunc.setSensor = function(siteKey, floorplanKey, deviceKey, deviceName, deviceType, xDevice, yDevice) {
             const rootRef = firebase.database().ref().child('deviceList');
-            var sensorRef = rootRef.child(siteKey).child(floorplanKey);
+            var sensorRef = rootRef.child(siteKey).child(floorplanKey).child(deviceKey);
             return sensorRef.set({
-                deviceKey: {
-                    name: deviceName,
-                    type: deviceType,
-                    x: xDevice,
-                    y: yDevice
-                }
+                name: deviceName,
+                type: deviceType,
+                x: xDevice,
+                y: yDevice
             });
         };
         
-        firebase.update = function() {
+        firebaseFunc.update = function() {
             
         };
         
-        firebase.delete = function() {
+        firebaseFunc.delete = function() {
             
         };
         
-        return firebase;
+        return firebaseFunc;
     }
     
 //    firebaseFactory.$inject = ['$firebaseObject'];
