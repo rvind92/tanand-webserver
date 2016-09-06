@@ -5,6 +5,7 @@
         
         var config = {
             headers: {
+                'Origin': 'http://192.168.3.3:3030',
                 'Content-Type': 'application/json; charset=utf-8;'
             }
         }

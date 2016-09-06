@@ -17,7 +17,7 @@
         
         firebaseFunc.setBuilding = function(siteKey, buildingKey, buildingName) {
             const rootRef = firebase.database().ref().child('buildingList');
-            var buildingRef = rootRef.child(siteKey).(buildingKey);
+            var buildingRef = rootRef.child(siteKey).child(buildingKey);
             return buildingRef.set({
                 name: buildingName
             });

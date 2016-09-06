@@ -1,4 +1,5 @@
 var express = require('express');
+var cors = require('cors');
 var bodyParser = require('body-parser');
 var _ = require('underscore');
 var db = require('./db.js');
@@ -20,6 +21,7 @@ firebase.initializeApp({
 var app = express();
 var PORT = process.env.PORT || 3030;
 
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.text());
 

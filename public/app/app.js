@@ -13,7 +13,6 @@
     var header = {
        templateUrl: 'app/views/menu.html',
        controller: "MenuController"
-
     };
     
     // app.config(function($routeProvider) {

@@ -21,10 +21,10 @@
                     firebase.auth().signInWithCustomToken(firebaseToken).catch(function(error) {
                         var errorCode = error.code;
                         var errorMessage = error.message;
+                        console.log('CODE: ' + errorCode + ' ' + 'MESSAGE: ' + errorMessage);
                     });
-                    $location.path('/login');
                     $scope.form = '';
-                    //need to add redirect path to site.html upon successful sign-in
+                    $location.path('/site');
                 }
             }, function(data, status, headers, config) {
                 alert("Error " + status);
