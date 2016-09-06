@@ -6,8 +6,8 @@
 
         <p>
         <label>Site: </label><br/>
-        <select name="site" id="site" ng-model="form.site" style="width:175px; height:30px; border-radius: 5px">
-            <option ng-repeat="option in form.site" value=" {{option.id}} ">site 1</option>
+        <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site">
+            <option ng-repeat="option in building.availableOptions" value="{{option.name}}">{{option.name}}</option>
         </select>
         </p>
         <br>

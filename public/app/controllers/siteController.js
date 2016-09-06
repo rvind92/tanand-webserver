@@ -6,7 +6,7 @@
 
             var siteObj = $scope.form;
 
-            console.log();
+            console.log('THIS IS THE OBJECT: ' + JSON.stringify(siteObj));
 
             var siteName = siteObj.site;
             var siteKey = (siteName.replace(/ /g, '').toLowerCase());
@@ -29,10 +29,11 @@
             
             firebaseFactory.setSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
                 alert(siteName + 'successfully added!');
-                $scope.form = '';
-            }, function() {
+            }, function(e) {
                 alert('This function cannot be performed at the moment!');
             });
+
+            $scope.form = '';
         }
     }
     
