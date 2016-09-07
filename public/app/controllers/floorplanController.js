@@ -3,7 +3,6 @@
     var FloorplanController = function($scope, firebaseFactory) {
 
         var sites = [];
-        var buildings = [];
 
         var sitesLoaded = firebase.database().ref('locationList/');
         sitesLoaded.on('value', function(snapshot) {
@@ -12,6 +11,7 @@
                     name: siteKey.key
                 });
             });
+            $scope.$apply();
             console.log('This is: ' + JSON.stringify(sites));
 
         }, function() {
@@ -23,27 +23,29 @@
             availableOptions: sites
         };
 
-        // $scope.updateBuildingSelect = function(option.name) {
-        //     console.log(value + ' has been selected!');
-        //     var buildingsLoaded = firebase.database().ref('locationList/').child(value);
-        //     buildingsLoaded.on('value', function(snapshot) {
-        //         snapshot.forEach(function(buildingKey) {
-        //             buildings.push({
-        //                 name: buildingKey.key
-        //             });
-        //         });
-        //         console.log('This is: ' + JSON.stringify(buildings));
-        //     }, function(e) {
-        //         alert('No building(s) available at the moment.');
-        //     });
+        $scope.updateBuildingSelect = function(value) {
+            var buildings = [];
+             console.log(value + ' has been selected!');
+             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
+             buildingsLoaded.on('value', function(snapshot) {
+                 snapshot.forEach(function(buildingKey) {
+                     buildings.push({
+                         name: buildingKey.key
+                     });
+                 });
+                 $scope.$apply();
+                 console.log('This is: ' + JSON.stringify(buildings));
+             }, function(e) {
+                 alert('No building(s) available at the moment.');
+             });
 
-        //     $scope.building = {
-        //         site: null,
-        //         availableOptions: buildings
-        //     };
-        // }
+             $scope.building = {
+                 site: null,
+                 availableOptions: buildings
+             };
+         }
 
-    	$scope.loadFile = function ($input) {
+        $scope.loadFile = function ($input) {
             if ($input.files && $input.files[0]) {
                 var reader = new FileReader();
 

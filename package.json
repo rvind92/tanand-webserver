@@ -9,6 +9,7 @@
   "author": "Aravind Radha Krishna",
   "license": "ISC",
   "dependencies": {
+    "angular-xeditable": "^0.3.0",
     "bcrypt": "^0.8.7",
     "bcryptjs": "^2.3.0",
     "body-parser": "^1.15.2",

@@ -11,6 +11,7 @@
 					name: siteKey.key
 				});
 			});
+            $scope.$apply();
 			console.log('This is: ' + JSON.stringify(sites));
 
 		}, function() {
@@ -21,6 +22,7 @@
 			site : null,
 			availableOptions: sites
 		};
+        
 
 		$scope.onBuildingCreate = function() {
 
