@@ -5,7 +5,7 @@
         var sites = [];
         var buildings = [];
 
-        var sitesLoaded = firebase.database().ref('locationList/');
+        var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
             snapshot.forEach(function(siteKey) {
                 sites.push({
@@ -23,9 +23,9 @@
             availableOptions: sites
         };
 
-        // $scope.updateBuildingSelect = function(option.name) {
+        // $scope.updateBuildingSelect = function(name) {
         //     console.log(value + ' has been selected!');
-        //     var buildingsLoaded = firebase.database().ref('locationList/').child(value);
+        //     var buildingsLoaded = firebase.database().ref('locationList').child(name);
         //     buildingsLoaded.on('value', function(snapshot) {
         //         snapshot.forEach(function(buildingKey) {
         //             buildings.push({

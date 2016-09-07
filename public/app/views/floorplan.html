@@ -5,7 +5,7 @@
     <form>
 
         <label>Site List: </label><br/>
-        <<select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site">
+        <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site">
         <option ng-repeat="option in site.availableOptions" value="{{option.name}}" ng-selected="updateBuildingSelect(option.name)">{{option.name}}</option>
         </select>
         <br/>
