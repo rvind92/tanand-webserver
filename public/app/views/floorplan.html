@@ -5,13 +5,9 @@
     <form>
 
         <label>Site List: </label><br/>
-<<<<<<< HEAD
+
         <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site" ng-change="updateBuildingSelect(form.site)">
         <option ng-repeat="option in site.availableOptions" value="{{option.name}}" >{{option.name}}</option>
-=======
-        <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site">
-        <option ng-repeat="option in site.availableOptions" value="{{option.name}}" ng-selected="updateBuildingSelect(option.name)">{{option.name}}</option>
->>>>>>> 27a523c93e0eaf34a170d1682613c99cd8c7e8a9
         </select>
         <br/>
 

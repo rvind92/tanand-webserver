@@ -1,70 +1,70 @@
 (function() {
-    
+
     var FloorplanController = function($scope, firebaseFactory) {
 
-        var sites = [];
+       var sites = [];
 
-        var sitesLoaded = firebase.database().ref('locationList');
-        sitesLoaded.on('value', function(snapshot) {
-            snapshot.forEach(function(siteKey) {
-                sites.push({
-                    name: siteKey.key
-                });
-            });
-            $scope.$apply();
-            console.log('This is: ' + JSON.stringify(sites));
-
-        }, function() {
-            alert('No site(s) available at the moment.');
+       var sitesLoaded = firebase.database().ref('buildingList');
+       sitesLoaded.on('value', function(snapshot) {
+           snapshot.forEach(function(siteKey) {
+            sites.push({
+              name: siteKey.key
+          });
         });
+           $scope.$apply();
+           console.log('This is: ' + JSON.stringify(sites));
 
-        $scope.site = {
-            site : null,
-            availableOptions: sites
+       }, function() {
+        alert('No site(s) available at the moment.');
+    });
+
+       $scope.site = {
+        site : null,
+        availableOptions: sites
+    };          
+
+    $scope.updateBuildingSelect = function(value) {
+        var buildings = [];
+        console.log(value + ' has been selected!');
+        var buildingsLoaded = firebase.database().ref('buildingList').child(value);
+        buildingsLoaded.on('value', function(snapshot) {
+           snapshot.forEach(function(buildingKey) {
+               buildings.push({
+                   name: buildingKey.key
+               });
+           });
+           $scope.$apply();
+           console.log('This is: ' + JSON.stringify(buildings));
+       }, function(e) {
+           alert('No building(s) available at the moment.');
+       });
+
+        $scope.building = {
+           site: null,
+           availableOptions: buildings
+       };
+   }
+
+   $scope.loadFile = function ($input) {
+    if ($input.files && $input.files[0]) {
+        var reader = new FileReader();
+
+        console.log(reader);
+
+        reader.onload = function (e) {
+            $('#blah')
+            .attr('src', e.target.result)
+            .width(300)
+            .height(180);
         };
 
-        $scope.updateBuildingSelect = function(value) {
-            var buildings = [];
-             console.log(value + ' has been selected!');
-             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
-             buildingsLoaded.on('value', function(snapshot) {
-                 snapshot.forEach(function(buildingKey) {
-                     buildings.push({
-                         name: buildingKey.key
-                     });
-                 });
-                 $scope.$apply();
-                 console.log('This is: ' + JSON.stringify(buildings));
-             }, function(e) {
-                 alert('No building(s) available at the moment.');
-             });
+        reader.readAsDataURL($input.files[0]);
+    }
+};
 
-             $scope.building = {
-                 site: null,
-                 availableOptions: buildings
-             };
-         }
-
-    	$scope.loadFile = function ($input) {
-            if ($input.files && $input.files[0]) {
-                var reader = new FileReader();
-
-                console.log(reader);
-
-                reader.onload = function (e) {
-                    $('#blah')
-                        .attr('src', e.target.result)
-                        .width(300)
-                        .height(180);
-                };
-
-                reader.readAsDataURL($input.files[0]);
-            }
-        };
-        
-        $scope.reset = function(){
-            document.getElementById('blah').src = "";
-        };
+$scope.reset = function(){
+    document.getElementById('blah').src = "";
+};
 
         // $scope.onFloorplanCreate = function() {
 
