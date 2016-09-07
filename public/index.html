@@ -1,6 +1,14 @@
 <!doctype html>
 <html data-ng-app="tanandApp">
     <head>
+
+        <style type="text/css">
+            #map {
+                width: 500px;
+                height: 350px;
+                border: 1px solid #a0a0a0;
+            }
+        </style>
         <title>Tanand Demo Angular</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,6 +20,7 @@
         <div ui-view="header"></div>
         <div ui-view="content"></div>
         
+        <script src="http://maps.google.com/maps/api/js?key=AIzaSyD68T1ie-rs0HUKabnJ_tY2FLL_uTab8Vk"></script>
         <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
         <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/3.3.0/firebase-auth.js"></script>
@@ -23,6 +32,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <script src="scripts/angular.js"></script>
+        <script src="scripts/gmaps.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.1/angular-ui-router.js"></script>
         <script src="https://cdn.firebase.com/libs/angularfire/2.0.2/angularfire.min.js"></script>
         <script src="scripts/angular-route.js"></script>

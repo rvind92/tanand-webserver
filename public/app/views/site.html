@@ -1,26 +1,26 @@
 <div id="site" class="tab-pane fade in active" style="text-align:center;">
     <h3>Add Site</h3>
     <br>
-    <form>
+
+    <form method="post" id="geocoding_form">
         
         <p><label>New Site: </label><br/>
-            <input type="text" ng-model="form.site" name="site" placeholder="New Site" style="text-align:center; width:200px;" required autocomplete="off"></p>
+            <input type="text" ng-model="form.site" name="site" placeholder="New Site" style="text-align:center; width:200px;" autocomplete="off"></p>
         {{ form.site }}
 
-        <br>
-        <iframe
-            width="500"
-            height="370"
-            frameborder="0" style="border:0"
-            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBo5SbSrcicib9vmSWBO9TiDckrAjX_iQI&q=Sunway+Pyramid,Petaling+Jaya+SE" allowfullscreen>
-        </iframe>
+        <div class="input">
+            <label>Map Search: </label>&nbsp;
+            <input type="text" id="address" name="address" placeholder="Input search criteria" style="text-align:center; width:200px;">&nbsp;&nbsp;
+            <input type="submit" class="btn" value="Search">
+            </div>
+
+            <center><div id="map"></div></center><br>
 
         <p>
-        <br>
-            <label> Latitude: </label>
-            <input type="text" ng-model="form.latitude" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" autocomplete="off">
+            <label>Latitude: </label>&nbsp;
+            <input type="text" ng-model="form.latitude" name="latitude" placeholder="Latitude" style="text-align:center; width:200px;" autocomplete="off">&nbsp;&nbsp;&nbsp;
         {{ form.latitude }}
-            <label> Longitude: </label>
+            <label>Longitude: </label>&nbsp;
             <input type="text" ng-model="form.longitude" name="longitude" placeholder="Longitude" style="text-align:center; width:200px;" autocomplete="off">
         </p>
         {{ form.longitude }}
