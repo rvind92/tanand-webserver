@@ -4,7 +4,7 @@
 
         var sites = [];
 
-        var sitesLoaded = firebase.database().ref('locationList/');
+        var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
             snapshot.forEach(function(siteKey) {
                 sites.push({
@@ -45,7 +45,7 @@
              };
          }
 
-        $scope.loadFile = function ($input) {
+    	$scope.loadFile = function ($input) {
             if ($input.files && $input.files[0]) {
                 var reader = new FileReader();
 
