@@ -30,7 +30,7 @@
         <br/>
         <br/>
 
-        <input type='file' onchange="angular.element(this).scope().loadFile(this)" style="margin: 0 auto;"><br/>
+        <input type='file' id='file' name="file" onchange="angular.element(this).scope().loadFile(this)" style="margin: 0 auto;"><br/>
         <img id="blah"/>
         <br/>
         <br/>
@@ -40,7 +40,7 @@
         <br/>
         
         <br/>
-        <button type="submit" ng-click="onBFloorplanCreate()" class="btn btn-success" style="margin-right: 20px">Submit
+        <button type="submit" class="btn btn-success" style="margin-right: 20px" ng-click="onFloorplanCreate()">Submit
             <span class="glyphicon glyphicon-ok"></span>
         </button>
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
@@ -48,4 +48,3 @@
         </button>
     </form>
 </div>
-
