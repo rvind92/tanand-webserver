@@ -541,7 +541,6 @@ app.get('/users/login', function(request, response) {
 app.post('/adc', function(request, response) {
 	var aq = parseFloat(request.body);
 	var round = Math.round(aq*1e3) / 1e3;
-	console.log('AFTER ROUND: ' + round);
 
 	var db = firebase.database();
 	var ref = db.ref("pm25sensor").child('iskl').child('mac');
