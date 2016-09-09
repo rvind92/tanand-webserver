@@ -14,39 +14,6 @@
        templateUrl: 'app/views/menu.html',
        controller: "MenuController"
     };
-    
-    // app.config(function($routeProvider) {
-    //     $routeProvider
-    //         .when('/login', {
-    //             controller: 'LoginController',
-    //             templateUrl: 'app/views/login.html'
-    //         })
-    //         .when('/register', {
-    //             controller: "RegisterController",
-    //             templateUrl: "app/views/register.html"
-    //         })
-    //         .when('/site', {
-    //             controller: 'SiteController',
-    //             templateUrl: 'app/views/site.html'
-    //         })
-    //        .when('/building', { 
-    //            controller: "BuildingController", 
-    //            templateUrl: "app/views/building.html"
-    //        })
-    //        .when('/floorplan', {
-    //            controller: "FloorplanController",
-    //            templateUrl: "app/views/floorplan.html"
-    //        })
-    //        .when('/sensor', {
-    //            controller: "SensorController",
-    //            templateUrl: "app/views/sensor.html"
-    //        })
-    //        .when('/edit_delete', {
-    //            controller: "EditDeleteController",
-    //            templateUrl: "app/views/edit_delete.html"
-    //        })
-    //         .otherwise( { redirectTo: '/login' } );
-    // });
 
     app.config(function($stateProvider, $urlRouterProvider){
         $urlRouterProvider.when('', '/');
@@ -59,12 +26,6 @@
                         templateUrl: "app/views/login.html",
                         controller: "LoginController"
                     }
-                }
-            })
-            .state("menu", {
-                url:"/menu",
-                views:{
-                    'header':header
                 }
             })
             .state('site', {
@@ -155,7 +116,7 @@
                         templateUrl: "app/views/register.html",
                         controller: "RegisterController",
                         resolve: {
-                            factory: checkRouting,
+                            factory: checkRouting
                         }
                     }
                 }
@@ -163,21 +124,23 @@
        
     });
     
-    var checkRouting = function ($location, $cookieStore) {
-   
-     
-         console.log($cookieStore.get('jwt'));
-        
-        $http.get('http://192.168.3.108:3030/users/login', { headers: { 'Auth': $cookieStore.get('jwt') } })
-        .then(function(response){
-             console.log(response.headers('Forbidden'));
-             $location.path('/site');
-            return response.headers('Forbidden');
-        
-        });
-        
-    }
+    var checkRouting = function ($location, $cookieStore, webServiceFactory, $q) {
 
-        
+        var jwt = $cookieStore.get('jwt');
+        var deferred = $q.defer();
+
+        webServiceFactory.resolveToken(jwt).then(function(response) {
+            var bool = response.headers('Forbidden');
+            if(bool === "false") {
+                deferred.resolve(true);
+            } else {
+                deferred.reject();
+                $location.path('/');
+            }
+        });
+
+        return deferred.promise;
+
+    }
         
 }());

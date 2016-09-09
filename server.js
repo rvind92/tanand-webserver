@@ -527,10 +527,12 @@ app.get('/users/login', function(request, response) {
 	}).then(function(tokenValue) {
 		if(!tokenValue) {
 			console.log('Forbidden\n');
-			response.setHeader('Forbidden', 'true');
+			response.header('Access-Control-Expose-Headers', 'Forbidden');
+			response.header('Forbidden', 'true');
 			response.status(403).send();
 		} else {
-			response.setHeader('Forbidden', 'false');
+			response.header('Access-Control-Expose-Headers', 'Forbidden');
+			response.header('Forbidden', 'false');
 			response.status(204).send();
 		}
 	})

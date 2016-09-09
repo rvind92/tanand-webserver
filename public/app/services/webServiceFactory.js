@@ -18,8 +18,20 @@
             return $http.post('http://192.168.3.3:3030/users', credentials);
         };
         
-        factory.logOut = function(credentials) {
-            return $http.delete('http://192.168.3.3:3030/users/login', credentials)
+        factory.logOut = function(token) {
+            return $http.delete('http://192.168.3.3:3030/users/login', {
+                headers: {
+                    'Auth': token
+                }
+            });
+        }
+
+        factory.resolveToken = function(token) {
+            return $http.get('http://192.168.3.3:3030/users/login', {
+                headers: {
+                    'Auth': token
+                }
+            });
         }
         
         return factory;
