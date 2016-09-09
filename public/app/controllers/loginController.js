@@ -1,8 +1,9 @@
 (function() {
     
-    var LoginController = function($scope, $cookieStore,$location ,webServiceFactory) {
+    var LoginController = function($scope, $cookieStore, $location ,webServiceFactory) {
         
         var firebaseToken;
+        var jwt;
         
         $scope.onLogin = function() {
             
@@ -14,9 +15,12 @@
                 console.log($cookieStore.get('userPassword'));
                 
                 console.log($scope.form);
+                jwt = response.headers('Auth');
                 firebaseToken = response.headers('FirebaseToken');
-                console.log('This is the fbToken: ' + firebaseToken);
-                
+
+                $cookieStore.put('jwt', jwt);
+                $cookieStore.put('firebaseToken', firebaseToken);
+              
                 if(firebaseToken) {
                     firebase.auth().signInWithCustomToken(firebaseToken).catch(function(error) {
                         var errorCode = error.code;

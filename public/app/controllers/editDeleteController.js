@@ -1,6 +1,9 @@
 (function() {
 
-	var EditDeleteController = function($scope, firebaseFactory) {
+	var EditDeleteController = function($scope, $cookieStore, firebaseFactory) {
+
+		console.log('This is the jwt value from EditDeleteController: ' + $cookieStore.get('jwt'));
+        console.log('This is the fbtoken value from EditDeleteController' + $cookieStore.get('firebaseToken'));
 
 		$scope.table = [
 			{ buildinglist: 'building 1', floorplanlist: 'floorplan 1', sensorlist: 'sensor 1', sensorname: 'outdoor' },
@@ -11,7 +14,7 @@
 
 	}
 
-	EditDeleteController.$inject = ['$scope', 'firebaseFactory'];
+	EditDeleteController.$inject = ['$scope', '$cookieStore', 'firebaseFactory'];
 
 	angular.module('tanandApp').controller('EditDeleteController', EditDeleteController);
 

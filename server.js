@@ -59,7 +59,7 @@ app.post('/users/login', function(request, response) {
 		});
 
 	}).then(function(tokenInstance) {
-		response.header('Access-Control-Expose-Headers', 'FirebaseToken');
+		response.header('Access-Control-Expose-Headers', 'FirebaseToken, Auth');
 		response.header('UnixTime', tokenInstance.get('iat'));
 		response.header('FirebaseToken', customToken);
 		response.header('Auth', tokenInstance.get('token')).json(userInstance.toPublicJSON());

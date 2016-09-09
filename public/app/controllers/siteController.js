@@ -1,6 +1,10 @@
 (function() {
 
-    var SiteController = function($scope, firebaseFactory) {
+    var SiteController = function($scope, $cookieStore, firebaseFactory) {
+
+        console.log('This is the jwt value: ' + $cookieStore.get('jwt'));
+        console.log('This is the fbtoken value ' + $cookieStore.get('firebaseToken'));
+
         var mapObj;
 
         $(document).ready(function() {
@@ -102,7 +106,7 @@
         }
     }
     
-    SiteController.$inject = ['$scope', 'firebaseFactory'];
+    SiteController.$inject = ['$scope', '$cookieStore', 'firebaseFactory'];
     
     angular.module('tanandApp').controller('SiteController', SiteController);
     
