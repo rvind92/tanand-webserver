@@ -3,83 +3,91 @@
         <h3>Add Sensor</h3>
         <br/>
         <br/>
-        <form ng-submit="">
+        <form id="everything" ng-submit="">
             <div class="row">
-                <div class="col-md-6" style="border-right:2px solid #000;height:520px">
+                <div class="col-md-6" style="border-right:2px solid #000;height:550px">
                     <label>Site List: </label><br/>
-                    <select name="siteList" style="width:200px; height:30px; border-radius: 5px">
-                        <option>site 1</option>
-                        <option>site 2</option>
-                        <option>site 3</option>
-                        <option>site 4</option>
+                    <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)" required>
+<!--                        <option value=""></option>-->
+                        <option ng-repeat="option in sitelist.availableOptions" value="{{option.name}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
                     <label>Building List: </label><br/>
-                    <select name="buildingList" style="width:200px; height:30px; border-radius: 5px">
-                        <option>building 1</option>
-                        <option>building 2</option>
-                        <option>building 3</option>
-                        <option>building 4</option>
+                    <select name="buildinglist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.buildinglist" ng-change="updateFloorplanSelect(form.sitelist, form.buildinglist)">
+                        <option ng-repeat="option in buildinglist.availableOptions" value="{{option.name}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
                     <label>Floorplan List: </label><br/>
-                    <select name="floorplanList" style="width:200px; height:30px; border-radius: 5px">
-                        <option>floorplan 1</option>
-                        <option>floorplan 2</option>
-                        <option>floorplan 3</option>
-                        <option>floorplan 4</option>
+                    <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
+                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.name}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
-                    <img id="image"  src="#" alt="floorplan"/>
+                    <br/>
+                    <label ng-show="hidecoor">{{coor}}</label><br/>
+                    <br/>
+                    <canvas  id="canvas"   ng-mousemove="showCoords()" ng-click="addData()"></canvas>
                     <br/>
                     <br/>
-                    <div style="width:200px; height:100px; margin:0 auto; border:1px solid black;;" ng-mousemove="showCoords()">
-                    </div>
-                    <br/>
-                    <label>{{coor}}</label>
                     <p id="demo"></p>
                     
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" ng-show="sensordiv">
                     <label><b>Sensor Type: </b></label><br/>
-                    <select name="sensortype" style="width:200px; height:30px; border-radius: 5px">
-                        <option>Temperature Sensor</option>
-                        <option>Power Meter Sensor</option>
+                    <select id="sensortype" name="sensortype" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sensorType" ng-change="handleSelect()">
+                        <option value="t">Temperature Sensor</option>
+                        <option value="p">Power Meter Sensor</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>Sensor Subtype: </label><br/>
+                    <select id="subtype" name="sensorsubtype" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sensorSubtype" disabled>
+                        <option value="ts">ts</option>
+                        <option value="taq">taq</option>
+                        <option value="p">ps</option>
                     </select>
                     <br/>
                     <br/>
                     <label>Mac ID: </label><br/>
-                    <input type="text",name="macID" style="width:200px" placeholder="mac ID" style="text-align:center; width:200px;" ng-model="macID">
+                    <input type="text",name="macID" style="width:200px; text-align:center;" placeholder="mac ID" ng-model="form.macID">
                     <br/>
                     <br/>
                     <label>Sensor Name: </label><br/>
-                    <input type="text",name="sensorName" style="width:200px" placeholder="Sensor Name" style="text-align:center; width:200px;" ng-model="sensorName">
+                    <input type="text",name="sensorName" style="width:200px; text-align:center;" placeholder="Sensor Name" ng-model="form.sensorName">
                     <br/>
                     <br/>
                     <label>CCTV: </label><br/>
-                    <input type="text",name="cctvURL" style="width:200px" placeholder="CCTV URL(optional)" style="text-align:center; width:200px;"> 
+                    <input type="text",name="cctvURL" style="width:200px; text-align:center;" placeholder="CCTV URL(optional)"> 
                     <button type="button" class="btn btn-info">Preview
                         <span class = "glyphicon glyphicon-eye-open"></span>
                     </button>
                     <br/>
                     <br/>
-                    <div style="width:300px; height:200px; margin:0 auto; border:1px solid black"></div>
+<!--                    <div style="width:300px; height:200px; margin:0 auto; border:1px solid black"></div>-->
+                    
+                    <OBJECT classid="clsid:9BE31822-FDAD-461B-AD51-BE1D1C159921" codebase="http://downloads.videolan.org/pub/videolan/vlc/latest/win32/axvlc.cab" width="640" height="480" id="vlc" events="True">
+                       <param name="Src" value="rtsp://cameraipaddress" />
+                       <param name="ShowDisplay" value="True" />
+                       <param name="AutoLoop" value="False" />
+                       <param name="AutoPlay" value="True" />
+                       <embed id="vlcEmb"  type="application/x-google-vlc-plugin" version="VideoLAN.VLCPlugin.2" autoplay="yes" loop="no" width="320" height="270"
+                         target="rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mov " />
+                    </OBJECT>
+
                 </div>
             </div>
             <br/>
             <br/>
-            <button type="button" class="btn btn-success" style="margin-right: 20px">Submit
+            <button type="submit" ng-click="onSensorCreate()" class="btn btn-success" style="margin-right: 20px">Submit
                 <span class="glyphicon glyphicon-ok"></span>
             </button>
-            <button type="button" class="btn btn-danger" style="margin-left: 20px">Cancel
+            <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
                 <span class="glyphicon glyphicon-remove"></span>
             </button>
+            <p>&nbsp;</p>
         </form>
     </div>
 </div>
-
-

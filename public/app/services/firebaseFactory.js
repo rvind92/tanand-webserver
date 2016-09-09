@@ -32,12 +32,13 @@
             });
         };
         
-        firebaseFunc.setSensor = function(siteKey, floorplanKey, deviceKey, deviceName, deviceType, xDevice, yDevice) {
+        firebaseFunc.setSensor = function(siteKey, floorplanKey, deviceKey, deviceName, deviceType, deviceSubType, xDevice, yDevice) {
             const rootRef = firebase.database().ref().child('deviceList');
             var sensorRef = rootRef.child(siteKey).child(floorplanKey).child(deviceKey);
             return sensorRef.set({
                 name: deviceName,
                 type: deviceType,
+                subtype: deviceSubType,
                 x: xDevice,
                 y: yDevice
             });
