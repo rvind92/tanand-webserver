@@ -22,7 +22,6 @@
 			site : null,
 			availableOptions: sites
 		};
-        
 
 		$scope.onBuildingCreate = function() {
 

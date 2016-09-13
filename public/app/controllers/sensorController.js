@@ -36,7 +36,7 @@
                        name: buildingKey.key
                    });
                });
-//                $scope.$apply();
+               $scope.$apply();
                 console.log('This is: ' + JSON.stringify(buildings));
             
             }, function(e) {

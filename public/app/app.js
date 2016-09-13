@@ -89,22 +89,6 @@
                     }
                 }
             })
-            .state('editDelete', {
-                url:'/editDelete',
-                views:{
-                    'header':{
-                        templateUrl: "app/views/menu.html",
-                        controller: "MenuController"
-                    },
-                    'content':{
-                        templateUrl: "app/views/editdelete.html",
-                        controller: "EditDeleteController",
-                        resolve: {
-                            factory: checkRouting
-                        }
-                    }
-                }
-            })
             .state('register', {
                 url:'/register',
                 views:{
@@ -115,6 +99,22 @@
                     'content':{
                         templateUrl: "app/views/register.html",
                         controller: "RegisterController",
+                        resolve: {
+                            factory: checkRouting
+                        }
+                    }
+                }
+            })
+            .state('buildEdit', {
+                url:'/build_edit',
+                views:{
+                    'header':{
+                        templateUrl: "app/views/menu.html",
+                        controller: "MenuController"
+                    },
+                    'content':{
+                        templateUrl: "app/views/buildingEdit.html",
+                        controller: "BuildingEditController",
                         resolve: {
                             factory: checkRouting
                         }
