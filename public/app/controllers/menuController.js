@@ -10,15 +10,17 @@
 				$cookieStore.remove('userEmail');
 				$cookieStore.remove('userPassword');
                 $cookieStore.remove('jwt');
+				console.log('SUCCESSFULLY LOGGED OUT FROM ANGULAR APP!');
 
                 firebase.auth().signOut().then(function() {
                 	$cookieStore.remove('firebaseToken');
+					console.log('SUCCESSFULLY LOGGED OUT FROM FIREBASE!');
+					$location.path('/');
+					alert('Successful logout. See you again!');
                 }, function(error) {
                 	// An error happened.
                 });
-
-                $location.path('/');
-                alert('Successful logout. See you again!');
+                
             }, function(data, status, headers, config) {
             	alert('Error ' + status);
             });

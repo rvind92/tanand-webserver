@@ -33,11 +33,11 @@
                 views:{
                     'header':header,
                     'content':{
-                        templateUrl: "app/views/site.html",
-                        controller: "SiteController",   
-                        resolve: {
+						resolve: {
                             factory: checkRouting
-                        }
+                        },
+                        templateUrl: "app/views/site.html",
+                        controller: "SiteController"
                     }
                 }
             })
@@ -130,12 +130,13 @@
         console.log(jwt);
         var deferred = $q.defer();
 
-        if (jwt === undefined) {
+        if (jwt === undefined || jwt == undefined) {
             deferred.reject();
+			$location.path('/');
         } else {
             webServiceFactory.resolveToken(jwt).then(function(response) {
                 var bool = response.headers('Forbidden');
-                if(bool === "false") {
+                if(bool == "false") {
                     deferred.resolve(true);
                 } else {
                     deferred.reject();
