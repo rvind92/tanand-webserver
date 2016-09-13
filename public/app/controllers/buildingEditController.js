@@ -51,6 +51,7 @@
         	var buildingDetails = firebase.database().ref('buildingList').child(temp).child(value);
         	buildingDetails.on('value', function(snapshot) {
         		console.log('THIS IS THE SNAPSHOT VALUE: ' + snapshot.val().name);
+                $scope.buildingInfo = "Current building info " +  "\nName: " + snapshot.val().name + "\nID: " + value + "\nSite: " + temp;
         	}, function(e) {
         		console.log(e);
         	});
@@ -60,14 +61,18 @@
 
         	var buildObj = $scope.form;
 
-			console.log(JSON.stringify(buildObj));
+			console.log('PRINT THE OBJECT: ' + JSON.stringify(buildObj));
 
 			var siteKey = buildObj.site;
-			var buildKey = buildObj.buildingid;
+			var buildKey = buildObj.building;
 			var buildName = buildObj.buildingname;
 
+            console.log('THIS IS SITE: ' + siteKey);
+            console.log('THIS IS BUILD: ' + buildKey);
+            console.log('THIS IS BUILDNAME: ' + buildName);
+
 			firebaseFactory.updateBuilding(siteKey, buildKey, buildName).then(function() {
-				alert('');
+				alert('Building successfully updated!');
 			}, function(e) {
 				alert('Error ' + e);
 			});
@@ -77,6 +82,26 @@
         }
 
         $scope.onBuildingDelete = function() {
+
+            var buildObj = $scope.form;
+
+            console.log('PRINT THE OBJECT: ' + JSON.stringify(buildObj));
+
+            var siteKey = buildObj.site;
+            var buildKey = buildObj.building;
+            var buildName = buildObj.buildingname;
+
+            console.log('THIS IS SITE: ' + siteKey);
+            console.log('THIS IS BUILD: ' + buildKey);
+            console.log('THIS IS BUILDNAME: ' + buildName);
+
+            firebaseFactory.deleteBuilding(siteKey, buildKey).then(function() {
+                alert('Building successfully deleted!');
+            }, function(e) {
+                alert('Error ' + e);
+            });
+
+            $scope.form = '';
 
         }
 
