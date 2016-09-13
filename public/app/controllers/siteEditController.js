@@ -1,12 +1,10 @@
 (function() {
 
-	var  siteEditController= function() {
+	var SiteEditController = function() {
 
 
 	}
-
-
-
-	angular.module('tanandApp').controller('siteEditController', siteEditController);
+	
+	angular.module('tanandApp').controller('SiteEditController', SiteEditController);
 
 }());

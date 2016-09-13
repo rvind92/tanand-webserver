@@ -1,12 +1,10 @@
 (function() {
 
-	var  floorPlanEditController= function() {
+	var FloorPlanEditController= function() {
 
 
 	}
-
-
-
-	angular.module('tanandApp').controller('floorPlanEditController', floorPlanEditController);
+	
+	angular.module('tanandApp').controller('FloorPlanEditController', FloorPlanEditController);
 
 }());

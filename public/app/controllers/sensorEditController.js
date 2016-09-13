@@ -1,12 +1,11 @@
 (function() {
 
-	var  sensorEditController= function() {
+	var  SensorEditController = function() {
 
+		
 
 	}
 
-
-
-	angular.module('tanandApp').controller('sensorEditController', sensorEditController);
+	angular.module('tanandApp').controller('SensorEditController', SensorEditController);
 
 }());
