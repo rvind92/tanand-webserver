@@ -1,0 +1,39 @@
+<div id="building" class="tab-pane fade in active" style="text-align:center;">
+    <h3>Edit Building</h3>
+    <br/>
+    <br/>
+    <form>
+
+        <p>
+        <label> Site: </label><br/>
+        <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site" ng-change="updateBuildingSelect(form.site)">
+            <option ng-repeat="option in site.availableOptions" value="{{option.name}}">{{option.name}}</option>
+        </select>
+        </p>
+        <br>
+
+        <p>
+        <label> Building ID: </label><br/>
+        <select name="building" style="width:200px; height:30px; border-radius: 5px" ng-model="form.building" ng-change="onEverySelect(form.building)">
+            <option ng-repeat="option in building.availableOptions" value="{{option.name}}">{{option.name}}</option>
+        </select>
+        <br>
+
+        <p>
+        <label> New Building Name: </label><br/>
+        <input type="text" ng-model="form.buildingname" name="buildingName" placeholder="Building Name" style="text-align:center; width:200px;">
+        <br>
+
+        <br/>
+        <button type="submit" ng-click="onBuildingEdit()" class="btn btn-success" style="margin-right: 20px">Submit
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button type="submit" ng-click="onBuildingDelete()" class="btn btn-danger" style="margin-right: 20px">Delete
+            <span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+            <span class="glyphicon glyphicon-remove"></span>
+        </button>
+        
+    </form>
+</div>
