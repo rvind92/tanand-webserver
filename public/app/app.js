@@ -127,18 +127,23 @@
     var checkRouting = function ($location, $cookieStore, webServiceFactory, $q) {
 
         var jwt = $cookieStore.get('jwt');
+        console.log(jwt);
         var deferred = $q.defer();
 
-        webServiceFactory.resolveToken(jwt).then(function(response) {
-            var bool = response.headers('Forbidden');
-            if(bool === "false") {
-                deferred.resolve(true);
-            } else {
-                deferred.reject();
-                $location.path('/');
-            }
-        });
-
+        if (jwt === undefined) {
+            deferred.reject();
+        } else {
+            webServiceFactory.resolveToken(jwt).then(function(response) {
+                var bool = response.headers('Forbidden');
+                if(bool === "false") {
+                    deferred.resolve(true);
+                } else {
+                    deferred.reject();
+                    $location.path('/');
+                }
+            });
+        }
+        
         return deferred.promise;
 
     }

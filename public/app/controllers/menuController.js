@@ -3,10 +3,12 @@
 	var MenuController = function ($scope, $cookieStore, webServiceFactory, $location) {
 
 		$scope.logout = function() {
-			
+
 			var jwt = $cookieStore.get('jwt');
 
 			webServiceFactory.logOut(jwt).then(function(response) {
+				$cookieStore.remove('userEmail');
+				$cookieStore.remove('userPassword');
                 $cookieStore.remove('jwt');
 
                 firebase.auth().signOut().then(function() {
