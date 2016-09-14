@@ -5,7 +5,7 @@
 		var sites = [];
 		var temp = '';
 
-		var sitesLoaded = firebase.database().ref('locationList/');
+		var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
 			snapshot.forEach(function(siteKey) {
 				sites.push({
@@ -78,6 +78,7 @@
 			});
 
 			$scope.form = '';
+            $scope.buildingInfo = '';
 
         }
 
@@ -102,6 +103,7 @@
             });
 
             $scope.form = '';
+            $scope.buildingInfo = '';
 
         }
 

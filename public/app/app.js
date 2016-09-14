@@ -120,6 +120,22 @@
                         }
                     }
                 }
+            })
+            .state('siteEdit', {
+                url:'/site_edit',
+                views:{
+                    'header':{
+                        templateUrl: "app/views/menu.html",
+                        controller: "MenuController"
+                    },
+                    'content':{
+                        templateUrl: "app/views/siteEdit.html",
+                        controller: "SiteEditController",
+                        resolve: {
+                            factory: checkRouting
+                        }
+                    }
+                }
             }); 
        
     });
