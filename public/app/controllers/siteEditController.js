@@ -66,7 +66,8 @@
 		sitesLoaded.on('value', function(snapshot) {
 			snapshot.forEach(function(siteKey) {
 				sites.push({
-					name: siteKey.key
+					name: siteKey.val().name,
+                    ID : siteKey.key
 				});
 			});
             $scope.$apply();
@@ -83,6 +84,15 @@
 
         $scope.showHiddenFields = function(value) {
             $scope.fieldsdiv = true;
+
+            var siteInfo = firebase.database().ref('locationList').child(value);
+            siteInfo.on('value', function(snapshot) {
+                var site = snapshot.val();
+                $scope.siteInfo = "Current site info " + "\nNAME: " + site.name + "\nADDRESS: " + site.address + "\LATITUDE: " + site.lat + "\nLONGITUDE: " + site.lng ;
+            }, function(e) {
+
+            });
+            
         }
 
         $scope.onSiteEdit = function() {

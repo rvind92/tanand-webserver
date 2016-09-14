@@ -7,20 +7,15 @@
         <label>Site List: </label><br/>
 
         <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site" ng-change="updateBuildingSelect(form.site)">
-        <option ng-repeat="option in site.availableOptions" value="{{option.name}}" >{{option.name}}</option>
+        <option ng-repeat="option in site.availableOptions" value="{{option.ID}}" >{{option.name}}</option>
         </select>
         <br/>
 
         <br/>
         <label>Building Name List: </label><br/>
         <select name="building" style="width:200px; height:30px; border-radius: 5px" ng-model="form.building">
-            <option ng-repeat="option in building.availableOptions" value="{{option.name}}">{{option.name}}</option>
+            <option ng-repeat="option in building.availableOptions" value="{{option.ID}}">{{option.name}}</option>
         </select>
-        <br/>
-
-        <br/>
-        <label>New Floorplan ID: </label><br/>
-        <input type="text" name="floorplanID" placeholder="Floorplan ID" style="text-align:center; width:200px;" ng-model="form.floorplanid">
         <br/>
 
         <br/>

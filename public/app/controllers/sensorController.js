@@ -7,13 +7,14 @@
         var context = canvas.getContext('2d');
         var imgs;
 
-        var sitesLoaded = firebase.database().ref('buildingList');
+        var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
-           snapshot.forEach(function(siteKey) {
-            sites.push({
-              name: siteKey.key
-            });
-           });
+         snapshot.forEach(function(siteKey) {
+          sites.push({
+            ID: siteKey.key,
+            name: siteKey.val().name
+          });
+        });
            $scope.$apply();
            console.log('This is: ' + JSON.stringify(sites));
         
@@ -33,7 +34,8 @@
             buildingsLoaded.on('value', function(snapshot) {
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
-                       name: buildingKey.key
+                       ID: buildingKey.key,
+                       name: buildingKey.val().name
                    });
                });
                $scope.$apply();
@@ -56,7 +58,8 @@
             floorplansLoaded.on('value', function(snapshot) {
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
-                       name: floorplanKey.key
+                       ID: floorplanKey.key,
+                       name: floorplanKey.val().name
                    });
                });
 //                $scope.$apply();
@@ -179,6 +182,7 @@
 
              firebaseFactory.setSensor(siteKey, floorId, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
                  alert(deviceName + ' successfully added!');
+                 $scope.form = "";
              }, function(e) {
                  alert('This function cannot be performed at the moment!');
              });

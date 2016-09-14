@@ -6,11 +6,12 @@
         var metadata;
         var file;
 
-        var sitesLoaded = firebase.database().ref('buildingList');
+        var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
             snapshot.forEach(function(siteKey) {
                 sites.push({
-                    name: siteKey.key
+                    ID : siteKey.key,
+                    name: siteKey.val().name
                 });
             });
             $scope.$apply();
@@ -45,9 +46,11 @@
             buildingsLoaded.on('value', function(snapshot) {
                 snapshot.forEach(function(buildingKey) {
                     buildings.push({
-                        name: buildingKey.key
+                        ID: buildingKey.key,
+                        name: buildingKey.val().name
                     });
                 });
+                $scope.$apply();
                 console.log('This is: ' + JSON.stringify(buildings));
             }, function(e) {
                 alert('No building(s) available at the moment.');
@@ -93,13 +96,16 @@
             storageRef.child(siteKey + '/' + buildKey + '/' + floorName + '/' + file.name).put(file, metadata).then(function(snapshot) {
                 floorUrl = snapshot.metadata.downloadURLs[0];
                 console.log('File available at', floorUrl);
-                firebaseFactory.setFloorplan(siteKey, buildKey, floorId, floorName, floorUrl).then(function() {
+                firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl).then(function() {
+                    alert("Success add");
+                    $scope.form = "";
                 }, function(e) {
                     alert('This function cannot be performed at the moment!');
                 });
             }).catch(function(error) {
                 console.error('Upload failed:', error);
             });
+
         }
     }
 

@@ -11,9 +11,15 @@
 
         <p><label>Site: </label><br/>
         <select name="site" ng-model="form.site" style="width:200px; height:30px; border-radius: 5px" ng-change="showHiddenFields(form.site)">
-            <option ng-repeat="option in site.availableOptions" value="{{option.name}}">{{option.name}}</option>
+            <option ng-repeat="option in site.availableOptions" value="{{option.ID}}">{{option.name}}</option>
         </select>
         </p>
+
+        <div id="message">
+        <p>
+            <pre> {{ siteInfo }}</pre>
+        </p>
+        </div>
 
         <div ng-show="fieldsdiv">
         <p>
@@ -36,13 +42,16 @@
             <input type="text" ng-model="form.address" name="address" placeholder="Address" style="text-align:center; width:200px;" autocomplete="off">
         </p>
         </div>
-        </center>
-        
+
         <button type="submit" ng-click="onSiteEdit()" class="btn btn-success" style="margin-right: 20px">Submit<span class="glyphicon glyphicon-ok" ng-show="fieldsdiv"></span></button>
 
         <button type="submit" ng-click="onSiteDelete()" class="btn btn-danger" style="margin-right: 20px">Delete<span class="glyphicon glyphicon-remove"></span></button>
         
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel<span class="glyphicon glyphicon-remove"></span></button>
+        
+        </center>
+        
+        
         </div>
 
         <div class="col-md-6">

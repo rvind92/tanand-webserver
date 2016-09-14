@@ -4,9 +4,9 @@
         
         var firebaseFunc = {};
         
-        firebaseFunc.setSite = function(siteKey, siteAddress, siteLat, siteLng, siteName) {
+        firebaseFunc.setSite = function(siteAddress, siteLat, siteLng, siteName) {
             const rootRef = firebase.database().ref();
-            var siteRef = rootRef.child('locationList').child(siteKey);
+            var siteRef = rootRef.child('locationList').push(siteRef);
             return siteRef.set({
                 address: siteAddress,
                 lat: siteLat,
@@ -15,17 +15,17 @@
             });
         };
         
-        firebaseFunc.setBuilding = function(siteKey, buildingKey, buildingName) {
+        firebaseFunc.setBuilding = function(siteKey, buildingName) {
             const rootRef = firebase.database().ref().child('buildingList');
-            var buildingRef = rootRef.child(siteKey).child(buildingKey);
+            var buildingRef = rootRef.child(siteKey).push(buildingRef);
             return buildingRef.set({
                 name: buildingName
             });
         };
         
-        firebaseFunc.setFloorplan = function(siteKey, buildingKey, floorplanKey, floorplanName, floorplanImgUrl) {
+        firebaseFunc.setFloorplan = function(siteKey, buildingKey, floorplanName, floorplanImgUrl) {
             const rootRef = firebase.database().ref().child('buildingList').child(siteKey).child(buildingKey);
-            var floorplanRef = rootRef.child('floorplan').child(floorplanKey);
+            var floorplanRef = rootRef.child('floorplan').push(floorplanRef);
             return floorplanRef.set({
                 fpImg: floorplanImgUrl,
                 name: floorplanName

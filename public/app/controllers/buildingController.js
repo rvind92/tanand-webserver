@@ -4,11 +4,12 @@
 
 		var sites = [];
 
-		var sitesLoaded = firebase.database().ref('locationList/');
+		var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
 			snapshot.forEach(function(siteKey) {
 				sites.push({
-					name: siteKey.key
+					name: siteKey.val().name,
+                    ID : siteKey.key
 				});
 			});
             $scope.$apply();
@@ -30,10 +31,12 @@
 			console.log(JSON.stringify(buildObj));
 
 			var siteKey = buildObj.site;
-			var buildKey = buildObj.buildingid;
 			var buildName = buildObj.buildingname;
+            
+            console.log('SITE KEY: ' + siteKey);
+            console.log('BUILD NAME: ' + buildName);
 
-			firebaseFactory.setBuilding(siteKey, buildKey, buildName).then(function() {
+			firebaseFactory.setBuilding(siteKey, buildName).then(function() {
 				alert(buildName + ' successfully added!');
 			}, function(e) {
 				alert('This function cannot be performed at the moment!');

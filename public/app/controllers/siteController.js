@@ -85,7 +85,7 @@
 
             if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
 
-                firebaseFactory.setSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
+                firebaseFactory.setSite(siteAddress, siteLat, siteLng, siteName).then(function() {
                     alert(siteName + 'successfully added!');
                 }, function(e) {
                     alert('This function cannot be performed at the moment!');

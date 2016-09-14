@@ -9,7 +9,8 @@
 		sitesLoaded.on('value', function(snapshot) {
 			snapshot.forEach(function(siteKey) {
 				sites.push({
-					name: siteKey.key
+					name: siteKey.val().name,
+                    ID : siteKey.key
 				});
 			});
             $scope.$apply();
@@ -33,7 +34,8 @@
             buildingsLoaded.on('value', function(snapshot) {
                 snapshot.forEach(function(buildingKey) {
                     buildings.push({
-                        name: buildingKey.key
+                        ID: buildingKey.key,
+                        name: buildingKey.val().name
                     });
                 });
                 console.log('This is: ' + JSON.stringify(buildings));
@@ -51,7 +53,7 @@
         	var buildingDetails = firebase.database().ref('buildingList').child(temp).child(value);
         	buildingDetails.on('value', function(snapshot) {
         		console.log('THIS IS THE SNAPSHOT VALUE: ' + snapshot.val().name);
-                $scope.buildingInfo = "Current building info " +  "\nName: " + snapshot.val().name + "\nID: " + value + "\nSite: " + temp;
+                $scope.buildingInfo = "Current building info " +  "\nNAME: " + snapshot.val().name + "\nID: " + value + "\nSITE: " + temp;
         	}, function(e) {
         		console.log(e);
         	});

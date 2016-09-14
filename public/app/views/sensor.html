@@ -9,19 +9,19 @@
                     <label>Site List: </label><br/>
                     <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)" required>
 <!--                        <option value=""></option>-->
-                        <option ng-repeat="option in sitelist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                        <option ng-repeat="option in sitelist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
                     <label>Building List: </label><br/>
                     <select name="buildinglist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.buildinglist" ng-change="updateFloorplanSelect(form.sitelist, form.buildinglist)">
-                        <option ng-repeat="option in buildinglist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                        <option ng-repeat="option in buildinglist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
                     <label>Floorplan List: </label><br/>
                     <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
-                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
