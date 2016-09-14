@@ -81,43 +81,46 @@
 			availableOptions: sites
 		};
 
+        $scope.showHiddenFields = function(value) {
+            $scope.fieldsdiv = true;
+        }
+
         $scope.onSiteEdit = function() {
 
             var siteObj = $scope.form;
 
             console.log('THIS IS THE OBJECT: ' + JSON.stringify(siteObj));
 
-            var siteName = siteObj.site;
-            var siteKey = (siteName.replace(/ /g, '').toLowerCase());
+            var siteKey = siteObj.site;
+            var siteName = siteObj.sitename;
             var siteAddress = siteObj.address;
             var siteLat = parseFloat(siteObj.latitude);
             var siteLng = parseFloat(siteObj.longitude);
 
-            // if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
+            var filterFloat = function (value) {
+                if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
+                    .test(value))
+                    return Number(value);
+                return NaN;
+            }
 
-            //     firebaseFactory.updateSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
-            //         alert(siteName + 'successfully updated!');
-            //     }, function(e) {
-            //         alert('This function cannot be performed at the moment!');
-            //     });
+            if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
 
-            // } else {
-            //     alert('All fields must be filled!');
-            // }
+                firebaseFactory.updateSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
+                    alert(siteName + 'successfully updated!');
+                }, function(e) {
+                    alert('This function cannot be performed at the moment!');
+                });
 
-            // var filterFloat = function (value) {
-            //     if(/^(\-|\+)?([0-9]+(\.[0-9]+)?|Infinity)$/
-            //         .test(value))
-            //         return Number(value);
-            //     return NaN;
-            // }
+            } else {
+                alert('All fields must be filled!');
+            }
 
-            console.log(siteName);
-            console.log(siteKey);
-            console.log(siteAddress);
-            console.log(filterFloat(siteLat));
-            console.log(filterFloat(siteLng));
-            
+            console.log('Site key: ' + siteKey);
+            console.log('Site name: ' + siteName);
+            console.log('Address: ' + siteAddress);
+            console.log('Latitude: ' + filterFloat(siteLat));
+            console.log('Longitude: ' + filterFloat(siteLng));
             
             $scope.form = '';
         }
@@ -126,8 +129,8 @@
 
         	var siteObj = $scope.form;
 
-        	var siteName = siteObj.site;
-        	var siteKey = (siteName.replace(/ /g, '').toLowerCase());
+        	var siteKey = siteObj.site;
+            var siteName = siteObj.sitename;
 
         	firebaseFactory.deleteSite(siteKey).then(function() {
         		alert("Site successfully deleted!");

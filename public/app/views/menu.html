@@ -10,7 +10,15 @@
         <li><a data-toggle="pill" href="#sensor" href="#/sensor">Sensor</a></li>
       </ul>
     </li>
-    <li><a data-toggle="pill" href="#editDelete" style="font-size:15px;">Edit/Delete</a></li>
+    <li>
+    <a class="dropdown-toggle" data-toggle="dropdown" style="font-size:15px;">Edit<span class="caret"></span></a>
+      <ul class="dropdown-menu">
+        <li><a data-toggle="pill" href="#site_edit">Site</a></li>
+        <li><a data-toggle="pill" href="#build_edit">Building</a></li>
+        <!-- <li><a data-toggle="pill" href="#floorplan" href="#/floorplan">Floor Plan</a></li>
+        <li><a data-toggle="pill" href="#sensor" href="#/sensor">Sensor</a></li> -->
+      </ul>
+    </li>
     <li><a data-toggle="pill" href="#register" href="#/register" style="font-size:15px;">Register</a></li>
     <li><a data-toggle="pill" href="#" href="#/" ng-click="logout()" style="font-size:15px;">Logout</a></li>
   </ul>
