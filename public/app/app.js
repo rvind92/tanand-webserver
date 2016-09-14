@@ -136,6 +136,22 @@
                         }
                     }
                 }
+            })
+            .state('floorplanEdit', {
+                url:'/floorplan_edit',
+                views:{
+                    'header':{
+                        templateUrl: "app/views/menu.html",
+                        controller: "MenuController"
+                    },
+                    'content':{
+                        templateUrl: "app/views/floorplanEdit.html",
+                        controller: "FloorplanEditController",
+                        resolve: {
+                            factory: checkRouting
+                        }
+                    }
+                }
             }); 
        
     });

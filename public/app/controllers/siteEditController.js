@@ -88,7 +88,7 @@
             var siteInfo = firebase.database().ref('locationList').child(value);
             siteInfo.on('value', function(snapshot) {
                 var site = snapshot.val();
-                $scope.siteInfo = "Current site info " + "\nNAME: " + site.name + "\nADDRESS: " + site.address + "\LATITUDE: " + site.lat + "\nLONGITUDE: " + site.lng ;
+                $scope.siteInfo = "Current site info " + "\nNAME: " + site.name + "\nADDRESS: " + site.address + "\nLATITUDE: " + site.lat + "\nLONGITUDE: " + site.lng ;
             }, function(e) {
 
             });

@@ -6,6 +6,7 @@
         <form id="everything" ng-submit="">
             <div class="row">
                 <div class="col-md-6" style="border-right:2px solid #000;height:550px">
+                <h4> Select options to proceed </h4>
                     <label>Site List: </label><br/>
                     <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)" required>
 <!--                        <option value=""></option>-->
@@ -36,6 +37,7 @@
                 </div>
 
                 <div class="col-md-6" ng-show="sensordiv">
+                <h4> Configure selected sensor </h4>
                     <label><b>Sensor Type: </b></label><br/>
                     <select id="sensortype" name="sensortype" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sensorType" ng-change="handleSelect()">
                         <option value="t">Temperature Sensor</option>

@@ -8,7 +8,7 @@
         <div class="col-md-6" style="border-right:2px solid #000;height:550px">
 
         <center>
-
+        <h4> Select site to proceed </h4>
         <p><label>Site: </label><br/>
         <select name="site" ng-model="form.site" style="width:200px; height:30px; border-radius: 5px" ng-change="showHiddenFields(form.site)">
             <option ng-repeat="option in site.availableOptions" value="{{option.ID}}">{{option.name}}</option>
@@ -53,6 +53,8 @@
         
         
         </div>
+
+        <h4> Search via Address or Coordinates </h4>
 
         <div class="col-md-6">
 
