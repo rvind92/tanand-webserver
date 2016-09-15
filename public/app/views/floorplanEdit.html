@@ -1,0 +1,78 @@
+<div id="floorplan" class="tab-pane fade in active" style="text-align: center">
+    <h3>Edit Floorplan</h3>
+    <br/>
+    <br/>
+    <form>
+        <div class="row">
+
+
+            <div class="col-md-6" style="border-right:2px solid #000;height:550px">
+
+                <h4><b> Select options to proceed </b></h4>
+
+                    <label>Site List: </label><br/>
+                    <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)" required>
+<!--                        <option value=""></option>-->
+                        <option ng-repeat="option in sitelist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+
+                    <label>Building List: </label><br/>
+                    <select name="buildinglist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.buildinglist" ng-change="updateFloorplanSelect(form.sitelist, form.buildinglist)">
+                        <option ng-repeat="option in buildinglist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+
+                    <label>Floorplan List: </label><br/>
+                    <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
+                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+
+                    <br/>
+                    <canvas  id="canvas"></canvas>
+                    <br/>
+                    <br/>
+                    <p id="demo"></p>
+
+            </div>
+
+
+            <div class="col-md-6" ng-show="sensordiv">
+
+                <h4><b> Edit selected floorplan </b></h4>
+
+                    <br/>
+                    <label>New Floorplan Name: </label><br/>
+                    <input type="text" name="floorplanName" ng-model="form.floorplanname" placeholder="Floorplan Name" style="text-align:center; width:200px;">
+                    <br/>
+                    <br/>
+                    <br/>
+
+                    <input type='file' id='file' name="file" onchange="angular.element(this).scope().loadFile(this)" style="margin: 0 auto;"><br/>
+                    <img id="blah"/>
+                    <br/>
+                    <br/>
+
+                    <button class="glyphicon glyphicon-retweet" type="reset" value="Reset" style="width: 60px" ng-click="reset()"></button>
+
+                     <br/>
+                     <br/>
+
+                     </div>
+
+            </div>
+
+            
+            <br/>
+            <button type="submit" class="btn btn-success" style="margin-right: 20px" ng-click="onFloorplanCreate()">Submit
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+    </form>
+</div>

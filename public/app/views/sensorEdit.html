@@ -1,0 +1,109 @@
+<div class="container">
+    <div id="editsensor" class="tab-pane fade in active" style="text-align: center;">
+        <h3>Edit Sensor</h3>
+        <br/>
+        <br/>
+        <form id="everything" ng-submit="">
+            <div class="row">
+                <div class="col-md-6" style="border-right:2px solid #000;height:550px">
+                    <p><font size="4"><b>Currrent Floorplan: </b></font></p>
+                    <br/>
+                    <br/>
+                    <label>Current Site List: </label><br/>
+                    <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)" required>
+<!--                        <option value=""></option>-->
+                        <option ng-repeat="option in sitelist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label> Current Building List: </label><br/>
+                    <select name="buildinglist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.buildinglist" ng-change="updateFloorplanSelect(form.sitelist, form.buildinglist)">
+                        <option ng-repeat="option in buildinglist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>Current Floorplan List: </label><br/>
+                    <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
+                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.name}}">{{option.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <label ng-show="hidecoor">{{coor}}</label><br/>
+                    <br/>
+                    <canvas  id="canvas"   ng-click="showCoords()"></canvas>
+                    <br/>
+                    <br/>
+                    <p id="demo"></p>
+                    
+                </div>
+
+                <div class="col-md-3" ng-show="sensordiv">
+                    <p><font size="4"><b>Sensor details to edit: </b></font></p>
+                    <br/>
+                    <br/>
+                    <label><b>Sensor Type: </b></label><br/>
+                    <select id="sensortype" name="sensortype" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sensorType">
+                        <option value="t">Temperature Sensor</option>
+                        <option value="p">Power Meter Sensor</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>Sensor Subtype: </label><br/>
+                    <select id="subtype" name="sensorsubtype" style="width:200px; height:30px; border-radius: 5px" ng-model="form.sensorSubtype">
+                        <option value="ts">ts</option>
+                        <option value="taq">taq</option>
+                        <option value="p">ps</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>Mac ID: </label><br/>
+                    <input id="macID" type="text",name="macID" style="width:200px; text-align:center;" placeholder="mac ID" ng-model="form.macID" disabled>
+                    <br/>
+                    <br/>
+                    <label>Sensor Name: </label><br/>
+                    <input id="sensorName" type="text" name="sensorName" style="width:200px; text-align:center;" placeholder="Sensor Name" ng-model="form.sensorName"><br/>
+                    <br/>
+                    <br/>
+                    <label>Sensor Coordinates: </label><br/>
+                    <label style="margin-right:5px;">x: </label><input id="x" style="width: 50px; margin-right:10px;">
+                    <label style="margin-left:5px;">y: </label><input id="y" style="width: 50px; margin-left:10px;">
+
+                </div>
+                <div class="col-md-3" ng-show="sensordiv">
+                    <p><font size="4"><b>New Floorplan to move: </b></font></p>
+                    <br/>
+                    <br/>
+                    <label>New Site List: </label><br/>
+                    <select id="newsitelist" name="newsitelist" style="width:200px; height:30px; border-radius: 5px" ng-model="edit.newsitelist" ng-change="updateBuildingSelect(edit.newsitelist)">
+                        <option ng-repeat="options in sitelist.availableOptions" value="{{options.name}}">{{options.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>New Building List: </label><br/>
+                    <select id="newbuildinglist" name="newbuildinglist" style="width:200px; height:30px; border-radius: 5px" ng-model="edit.newbuildinglist" ng-change="updateFloorplanSelect(edit.newsitelist, edit.newbuildinglist)">
+                        <option ng-repeat="options in buildinglist.availableOptions" value="{{options.name}}">{{options.name}}</option>
+                    </select>
+                    <br/>
+                    <br/>
+                    <label>New Floorplan List: </label><br/>
+                    <select id="newfloorplanlist" name="newfloorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="edit.newfloorplanlist">
+                        <option ng-repeat="options in floorplanlist.availableOptions" value="{{options.name}}">{{options.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
+            <button type="button" ng-click="onSensorEdit()" class="btn btn-success" style="margin-right: 20px">Submit
+                <span class="glyphicon glyphicon-ok"></span>
+            </button>
+            <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel
+                <span class="glyphicon glyphicon-remove"></span>
+            </button>
+            <p>&nbsp;</p>
+        </form>
+    </div>
+</div>

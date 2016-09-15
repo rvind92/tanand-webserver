@@ -95,6 +95,14 @@
                 name: floorplanName
             });
         };
+
+        firebaseFunc.updateFloorplanWithoutImage = function(siteKey, buildingKey, floorplanKey, floorplanName) {
+            const rootRef = firebase.database().ref().child('buildingList').child(siteKey).child(buildingKey);
+            var floorplanRef = rootRef.child('floorplan').child(floorplanKey);
+            return floorplanRef.update({
+                name: floorplanName
+            });
+        };
         
         firebaseFunc.updateSensor = function(siteKey, floorplanKey, deviceKey, deviceName, deviceType, deviceSubType, xDevice, yDevice) {
             const rootRef = firebase.database().ref().child('deviceList');

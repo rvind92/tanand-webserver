@@ -5,6 +5,7 @@
         var sites = [];
         var metadata;
         var file;
+        var storageRef = firebase.storage().ref();
 
         var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
@@ -28,17 +29,21 @@
 
         document.getElementById('file').addEventListener('change', handleFileSelect, false);
 
-        var storageRef = firebase.storage().ref();
+        
+
         function handleFileSelect(evt) {
             evt.stopPropagation();
             evt.preventDefault();
             file = evt.target.files[0];
+            console.log(file);
             metadata = {
                 'contentType': file.type
             };
-            console.log(metadata);
+            // console.log(metadata);
         }
-        
+
+        console.log(file);
+
         $scope.updateBuildingSelect = function(value) {
             var buildings = [];
             console.log(value + ' has been selected!');
@@ -97,7 +102,7 @@
                 floorUrl = snapshot.metadata.downloadURLs[0];
                 console.log('File available at', floorUrl);
                 firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl).then(function() {
-                    alert("Success add");
+                    alert("Success added floorplan!");
                     $scope.form = "";
                 }, function(e) {
                     alert('This function cannot be performed at the moment!');

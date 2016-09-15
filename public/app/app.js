@@ -24,7 +24,7 @@
                 views:{
                     'content':{
                         templateUrl: "app/views/login.html",
-                        controller: "LoginController"
+                        controller: "LoginController",
                         resolve: {
                             factory: userAuth
                         }
@@ -150,6 +150,22 @@
                     'content':{
                         templateUrl: "app/views/floorplanEdit.html",
                         controller: "FloorplanEditController",
+                        resolve: {
+                            factory: checkRouting
+                        }
+                    }
+                }
+            })
+            .state('sensorEdit', {
+                url:'/sensor_edit',
+                views:{
+                    'header':{
+                        templateUrl: "app/views/menu.html",
+                        controller: "MenuController"
+                    },
+                    'content':{
+                        templateUrl: "app/views/sensorEdit.html",
+                        controller: "SensorEditController",
                         resolve: {
                             factory: checkRouting
                         }

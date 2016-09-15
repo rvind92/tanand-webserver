@@ -5,12 +5,12 @@
 		$scope.logout = function() {
 
 			var jwt = $cookieStore.get('jwt');
+			$cookieStore.put('userAuth', true);
 
 			webServiceFactory.logOut(jwt).then(function(response) {
 				$cookieStore.remove('userEmail');
 				$cookieStore.remove('userPassword');
                 $cookieStore.remove('jwt');
-                $cookieStore.put('userAuth', true);
 				console.log('SUCCESSFULLY LOGGED OUT FROM ANGULAR APP!');
 
                 firebase.auth().signOut().then(function() {

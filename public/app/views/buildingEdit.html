@@ -6,7 +6,7 @@
 
         <p>
         <label> Site: </label><br/>
-        <select name="site" style="width:200px; height:30px; border-radius: 5px" ng-model="form.site" ng-change="updateBuildingSelect(form.site)">
+        <select name="site" ng-model="form.site" style="width:200px; height:30px; border-radius: 5px" ng-change="updateBuildingSelect(form.site)">
             <option ng-repeat="option in site.availableOptions" value="{{option.ID}}">{{option.name}}</option>
         </select>
         </p>
@@ -14,7 +14,7 @@
 
         <p>
         <label> Building ID: </label><br/>
-        <select name="building" style="width:200px; height:30px; border-radius: 5px" ng-model="form.building" ng-change="onEverySelect(form.building)">
+        <select name="building" ng-model="form.building" style="width:200px; height:30px; border-radius: 5px" ng-change="onEverySelect(form.building)">
             <option ng-repeat="option in building.availableOptions" value="{{option.ID}}">{{option.name}}</option>
         </select>
         <br>
