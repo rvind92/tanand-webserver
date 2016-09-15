@@ -10,6 +10,7 @@
 				$cookieStore.remove('userEmail');
 				$cookieStore.remove('userPassword');
                 $cookieStore.remove('jwt');
+                $cookieStore.put('userAuth', true);
 				console.log('SUCCESSFULLY LOGGED OUT FROM ANGULAR APP!');
 
                 firebase.auth().signOut().then(function() {
