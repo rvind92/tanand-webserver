@@ -25,6 +25,9 @@
                     'content':{
                         templateUrl: "app/views/login.html",
                         controller: "LoginController"
+                        resolve: {
+                            factory: userAuth
+                        }
                     }
                 }
             })
@@ -157,28 +160,54 @@
     });
     
     var checkRouting = function ($location, $cookieStore, webServiceFactory, $q) {
-
+        $cookieStore.put('userAuth', true);
         var jwt = $cookieStore.get('jwt');
-        console.log(jwt);
         var deferred = $q.defer();
 
         if (jwt === undefined || jwt == undefined) {
+
             deferred.reject();
-			$location.path('/');
+            $cookieStore.remove('jwt');
+            $location.path('/');
+            $cookieStore.put('userAuth', true);
+
         } else {
+
             webServiceFactory.resolveToken(jwt).then(function(response) {
+
                 var bool = response.headers('Forbidden');
+
                 if(bool == "false") {
+
                     deferred.resolve(true);
+                    $cookieStore.put('userAuth', false);
+
                 } else {
+
                     deferred.reject();
+                    $cookieStore.remove('jwt');
                     $location.path('/');
+                    $cookieStore.put('userAuth', true);
+
                 }
             });
         }
         
         return deferred.promise;
+    }
+        
+    var userAuth = function($cookieStore, $location) {
+            if($cookieStore.get('userAuth')) {
 
+                $location.path('/');
+                return $cookieStore.get('userAuth');
+
+            } else {
+
+                $location.path('/site');
+                return $cookieStore.get('userAuth');
+
+            }
     }
         
 }());
