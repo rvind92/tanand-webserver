@@ -1,6 +1,6 @@
 (function() {
     
-    var firebaseFactory = function() {
+    var firebaseFactory = function($firebaseObject) {
         
         var firebaseFunc = {};
         
@@ -118,6 +118,8 @@
         
         return firebaseFunc;
     }
+
+    firebaseFactory.$inject = ['$firebaseObject'];
     
     angular.module("tanandApp").factory('firebaseFactory', firebaseFactory);
     
