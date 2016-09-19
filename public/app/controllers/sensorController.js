@@ -95,40 +95,40 @@
         };
         
         $scope.handleSelect = function() {
-             if (this.value == 't' || this.value == 'p') {
-                 document.getElementById('subtype').disabled = true;
-             } else {
-                 document.getElementById('subtype').disabled = false;
-             }
-         };
+            if (this.value == 't' || this.value == 'p') {
+                document.getElementById('subtype').disabled = true;
+            } else {
+                document.getElementById('subtype').disabled = false;
+            }
+        };
         
-        function imagesload(floorPlanURL){
+        function imagesload(floorPlanURL) {
             var img = new Image();
             imgs = img;
-            img.onload = function(){ 
-            $scope.imgHeight = img.height;
-            $scope.imgWidth = img.width;
-            canvas.width = ($scope.imgWidth)/2;
-            canvas.height = ($scope.imgHeight)/2;
-            console.log("Canvas width: " + canvas.width);
-            console.log("Canvas height: " + canvas.height);
+            img.onload = function() { 
+                $scope.imgHeight = img.height;
+                $scope.imgWidth = img.width;
+                canvas.width = ($scope.imgWidth) / 2;
+                canvas.height = ($scope.imgHeight) / 2;
+                console.log("Canvas width: " + canvas.width);
+                console.log("Canvas height: " + canvas.height);
                 context.clearRect(0,0,600,400);
                 context.drawImage(imgs,0,0, canvas.width, canvas.height);
-            console.log("This is image Height: " +$scope.imgHeight);
-            console.log("This is image Width: " +$scope.imgWidth);
+                console.log("This is image Height: " + $scope.imgHeight);
+                console.log("This is image Width: " + $scope.imgWidth);
             };
-            img.onerror=function(){alert("image load failed");} 
+            img.onerror = function(){alert("image load failed");} 
             img.src = floorPlanURL;
-            $scope.hidecoor =true;
+            $scope.hidecoor = true;
             $scope.sensordiv = true;
         }
 
-            $scope.addData = function() {
+        $scope.addData = function() {
             $scope.data = {x: $scope.x, y: $scope.y};
             console.log($scope.data);
             $scope.x = '';
             $scope.y = '';
-           drawDot($scope.data);
+            drawDot($scope.data);
         };
 
         function drawDot(data) {
@@ -189,6 +189,7 @@
         
         }
     }
+    
     SensorController.$inject = ['$scope', 'firebaseFactory'];
     
     angular.module('tanandApp').controller('SensorController', SensorController);
