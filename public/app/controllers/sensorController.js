@@ -8,6 +8,9 @@
         var imgs;
 
         var sitesLoaded = firebase.database().ref('locationList');
+		while(sites.length > 0) {
+					sites.pop();
+		}
         sitesLoaded.on('value', function(snapshot) {
          snapshot.forEach(function(siteKey) {
           sites.push({
@@ -159,7 +162,7 @@
         
         
         $scope.onSensorCreate = function() {
-            
+            $scope.loading= true;
             var floorObj = $scope.form;
             var siteKey = floorObj.sitelist; 
             var floorId = floorObj.floorplanlist;
@@ -181,9 +184,13 @@
             
 
              firebaseFactory.setSensor(siteKey, floorId, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
+				 $scope.loading= false;
+				 $scope.$apply();
                  alert(deviceName + ' successfully added!');
                  $scope.form = "";
              }, function(e) {
+				 $scope.loading= false;
+				 $scope.$apply();
                  alert('This function cannot be performed at the moment!');
              });
         

@@ -1,0 +1,57 @@
+<div id="site" class="tab-pane fade in active" style="text-align:center;">
+    <h3> Home </h3>
+    <br>
+
+    <div>
+        <p> HELLO </p>
+    </div>
+
+    <div>
+        <div class="col-md-6" style="border-right:2px solid #000;height:550px">
+            
+        </div>
+
+        <div class="col-md-6">
+            <center>
+                <table>
+                    <tr>
+                        <th> Site List: </th>&nbsp;
+                        <th> Building List: </th>&nbsp;
+                        <th> Floorplan List: </th>&nbsp;
+                    </tr>
+
+                    <tr>
+                        <td style="padding:0 15px 0 0;">
+                            <select id="sitelist" name="sitelist" style="width:200px; height:30px; border-radius: 5px, padding: 10px" ng-model="form.sitelist" ng-change="updateBuildingSelect(form.sitelist)">
+                                <option ng-repeat="option in sitelist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                            </select>
+                        </td>&nbsp;
+                        <td style="padding:0 15px 0 0;">
+                            <select name="buildinglist" style="width:200px; height:30px; border-radius: 5px padding: 10px" ng-model="form.buildinglist" ng-change="updateFloorplanSelect(form.sitelist, form.buildinglist)">
+                                <option ng-repeat="option in buildinglist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                            </select>
+                        </td>&nbsp;
+                        <td style="padding:0 15px 0 0;">
+                            <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px padding: 10px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
+                                <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                            </select>
+                        </td>&nbsp;
+                    </tr>
+                </table>
+            </center>
+
+            <center ng-show="displaydata">
+                <br>
+                <label> Location: {{ location }} </label>&nbsp; <label> | </label>&nbsp;
+                <label> Building: {{ building }} </label>&nbsp; <label> | </label>&nbsp;
+                <label> Floorplan: {{ floorplan }} </label>&nbsp;
+                <br>
+
+                <canvas id="canvas"></canvas><br>
+
+                <!-- <pre ng-model="airquality"> </pre> -->
+            </center>
+        </div>
+    </div>
+
+</div>

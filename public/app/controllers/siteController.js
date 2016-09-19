@@ -44,7 +44,6 @@
 
             $('#geocoding_form').submit(function(e) {
                 e.preventDefault();
-
                 GMaps.geocode({
                     address: $('#address').val(),
                     callback: function(results, status) {
@@ -65,7 +64,7 @@
         });
 
         $scope.onSiteSubmit = function() {
-
+			$scope.loading= true;
             var siteObj = $scope.form;
 
             console.log('THIS IS THE OBJECT: ' + JSON.stringify(siteObj));
@@ -86,12 +85,17 @@
             if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
 
                 firebaseFactory.setSite(siteAddress, siteLat, siteLng, siteName).then(function() {
-                    alert(siteName + 'successfully added!');
+					$scope.loading= false;
+					$scope.$apply();     
                 }, function(e) {
+					$scope.loading= false;
+					$scope.$apply();
                     alert('This function cannot be performed at the moment!');
                 });
 
             } else {
+				$scope.loading= false;
+				$scope.$apply();
                 alert('All fields must be filled!');
             }
 

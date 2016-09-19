@@ -13,6 +13,9 @@
 
 		var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
+		while(sites.length > 0) {
+					sites.pop();
+		}
          snapshot.forEach(function(siteKey) {
           sites.push({
             ID: siteKey.key,
@@ -36,6 +39,9 @@
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
+				while(buildings.length > 0) {
+					buildings.pop();
+				}
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
                        ID: buildingKey.key,
@@ -60,6 +66,9 @@
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
+				while(floorplans.length > 0) {
+					floorplans.pop();
+				}
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
                        ID: floorplanKey.key,
@@ -161,7 +170,7 @@
         };
 
         $scope.onFloorplanCreate = function() {
-
+			$scope.loading= true;
         	var floorObj = $scope.form;
 
         	var siteKey = floorObj.sitelist;
@@ -190,12 +199,18 @@
         			console.log('File available at', floorUrl);
 
         			firebaseFactory.updateFloorplan(siteKey, buildKey, floorId, floorName, floorUrl).then(function() {
+						$scope.loading= false;
+						$scope.$apply();
         				alert("Success updated floorplan!");
         				$scope.form = "";
         			}, function(e) {
+						$scope.loading= false;
+						$scope.$apply();
         				alert('This function cannot be performed at the moment!');
         			});
         		}).catch(function(error) {
+					$scope.loading= false;
+					$scope.$apply();
         			console.error('Upload failed:', error);
         		});
 

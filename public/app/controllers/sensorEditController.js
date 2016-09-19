@@ -18,11 +18,15 @@
         };
         var config = [];
 
-        var sitesLoaded = firebase.database().ref('buildingList');
+        var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
+			while(sites.length>0){
+				sites.pop();
+			}
            snapshot.forEach(function(siteKey) {
             sites.push({
-              name: siteKey.key
+				ID:siteKey.key,
+              name: siteKey.val().name
             });
            });
            $scope.$apply();
@@ -44,7 +48,8 @@
             buildingsLoaded.on('value', function(snapshot) {
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
-                       name: buildingKey.key
+					   ID:buildingKey.key,
+                       name: buildingKey.val().name
                    });
                });
 //                $scope.$apply();
@@ -67,7 +72,8 @@
             floorplansLoaded.on('value', function(snapshot) {
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
-                       name: floorplanKey.key
+					   ID: floorplanKey.key,
+                       name: floorplanKey.val().name
                    });
                });
 //                $scope.$apply();
@@ -84,6 +90,7 @@
         }
             
         $scope.floorplanImg = function(sitekey, buildingkey,floorplanKey) {
+            
             var floorplanImg;
             console.log(buildingkey + ' has been selected!');
             var imgLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan').child(floorplanKey).child('fpImg');
@@ -106,6 +113,8 @@
                         console.log(circle);
                    }) 
                     imagesload(floorplanImg);
+                    $scope.$apply;
+                    
                         
                 });
             }, function(e) {
@@ -147,10 +156,6 @@
                 }
         });
         
-        $scope.showSubtype = function(){
-            $scope.subtype = true;
-        };
-        
         $scope.handleSelect = function() {
              if (this.value == 't' || this.value == 'p') {
                  document.getElementById('subtype').disabled = true;
@@ -179,9 +184,10 @@
             img.src = floorPlanURL;
             $scope.hidecoor =true;
             $scope.sensordiv = true;
-            document.getElementById('newsitelist').selectedIndex = -1;
-            document.getElementById('newbuildinglist').selectedIndex = -1;
-            document.getElementById('newfloorplanlist').selectedIndex = -1;
+            
+//            document.getElementById('newsitelist').selectedIndex = -1;
+//            document.getElementById('newbuildinglist').selectedIndex = -1;
+//            document.getElementById('newfloorplanlist').selectedIndex = -1;
         }
 
         $scope.addData = function() {
@@ -194,6 +200,27 @@
                 drawDot($scope.data);
             }
         };
+        
+        $scope.validateForm = function() {
+            var newsitelist = document.forms["everything"]["newsitelist"].value;
+            var newbuildinglist = document.forms["everything"]["newbuildinglist"].value;
+            var newfloorplanlist = document.forms["everything"]["newfloorplanlist"].value;
+            if (newsitelist == null || newsitelist == "") {
+                alert("The new site list must be selected");
+                return false;
+            }
+            else if (newbuildinglist == null || newbuildinglist == "") {
+                alert("The new building list must be selected");
+                return false;
+            }
+            else if (newfloorplanlist == null || newfloorplanlist == "") {
+                alert("The new floorplan list must be selected");
+                return false;
+            }
+            else{
+                $scope.onSensorEdit();
+            }
+        }
         
 
         function drawDot(data) {
@@ -228,7 +255,7 @@
         
         
         $scope.onSensorEdit = function() {
-            
+             $scope.loading= true;
             var floorObj = $scope.form;
             var siteKey = floorObj.sitelist; 
             var floorId = floorObj.floorplanlist;
@@ -252,7 +279,7 @@
             console.log(deviceSubtype);
             console.log(xDevice);
             console.log(yDevice);
-            
+               
              firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
                  alert(deviceName + ' successfully removed from '+ floorId + ' !');
              }, function(e) {
@@ -260,14 +287,43 @@
              });
 
              firebaseFactory.updateSensor(siteEdit, floorIdEdit, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
+				 $scope.loading= false;
+				$scope.$apply();
                  alert(deviceName + ' successfully moved to ' + floorIdEdit + ' !');
              }, function(e) {
+				 $scope.loading= false;
+				$scope.$apply();
+                 alert('This function cannot be performed at the moment!');
+				 
+             });
+        
+        }
+        
+        $scope.onSensorDelete = function() {
+            $scope.loading= true;
+            var floorObj = $scope.form;
+            var siteKey = floorObj.sitelist; 
+            var floorId = floorObj.floorplanlist;
+            var deviceId = document.getElementById('macID').value
+            var deviceName = document.getElementById('sensorName').value
+
+            console.log(siteKey); 
+            console.log(floorId);
+            console.log(deviceId);
+            console.log(deviceName);
+            
+             firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
+				 $scope.loading= false;
+				$scope.$apply();
+                 alert(deviceName + ' successfully removed from '+ floorId + ' !');
+             }, function(e) {
+				 $scope.loading= false;
+				$scope.$apply();
                  alert('This function cannot be performed at the moment!');
              });
         
         }
     }
-    
     SensorEditController.$inject = ['$scope', 'firebaseFactory'];
     
     angular.module('tanandApp').controller('SensorEditController', SensorEditController);

@@ -7,6 +7,9 @@
 
 		var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
+			while(sites.length > 0) {
+					sites.pop();
+				}
 			snapshot.forEach(function(siteKey) {
 				sites.push({
 					name: siteKey.val().name,
@@ -60,7 +63,7 @@
         }
 
         $scope.onBuildingEdit = function() {
-
+			$scope.loading= true;
         	var buildObj = $scope.form;
 
 			console.log('PRINT THE OBJECT: ' + JSON.stringify(buildObj));
@@ -72,12 +75,17 @@
             console.log('THIS IS SITE: ' + siteKey);
             console.log('THIS IS BUILD: ' + buildKey);
             console.log('THIS IS BUILDNAME: ' + buildName);
-
+			
 			firebaseFactory.updateBuilding(siteKey, buildKey, buildName).then(function() {
+				$scope.loading= false;
+				$scope.$apply();
 				alert('Building successfully updated!');
 			}, function(e) {
+			$scope.loading= false;
+				$scope.$apply();
 				alert('Error ' + e);
 			});
+		
 
 			$scope.form = '';
             $scope.buildingInfo = '';
@@ -85,7 +93,7 @@
         }
 
         $scope.onBuildingDelete = function() {
-
+			$scope.loading= true;
             var buildObj = $scope.form;
 
             console.log('PRINT THE OBJECT: ' + JSON.stringify(buildObj));
@@ -99,8 +107,12 @@
             console.log('THIS IS BUILDNAME: ' + buildName);
 
             firebaseFactory.deleteBuilding(siteKey, buildKey).then(function() {
+				$scope.loading= false;
+				$scope.$apply();
                 alert('Building successfully deleted!');
             }, function(e) {
+				$scope.loading= false;
+				$scope.$apply();
                 alert('Error ' + e);
             });
 

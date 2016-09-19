@@ -7,6 +7,8 @@
         storageBucket: "tanand-demo.appspot.com",
     };
     firebase.initializeApp(fbconfig);
+
+    // application.constant('_', window._);
     
     var app = angular.module('tanandApp', ['firebase', 'ui.router', 'ngRoute', 'ngCookies']);
 
@@ -166,6 +168,22 @@
                     'content':{
                         templateUrl: "app/views/sensorEdit.html",
                         controller: "SensorEditController",
+                        resolve: {
+                            factory: checkRouting
+                        }
+                    }
+                }
+            })
+            .state('home', {
+                url:'/home',
+                views:{
+                    'header':{
+                        templateUrl: "app/views/menu.html",
+                        controller: "MenuController"
+                    },
+                    'content':{
+                        templateUrl: "app/views/home.html",
+                        controller: "HomeController",
                         resolve: {
                             factory: checkRouting
                         }

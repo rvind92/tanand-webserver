@@ -64,6 +64,10 @@
 
         var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
+			console.log('VALUE ACTIVE');
+			while(sites.length > 0) {
+					sites.pop();
+				}
 			snapshot.forEach(function(siteKey) {
 				sites.push({
 					name: siteKey.val().name,
@@ -98,7 +102,7 @@
         $scope.onSiteEdit = function() {
 
             var siteObj = $scope.form;
-
+			$scope.loading= true;
             console.log('THIS IS THE OBJECT: ' + JSON.stringify(siteObj));
 
             var siteKey = siteObj.site;
@@ -117,12 +121,18 @@
             if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
 
                 firebaseFactory.updateSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
+					$scope.loading= false;
+				$scope.$apply();
                     alert(siteName + 'successfully updated!');
                 }, function(e) {
+					$scope.loading= false;
+				$scope.$apply();
                     alert('This function cannot be performed at the moment!');
                 });
 
             } else {
+				$scope.loading= false;
+				$scope.$apply();
                 alert('All fields must be filled!');
             }
 
@@ -138,17 +148,23 @@
         $scope.onSiteDelete = function() {
 
         	var siteObj = $scope.form;
-
+//			$scope.loading= true;
         	var siteKey = siteObj.site;
             var siteName = siteObj.sitename;
 
         	firebaseFactory.deleteSite(siteKey).then(function() {
+				$scope.loading= false;
+				
+				$scope.form = '';
+//				$scope.$apply();
         		alert("Site successfully deleted!");
         	}, function(e) {
+				$scope.loading= false;
+//				$scope.$apply();
         		alert(e);
         	});
 
-        	$scope.form = '';
+        	
         }
     }
     

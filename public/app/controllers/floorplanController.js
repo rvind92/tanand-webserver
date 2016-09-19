@@ -9,6 +9,9 @@
 
         var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
+			while(sites.length > 0) {
+					sites.pop();
+			}
             snapshot.forEach(function(siteKey) {
                 sites.push({
                     ID : siteKey.key,
@@ -89,7 +92,7 @@
         };
 
         $scope.onFloorplanCreate = function() {
-
+			$scope.loading= true;
             var floorObj = $scope.form;
 
             var siteKey = floorObj.site;
@@ -102,12 +105,18 @@
                 floorUrl = snapshot.metadata.downloadURLs[0];
                 console.log('File available at', floorUrl);
                 firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl).then(function() {
+					$scope.loading= false;
+					$scope.$apply();
                     alert("Success added floorplan!");
                     $scope.form = "";
                 }, function(e) {
+					$scope.loading= false;
+					$scope.$apply();
                     alert('This function cannot be performed at the moment!');
                 });
             }).catch(function(error) {
+				$scope.loading= false;
+				$scope.$apply();
                 console.error('Upload failed:', error);
             });
 
