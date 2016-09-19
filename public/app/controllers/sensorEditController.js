@@ -64,6 +64,29 @@
                availableOptions: buildings
             };
         }
+		
+		$scope.updateNewBuildingSelect = function(value) {
+            var newbuildings = [];
+            console.log(value + ' has been selected!');
+            var buildingsLoaded = firebase.database().ref('buildingList').child(value);
+            buildingsLoaded.on('value', function(snapshot) {
+               snapshot.forEach(function(buildingKey) {
+                   newbuildings.push({
+					   ID: buildingKey.key,
+                       name: buildingKey.val().name
+                   });
+               });
+//                $scope.$apply();
+                console.log('This is: ' + JSON.stringify(newbuildings));
+            
+            }, function(e) {
+                alert('No building(s) available at the moment.');
+            });
+        
+            $scope.newbuildinglist = {
+               availableOptions: newbuildings
+            };
+        }
         
         $scope.updateFloorplanSelect = function(sitekey, buildingkey) {
             var floorplans = [];
@@ -88,6 +111,29 @@
                availableOptions: floorplans
             };
         }
+		
+		$scope.updateNewFloorplanSelect = function(sitekey, buildingkey) {
+            var newfloorplans = [];
+            console.log(buildingkey + ' has been selected!');
+            var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
+            floorplansLoaded.on('value', function(snapshot) {
+               snapshot.forEach(function(floorplanKey) {
+                   newfloorplans.push({
+					   ID: floorplanKey.key,
+                       name: floorplanKey.val().name
+                   });
+               });
+//                $scope.$apply();
+                console.log('This is: ' + JSON.stringify(newfloorplans));
+            
+            }, function(e) {
+                alert('No building(s) available at the moment.');
+            });
+        
+            $scope.newfloorplanlist = {
+               availableOptions: newfloorplans
+            };
+        }
             
         $scope.floorplanImg = function(sitekey, buildingkey,floorplanKey) {
             
@@ -95,6 +141,9 @@
             console.log(buildingkey + ' has been selected!');
             var imgLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan').child(floorplanKey).child('fpImg');
             imgLoaded.on('value', function(snapshot) {
+				while(macData.length>0){
+					macData.pop();
+				}
                 floorplanImg = snapshot.val();
                 console.log('floorplan img: ' + JSON.stringify(floorplanImg));
                 
@@ -108,12 +157,13 @@
                            "y": macID.val().y,
                            "ID": macID.key
                        })
+
                        var circle = new theCircle((macID.val().x)/3, (macID.val().y)/3, 20, macID.key);
                         circles.push(circle);
                         console.log(circle);
                    }) 
                     imagesload(floorplanImg);
-                    $scope.$apply;
+                    $scope.$apply();
                     
                         
                 });
@@ -306,14 +356,17 @@
             var floorId = floorObj.floorplanlist;
             var deviceId = document.getElementById('macID').value
             var deviceName = document.getElementById('sensorName').value
-
+	
             console.log(siteKey); 
             console.log(floorId);
             console.log(deviceId);
             console.log(deviceName);
             
              firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
-				 $scope.loading= false;
+				context.clearRect(0,0,600,400);
+				 $scope.addData;
+				 context.drawImage(imgs,0,0, canvas.width, canvas.height);
+				$scope.loading= false;
 				$scope.$apply();
                  alert(deviceName + ' successfully removed from '+ floorId + ' !');
              }, function(e) {

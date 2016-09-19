@@ -111,8 +111,8 @@
             img.onload = function() { 
                 $scope.imgHeight = img.height;
                 $scope.imgWidth = img.width;
-                canvas.width = ($scope.imgWidth) / 2;
-                canvas.height = ($scope.imgHeight) / 2;
+                canvas.width = ($scope.imgWidth) / 3;
+                canvas.height = ($scope.imgHeight) / 3;
                 console.log("Canvas width: " + canvas.width);
                 console.log("Canvas height: " + canvas.height);
                 context.clearRect(0,0,600,400);
@@ -170,8 +170,8 @@
             var deviceName = floorObj.sensorName;
             var deviceType = floorObj.sensorType;
             var deviceSubtype = floorObj.sensorSubtype;
-            var xDevice = ($scope.data.x)*2;
-            var yDevice = ($scope.data.y)*2;
+            var xDevice = ($scope.data.x)*3;
+            var yDevice = ($scope.data.y)*3;
 
             console.log(siteKey); 
             console.log(floorId);

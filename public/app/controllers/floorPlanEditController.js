@@ -112,8 +112,8 @@
         	img.onload = function() {
         		$scope.imgHeight = img.height;
         		$scope.imgWidth = img.width;
-        		canvas.width = ($scope.imgWidth)/2;
-        		canvas.height = ($scope.imgHeight)/2;
+        		canvas.width = ($scope.imgWidth)/3;
+        		canvas.height = ($scope.imgHeight)/3;
         		console.log("Canvas width: " + canvas.width);
         		console.log("Canvas height: " + canvas.height);
         		context.clearRect(0,0,600,400);

@@ -12,7 +12,7 @@
         <div class="input">
             <label>Map Search: </label>&nbsp;
             <input type="text" id="address" name="address" placeholder="Input search criteria" style="text-align:center; width:200px;">&nbsp;&nbsp;
-            <input type="submit" class="btn" value="Search">
+            <input type="submit" class="btn" value="Search" style="margin:5px;">
             </div>
 
             <center><div id="map"></div></center><br>
@@ -31,9 +31,11 @@
         </p>
         {{ form.address }}
         
+		<br/>
         <button type="submit" ng-click="onSiteSubmit()" class="btn btn-success" style="margin-right: 20px">Submit<span class="glyphicon glyphicon-ok"></span></button>
         
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel<span class="glyphicon glyphicon-remove"></span></button>
-        
+		
+        <p>&nbsp;</p>
     </form>
 </div>
