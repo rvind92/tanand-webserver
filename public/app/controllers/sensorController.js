@@ -5,14 +5,15 @@
         var sites = [];
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
-        var imgs;
+        var imgs, imgscale;
+        var buildings = [];
+        var floorplans = [];
 
         var sitesLoaded = firebase.database().ref('locationList');
-		
+        while(sites.length > 0) {
+                    sites.pop();
+        }
         sitesLoaded.on('value', function(snapshot) {
-			while(sites.length > 0) {
-					sites.pop();
-					}
          snapshot.forEach(function(siteKey) {
           sites.push({
             ID: siteKey.key,
@@ -23,7 +24,7 @@
            console.log('This is: ' + JSON.stringify(sites));
         
         }, function() {
-         //   alert('No site(s) available at the moment.');
+            // alert('No site(s) available at the moment.');
         });
         
         $scope.sitelist = {
@@ -32,10 +33,13 @@
         };
         
         $scope.updateBuildingSelect = function(value) {
-            var buildings = [];
+            
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
+                while(buildings.length > 0) {
+                    buildings.pop();
+                }
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
                        ID: buildingKey.key,
@@ -46,7 +50,7 @@
                 console.log('This is: ' + JSON.stringify(buildings));
             
             }, function(e) {
-            //    alert('No building(s) available at the moment.');
+                // alert('No building(s) available at the moment.');
             });
         
             $scope.buildinglist = {
@@ -56,10 +60,13 @@
         }
         
         $scope.updateFloorplanSelect = function(sitekey, buildingkey) {
-            var floorplans = [];
+            
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
+                while(floorplans.length > 0) {
+                    floorplans.pop();
+                }
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
                        ID: floorplanKey.key,
@@ -70,7 +77,7 @@
                 console.log('This is: ' + JSON.stringify(floorplans));
             
             }, function(e) {
-           //     alert('No building(s) available at the moment.');
+                // alert('No building(s) available at the moment.');
             });
         
             $scope.floorplanlist = {
@@ -89,7 +96,7 @@
                 imagesload(floorplanImg);
             
             }, function(e) {
-           //     alert('No building(s) available at the moment.');
+                // alert('No building(s) available at the moment.');
             });
         
         };
@@ -112,14 +119,23 @@
             img.onload = function() { 
                 $scope.imgHeight = img.height;
                 $scope.imgWidth = img.width;
-                canvas.width = ($scope.imgWidth) / 3;
-                canvas.height = ($scope.imgHeight) / 3;
-                console.log("Canvas width: " + canvas.width);
-                console.log("Canvas height: " + canvas.height);
-                context.clearRect(0,0,600,400);
-                context.drawImage(imgs,0,0, canvas.width, canvas.height);
-                console.log("This is image Height: " + $scope.imgHeight);
-                console.log("This is image Width: " + $scope.imgWidth);
+                if($scope.imgHeight > 720 && $scope.imgWidth > 1280)
+                {
+                    imgscale = 3;
+                    canvas.width = ($scope.imgWidth) / 3;
+                    canvas.height = ($scope.imgHeight) / 3;
+                    context.clearRect(0,0,600,400);
+                    context.drawImage(imgs,0,0, canvas.width, canvas.height);
+                }
+                else{
+                    imgscale = 2;
+                    canvas.width = ($scope.imgWidth) / 2;
+                    canvas.height = ($scope.imgHeight) / 2;
+                    context.clearRect(0,0,600,400);
+                    context.drawImage(imgs,0,0, canvas.width, canvas.height);
+                }
+//                console.log("This is image Height: " + $scope.imgHeight);
+//                console.log("This is image Width: " + $scope.imgWidth);
             };
             img.onerror = function(){alert("image load failed");} 
             img.src = floorPlanURL;
@@ -171,8 +187,8 @@
             var deviceName = floorObj.sensorName;
             var deviceType = floorObj.sensorType;
             var deviceSubtype = floorObj.sensorSubtype;
-            var xDevice = ($scope.data.x)*3;
-            var yDevice = ($scope.data.y)*3;
+            var xDevice = ($scope.data.x)*imgscale;
+            var yDevice = ($scope.data.y)*imgscale;
 
             console.log(siteKey); 
             console.log(floorId);
@@ -182,16 +198,22 @@
             console.log(deviceSubtype)
             console.log(xDevice);
             console.log(yDevice);
-            
 
              firebaseFactory.setSensor(siteKey, floorId, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
-				 $scope.loading= false;
-				 $scope.$apply();
-                 alert(deviceName + ' successfully added!');
-                 $scope.form = "";
+                context.clearRect(0,0,600,400);
+                $scope.loading= false;
+                $scope.form = "";
+                while(buildings.length > 0) {
+                    buildings.pop();
+                }
+                while(floorplans.length > 0) {
+                    floorplans.pop();
+                }
+                $scope.$apply();
+                alert(deviceName + ' successfully added!');
              }, function(e) {
-				 $scope.loading= false;
-				 $scope.$apply();
+                 $scope.loading= false;
+                 $scope.$apply();
                  alert('This function cannot be performed at the moment!');
              });
         

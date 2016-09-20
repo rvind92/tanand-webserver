@@ -3,13 +3,13 @@
     var SensorEditController = function ($scope, firebaseFactory) {
         
         var sites = [];
-		var buildings = [];
-		var newbuildings = [];
-		var floorplans = [];
-		var newfloorplans = [];
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
-        var imgs;
+        var imgs, imgscale;
+        var buildings = [];
+        var newbuildings = [];
+        var floorplans = [];
+        var newfloorplans = [];
         
         var macData = [];
         var circles = [];
@@ -24,12 +24,12 @@
 
         var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
-			while(sites.length>0){
-				sites.pop();
-			}
+            while(sites.length>0){
+                sites.pop();
+            }
            snapshot.forEach(function(siteKey) {
             sites.push({
-				ID:siteKey.key,
+                ID:siteKey.key,
               name: siteKey.val().name
             });
            });
@@ -37,7 +37,7 @@
            console.log('This is: ' + JSON.stringify(sites));
         
         }, function() {
-            // alert('No site(s) available at the moment.');
+            alert('No site(s) available at the moment.');
         });
         
         $scope.sitelist = {
@@ -46,16 +46,15 @@
         };
         
         $scope.updateBuildingSelect = function(value) {
-            
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
-				while(buildings.length>0){
-				buildings.pop();
-				}
+                while(buildings.length > 0) {
+                    buildings.pop();
+                }
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
-					   ID:buildingKey.key,
+                       ID:buildingKey.key,
                        name: buildingKey.val().name
                    });
                });
@@ -63,7 +62,7 @@
                 console.log('This is: ' + JSON.stringify(buildings));
             
             }, function(e) {
-                // alert('No building(s) available at the moment.');
+                alert('No building(s) available at the moment.');
             });
         
             $scope.buildinglist = {
@@ -71,18 +70,17 @@
                availableOptions: buildings
             };
         }
-		
-		$scope.updateNewBuildingSelect = function(value) {
-            
+        
+        $scope.updateNewBuildingSelect = function(value) {
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
-				while(newbuildings.length>0){
-				newbuildings.pop();
-				}
+                while(newbuildings.length > 0) {
+                    newbuildings.pop();
+                }
                snapshot.forEach(function(buildingKey) {
                    newbuildings.push({
-					   ID: buildingKey.key,
+                       ID: buildingKey.key,
                        name: buildingKey.val().name
                    });
                });
@@ -90,7 +88,7 @@
                 console.log('This is: ' + JSON.stringify(newbuildings));
             
             }, function(e) {
-                // alert('No building(s) available at the moment.');
+                alert('No building(s) available at the moment.');
             });
         
             $scope.newbuildinglist = {
@@ -99,16 +97,15 @@
         }
         
         $scope.updateFloorplanSelect = function(sitekey, buildingkey) {
-            
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
-				while(floorplans.length>0){
-				floorplans.pop();
-				}
+                while(floorplans.length > 0) {
+                    floorplans.pop();
+                }
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
-					   ID: floorplanKey.key,
+                       ID: floorplanKey.key,
                        name: floorplanKey.val().name
                    });
                });
@@ -116,7 +113,7 @@
                 console.log('This is: ' + JSON.stringify(floorplans));
             
             }, function(e) {
-                // alert('No building(s) available at the moment.');
+                alert('No building(s) available at the moment.');
             });
         
             $scope.floorplanlist = {
@@ -124,18 +121,17 @@
                availableOptions: floorplans
             };
         }
-		
-		$scope.updateNewFloorplanSelect = function(sitekey, buildingkey) {
-            
+        
+        $scope.updateNewFloorplanSelect = function(sitekey, buildingkey) {
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
-				while(newfloorplans.length>0){
-				newfloorplans.pop();
-				}
+                while(newfloorplans.length > 0) {
+                    newfloorplans.pop();
+                }
                snapshot.forEach(function(floorplanKey) {
                    newfloorplans.push({
-					   ID: floorplanKey.key,
+                       ID: floorplanKey.key,
                        name: floorplanKey.val().name
                    });
                });
@@ -143,7 +139,7 @@
                 console.log('This is: ' + JSON.stringify(newfloorplans));
             
             }, function(e) {
-                // alert('No building(s) available at the moment.');
+                alert('No building(s) available at the moment.');
             });
         
             $scope.newfloorplanlist = {
@@ -152,14 +148,13 @@
         }
             
         $scope.floorplanImg = function(sitekey, buildingkey,floorplanKey) {
-            
             var floorplanImg;
             console.log(buildingkey + ' has been selected!');
             var imgLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan').child(floorplanKey).child('fpImg');
             imgLoaded.on('value', function(snapshot) {
-				while(macData.length>0){
-					macData.pop();
-				}
+                while(macData.length>0){
+                    macData.pop();
+                }
                 floorplanImg = snapshot.val();
                 console.log('floorplan img: ' + JSON.stringify(floorplanImg));
                 
@@ -184,7 +179,8 @@
                         
                 });
             }, function(e) {
-                // alert('No building(s) available at the moment.');
+            
+                alert('No building(s) available at the moment.');
             });
         
         };
@@ -233,26 +229,33 @@
             var img = new Image();
             imgs = img;
             img.onload = function(){ 
-            $scope.imgHeight = img.height;
-            $scope.imgWidth = img.width;
-            canvas.width = ($scope.imgWidth)/3;
-            canvas.height = ($scope.imgHeight)/3;
-            console.log("Canvas width: " + canvas.width);
-            console.log("Canvas height: " + canvas.height);
-                context.clearRect(0,0,600,400);
-                context.drawImage(imgs,0,0, canvas.width, canvas.height);
-            console.log("This is image Height: " +$scope.imgHeight);
-            console.log("This is image Width: " +$scope.imgWidth);
+                $scope.imgHeight = img.height;
+                $scope.imgWidth = img.width;
+                if($scope.imgHeight > 720 && $scope.imgWidth > 1280)
+                {
+                    imgscale = 3;
+                    canvas.width = ($scope.imgWidth) / 3;
+                    canvas.height = ($scope.imgHeight) / 3;
+                    context.clearRect(0,0,600,400);
+                    context.drawImage(imgs,0,0, canvas.width, canvas.height);
+                }
+                else{
+                    imgscale = 2;
+                    canvas.width = ($scope.imgWidth) / 2;
+                    canvas.height = ($scope.imgHeight) / 2;
+                    context.clearRect(0,0,600,400);
+                    context.drawImage(imgs,0,0, canvas.width, canvas.height);
+                }
+//                console.log("Canvas width: " + canvas.width);
+//                console.log("Canvas height: " + canvas.height);
+//                console.log("This is image Height: " +$scope.imgHeight);
+//                console.log("This is image Width: " +$scope.imgWidth);
                 $scope.addData();
             };
             img.onerror=function(){alert("image load failed");} 
             img.src = floorPlanURL;
             $scope.hidecoor =true;
             $scope.sensordiv = true;
-            
-//            document.getElementById('newsitelist').selectedIndex = -1;
-//            document.getElementById('newbuildinglist').selectedIndex = -1;
-//            document.getElementById('newfloorplanlist').selectedIndex = -1;
         }
 
         $scope.addData = function() {
@@ -305,8 +308,6 @@
             $scope.x = event.offsetX;
             $scope.y = event.offsetY;
             $scope.coor = "X coords: " + this.x + ", Y coords: " + this.y;
-//            document.getElementById('x').value = this.x;
-//            this.y = document.getElementById('y').value;
         };
         
         
@@ -329,11 +330,12 @@
             var deviceName = document.getElementById('sensorName').value
             var deviceType = document.getElementById('sensortype').value
             var deviceSubtype = document.getElementById('subtype').value
-            var xDevice = (document.getElementById('x').value)*3;
-            var yDevice = (document.getElementById('y').value)*3;
+            var xDevice = (document.getElementById('x').value)*imgscale;
+            var yDevice = (document.getElementById('y').value)*imgscale;
             
             var floorEdit = $scope.edit;
             var siteEdit = floorEdit.newsitelist;
+            var buildingEdit = floorEdit.newbuildinglist;
             var floorIdEdit = floorEdit.newfloorplanlist;
 
             console.log(siteEdit); 
@@ -352,43 +354,70 @@
              });
 
              firebaseFactory.updateSensor(siteEdit, floorIdEdit, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
-				 $scope.loading= false;
-				$scope.$apply();
+                 $scope.floorplanImg(siteEdit, buildingEdit, floorIdEdit);
+                 $scope.loading= false;
+                 $scope.form='';
+                 SensorDetailNull();
+                 $scope.edit='';
+                 $scope.$apply();
                  alert(deviceName + ' successfully moved to ' + floorIdEdit + ' !');
              }, function(e) {
-				 $scope.loading= false;
-				$scope.$apply();
+                 $scope.loading= false;
+                $scope.$apply();
                  alert('This function cannot be performed at the moment!');
-				 
+                 
              });
         
+        }
+        
+        function SensorDetailNull(){
+            document.getElementById('macID').value = null;
+            document.getElementById('sensorName').value = null;
+            document.getElementById('sensortype').value = null;
+            document.getElementById('subtype').value = null;
+            document.getElementById('x').value = null;
+            document.getElementById('y').value = null;
         }
         
         $scope.onSensorDelete = function() {
             $scope.loading= true;
             var floorObj = $scope.form;
             var siteKey = floorObj.sitelist; 
+            var buildingId = floorObj.buildinglist;
             var floorId = floorObj.floorplanlist;
             var deviceId = document.getElementById('macID').value
             var deviceName = document.getElementById('sensorName').value
-	
+    
             console.log(siteKey); 
             console.log(floorId);
             console.log(deviceId);
             console.log(deviceName);
-            
-             firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
-				context.clearRect(0,0,600,400);
-				 $scope.addData;
-				 context.drawImage(imgs,0,0, canvas.width, canvas.height);
-				$scope.loading= false;
-				$scope.$apply();
-                 alert(deviceName + ' successfully removed from '+ floorId + ' !');
-             }, function(e) {
-				 $scope.loading= false;
-				$scope.$apply();
-                 alert('This function cannot be performed at the moment!');
-             });
+
+            firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
+                $scope.floorplanImg(siteKey, buildingId, floorId);
+                $scope.loading= false;
+                $scope.form='';
+                SensorDetailNull();
+                $scope.edit='';
+                while(buildings.length > 0) {
+                    buildings.pop();
+                }
+                while(floorplans.length > 0) {
+                    floorplans.pop();
+                }
+                while(newbuildings.length > 0) {
+                    newbuildings.pop();
+                }
+                while(newfloorplans.length > 0) {
+                    newfloorplans.pop();
+                }
+                $scope.$apply();
+                alert(deviceName + ' successfully removed from '+ floorId + ' !');
+            }, function(e) {
+                $scope.loading= false;
+                $scope.$apply();
+                alert('This function cannot be performed at the moment!');
+            });
         
         }
     }
