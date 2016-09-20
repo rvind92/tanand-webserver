@@ -187,6 +187,8 @@
 
         	if(typeof file === 'undefined' || file === null) {
         		firebaseFactory.updateFloorplanWithoutImage(siteKey, buildKey, floorId, floorName).then(function() {
+					$scope.loading = false;
+					$scope.$apply();
         			alert("Success add");
         			$scope.form = "";
         		}, function(e) {
@@ -199,12 +201,12 @@
         			console.log('File available at', floorUrl);
 
         			firebaseFactory.updateFloorplan(siteKey, buildKey, floorId, floorName, floorUrl).then(function() {
-						$scope.loading= false;
+						$scope.loading = false;
 						$scope.$apply();
         				alert("Success updated floorplan!");
         				$scope.form = "";
         			}, function(e) {
-						$scope.loading= false;
+						$scope.loading = false;
 						$scope.$apply();
         				alert('This function cannot be performed at the moment!');
         			});

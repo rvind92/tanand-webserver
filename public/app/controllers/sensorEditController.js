@@ -3,6 +3,10 @@
     var SensorEditController = function ($scope, firebaseFactory) {
         
         var sites = [];
+		var buildings = [];
+		var newbuildings = [];
+		var floorplans = [];
+		var newfloorplans = [];
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
         var imgs;
@@ -42,17 +46,20 @@
         };
         
         $scope.updateBuildingSelect = function(value) {
-            var buildings = [];
+            
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
+				while(buildings.length>0){
+				buildings.pop();
+				}
                snapshot.forEach(function(buildingKey) {
                    buildings.push({
 					   ID:buildingKey.key,
                        name: buildingKey.val().name
                    });
                });
-//                $scope.$apply();
+                $scope.$apply();
                 console.log('This is: ' + JSON.stringify(buildings));
             
             }, function(e) {
@@ -66,17 +73,20 @@
         }
 		
 		$scope.updateNewBuildingSelect = function(value) {
-            var newbuildings = [];
+            
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
+				while(newbuildings.length>0){
+				newbuildings.pop();
+				}
                snapshot.forEach(function(buildingKey) {
                    newbuildings.push({
 					   ID: buildingKey.key,
                        name: buildingKey.val().name
                    });
                });
-//                $scope.$apply();
+                $scope.$apply();
                 console.log('This is: ' + JSON.stringify(newbuildings));
             
             }, function(e) {
@@ -89,17 +99,20 @@
         }
         
         $scope.updateFloorplanSelect = function(sitekey, buildingkey) {
-            var floorplans = [];
+            
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
+				while(floorplans.length>0){
+				floorplans.pop();
+				}
                snapshot.forEach(function(floorplanKey) {
                    floorplans.push({
 					   ID: floorplanKey.key,
                        name: floorplanKey.val().name
                    });
                });
-//                $scope.$apply();
+                $scope.$apply();
                 console.log('This is: ' + JSON.stringify(floorplans));
             
             }, function(e) {
@@ -113,17 +126,20 @@
         }
 		
 		$scope.updateNewFloorplanSelect = function(sitekey, buildingkey) {
-            var newfloorplans = [];
+            
             console.log(buildingkey + ' has been selected!');
             var floorplansLoaded = firebase.database().ref('buildingList').child(sitekey).child(buildingkey).child('floorplan');
             floorplansLoaded.on('value', function(snapshot) {
+				while(newfloorplans.length>0){
+				newfloorplans.pop();
+				}
                snapshot.forEach(function(floorplanKey) {
                    newfloorplans.push({
 					   ID: floorplanKey.key,
                        name: floorplanKey.val().name
                    });
                });
-//                $scope.$apply();
+                $scope.$apply();
                 console.log('This is: ' + JSON.stringify(newfloorplans));
             
             }, function(e) {

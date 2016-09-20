@@ -3,6 +3,7 @@
 	var BuildingEditController= function($scope, firebaseFactory) {
 
 		var sites = [];
+		var buildings = [];
 		var temp = '';
 
 		var sitesLoaded = firebase.database().ref('locationList');
@@ -29,7 +30,7 @@
 		};
 
 		$scope.updateBuildingSelect = function(value) {
-            var buildings = [];
+            
             temp = value;
             console.log('TEMP VALUE: ' + temp);
             console.log(value + ' has been selected!');
@@ -82,7 +83,9 @@
 			
 			firebaseFactory.updateBuilding(siteKey, buildKey, buildName).then(function() {
                 sites = [];
-                building = [];
+                while(buildings.length > 0) {
+                    buildings.pop();
+                }
 				$scope.loading= false;
 				$scope.$apply();
 				alert('Building successfully updated!');
