@@ -20,7 +20,7 @@
 			console.log('This is: ' + JSON.stringify(sites));
 
 		}, function() {
-			alert('No site(s) available at the moment.');
+		//	alert('No site(s) available at the moment.');
 		});
 
 		$scope.site = {
@@ -29,7 +29,7 @@
 		};
 
 		$scope.updateBuildingSelect = function(value) {
-            var buildings = [];
+			var buildings = [];
             temp = value;
             console.log('TEMP VALUE: ' + temp);
             console.log(value + ' has been selected!');
@@ -41,9 +41,10 @@
                         name: buildingKey.val().name
                     });
                 });
+				$scope.$apply();
                 console.log('This is: ' + JSON.stringify(buildings));
             }, function(e) {
-                alert('No building(s) available at the moment.');
+				
             });
 
             $scope.building = {
@@ -58,7 +59,7 @@
         		console.log('THIS IS THE SNAPSHOT VALUE: ' + snapshot.val().name);
                 $scope.buildingInfo = "Current building info " +  "\nNAME: " + snapshot.val().name + "\nID: " + value + "\nSITE: " + temp;
         	}, function(e) {
-        		console.log(e);
+        	//	console.log(e);
         	});
         }
 
@@ -81,7 +82,7 @@
 				$scope.$apply();
 				alert('Building successfully updated!');
 			}, function(e) {
-			$scope.loading= false;
+				$scope.loading= false;
 				$scope.$apply();
 				alert('Error ' + e);
 			});

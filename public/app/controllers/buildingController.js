@@ -5,10 +5,10 @@
 		var sites = [];
 		var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
-			snapshot.forEach(function(siteKey) {
-				while(sites.length > 0) {
+			while(sites.length > 0) {
 					sites.pop();
 				}
+			snapshot.forEach(function(siteKey) {
 				sites.push({
 					name: siteKey.val().name,
                     ID : siteKey.key

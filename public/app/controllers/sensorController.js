@@ -8,10 +8,11 @@
         var imgs;
 
         var sitesLoaded = firebase.database().ref('locationList');
-		while(sites.length > 0) {
-					sites.pop();
-		}
+		
         sitesLoaded.on('value', function(snapshot) {
+			while(sites.length > 0) {
+					sites.pop();
+					}
          snapshot.forEach(function(siteKey) {
           sites.push({
             ID: siteKey.key,
@@ -22,7 +23,7 @@
            console.log('This is: ' + JSON.stringify(sites));
         
         }, function() {
-            alert('No site(s) available at the moment.');
+         //   alert('No site(s) available at the moment.');
         });
         
         $scope.sitelist = {
@@ -45,7 +46,7 @@
                 console.log('This is: ' + JSON.stringify(buildings));
             
             }, function(e) {
-                alert('No building(s) available at the moment.');
+            //    alert('No building(s) available at the moment.');
             });
         
             $scope.buildinglist = {
@@ -69,7 +70,7 @@
                 console.log('This is: ' + JSON.stringify(floorplans));
             
             }, function(e) {
-                alert('No building(s) available at the moment.');
+           //     alert('No building(s) available at the moment.');
             });
         
             $scope.floorplanlist = {
@@ -88,7 +89,7 @@
                 imagesload(floorplanImg);
             
             }, function(e) {
-                alert('No building(s) available at the moment.');
+           //     alert('No building(s) available at the moment.');
             });
         
         };
