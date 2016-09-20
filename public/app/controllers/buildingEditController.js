@@ -35,6 +35,9 @@
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(temp);
             buildingsLoaded.on('value', function(snapshot) {
+                while(sites.length > 0) {
+                    sites.pop();
+                }
                 snapshot.forEach(function(buildingKey) {
                     buildings.push({
                         ID: buildingKey.key,
