@@ -22,7 +22,7 @@
             console.log('This is: ' + JSON.stringify(sites));
 
         }, function() {
-            alert('No site(s) available at the moment.');
+            // alert('No site(s) available at the moment.');
         });
 
         $scope.site = {
@@ -61,7 +61,7 @@
                 $scope.$apply();
                 console.log('This is: ' + JSON.stringify(buildings));
             }, function(e) {
-                alert('No building(s) available at the moment.');
+                // alert('No building(s) available at the moment.');
             });
 
             $scope.building = {
@@ -112,7 +112,7 @@
                 }, function(e) {
 					$scope.loading= false;
 					$scope.$apply();
-                    alert('This function cannot be performed at the moment!');
+                    // alert('This function cannot be performed at the moment!');
                 });
             }).catch(function(error) {
 				$scope.loading= false;

@@ -84,7 +84,7 @@
 			}, function(e) {
 				$scope.loading= false;
 				$scope.$apply();
-				alert('Error ' + e);
+				// alert('Error ' + e);
 			});
 		
 
@@ -114,7 +114,7 @@
             }, function(e) {
 				$scope.loading= false;
 				$scope.$apply();
-                alert('Error ' + e);
+                // alert('Error ' + e);
             });
 
             $scope.form = '';

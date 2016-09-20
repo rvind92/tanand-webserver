@@ -1,24 +1,24 @@
 (function() {
 	
-	var BuildingController = function($scope, firebaseFactory,$q) {
+	var BuildingController = function($scope, firebaseFactory) {
 
 		var sites = [];
 		var sitesLoaded = firebase.database().ref('locationList');
 		sitesLoaded.on('value', function(snapshot) {
 			while(sites.length > 0) {
-					sites.pop();
-				}
+				sites.pop();
+			}
 			snapshot.forEach(function(siteKey) {
 				sites.push({
 					name: siteKey.val().name,
-                    ID : siteKey.key
+					ID : siteKey.key
 				});
 			});
-            $scope.$apply();
+			$scope.$apply();
 			console.log('This is: ' + JSON.stringify(sites));
 
 		}, function() {
-			alert('No site(s) available at the moment.');
+			// alert('No site(s) available at the moment.');
 		});
 
 		$scope.building = {
@@ -34,10 +34,9 @@
 
 			var siteKey = buildObj.site;
 			var buildName = buildObj.buildingname;
-            
-            console.log('SITE KEY: ' + siteKey);
-            console.log('BUILD NAME: ' + buildName);
-	 $q.when(true);
+
+			console.log('SITE KEY: ' + siteKey);
+			console.log('BUILD NAME: ' + buildName);
 			
 			firebaseFactory.setBuilding(siteKey, buildName).then(function() {
 				console.log(siteKey+' this is success')
@@ -56,7 +55,7 @@
 
 	}
 
-	BuildingController.$inject = ['$scope', 'firebaseFactory','$q'];
+	BuildingController.$inject = ['$scope', 'firebaseFactory'];
 	
 	angular.module('tanandApp').controller('BuildingController', BuildingController);
 	
