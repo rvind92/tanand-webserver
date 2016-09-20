@@ -29,14 +29,14 @@
 		};
 
 		$scope.updateBuildingSelect = function(value) {
-			var buildings = [];
+            var buildings = [];
             temp = value;
             console.log('TEMP VALUE: ' + temp);
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(temp);
             buildingsLoaded.on('value', function(snapshot) {
-                while(sites.length > 0) {
-                    sites.pop();
+                while(buildings.length > 0) {
+                    buildings.pop();
                 }
                 snapshot.forEach(function(buildingKey) {
                     buildings.push({
