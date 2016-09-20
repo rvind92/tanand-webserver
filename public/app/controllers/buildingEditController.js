@@ -81,6 +81,8 @@
             console.log('THIS IS BUILDNAME: ' + buildName);
 			
 			firebaseFactory.updateBuilding(siteKey, buildKey, buildName).then(function() {
+                sites = [];
+                building = [];
 				$scope.loading= false;
 				$scope.$apply();
 				alert('Building successfully updated!');
