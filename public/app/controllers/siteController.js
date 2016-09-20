@@ -29,7 +29,7 @@
                     click: function() {
                         GMaps.geolocate({
                             success: function(position) {
-                                map.setCenter(position.coords.latitude, position.coords.longitude);
+                                mapObj.setCenter(position.coords.latitude, position.coords.longitude);
                             },
                             error: function(error) {
                                 alert('Geolocation failed: ' + error.message);
