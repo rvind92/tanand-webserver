@@ -151,15 +151,13 @@
 
         $scope.onSiteDelete = function() {
 
-            var siteObj = $scope.form;
 //          $scope.loading= true;
+            var siteObj = $scope.form;
             var siteKey = siteObj.site;
             var siteName = siteObj.sitename;
 
             firebaseFactory.deleteSite(siteKey).then(function() {
-                $scope.loading= false;
-                
-                $scope.form = '';
+                $scope.loading= false; 
 //              $scope.$apply();
                 alert("Site successfully deleted!");
             }, function(e) {
@@ -167,6 +165,7 @@
 //              $scope.$apply();
                 alert(e);
             });
+                $scope.form = '';
 
             
         }

@@ -168,10 +168,6 @@
                            "y": macID.val().y,
                            "ID": macID.key
                        })
-
-                       var circle = new theCircle((macID.val().x)/3, (macID.val().y)/3, 20, macID.key);
-                        circles.push(circle);
-                        console.log(circle);
                    }) 
                     imagesload(floorplanImg);
                     $scope.$apply();
@@ -187,7 +183,7 @@
         
         
         canvas.addEventListener('click', function(e) {  // use event argument
-
+            
             var rect = canvas.getBoundingClientRect();  // get element's abs. position
             var clickedX = e.clientX - rect.left;              // get mouse x and adjust for el.
             var clickedY = e.clientY - rect.top;               // get mouse y and adjust for el.
@@ -209,9 +205,8 @@
                             document.getElementById('subtype').value = snapshot.val().subtype;
                             document.getElementById('macID').value = deviceID;
                             document.getElementById('sensorName').value = snapshot.val().name;
-                            document.getElementById('x').value = (snapshot.val().x)/3;
-                            document.getElementById('y').value = (snapshot.val().y)/3;
-                            //sconsole.log(snapshot.val())
+                            document.getElementById('x').value = (snapshot.val().x)/imgscale;
+                            document.getElementById('y').value = (snapshot.val().y)/imgscale;
                         });
                     }
                 }
@@ -260,9 +255,12 @@
 
         $scope.addData = function() {
             for(var i = 0; i < macData.length; i++){
+                var circle = new theCircle((macData[i].x)/imgscale, (macData[i].y)/imgscale, 20, macData[i].ID);
+                circles.push(circle);
+                console.log(circle);
                 
-                $scope.x = (macData[i].x)/3;
-                $scope.y = (macData[i].y)/3;
+                $scope.x = (macData[i].x)/imgscale;
+                $scope.y = (macData[i].y)/imgscale;
                 $scope.data = {x: $scope.x, y: $scope.y};
                 console.log($scope.data);
                 drawDot($scope.data);
@@ -324,6 +322,7 @@
              $scope.loading= true;
             var floorObj = $scope.form;
             var siteKey = floorObj.sitelist; 
+            var buildingId = floorObj.buildinglist;
             var floorId = floorObj.floorplanlist;
             
             var deviceId = document.getElementById('macID').value
@@ -354,11 +353,16 @@
              });
 
              firebaseFactory.updateSensor(siteEdit, floorIdEdit, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
-                 $scope.floorplanImg(siteEdit, buildingEdit, floorIdEdit);
+                 $scope.floorplanImg(siteKey, buildingId, floorId);
                  $scope.loading= false;
-                 $scope.form='';
                  SensorDetailNull();
                  $scope.edit='';
+                 while(newbuildings.length > 0) {
+                    newbuildings.pop();
+                }
+                while(newfloorplans.length > 0) {
+                    newfloorplans.pop();
+                }
                  $scope.$apply();
                  alert(deviceName + ' successfully moved to ' + floorIdEdit + ' !');
              }, function(e) {
@@ -396,21 +400,8 @@
             firebaseFactory.deleteSensor(siteKey, floorId, deviceId).then(function() {
                 $scope.floorplanImg(siteKey, buildingId, floorId);
                 $scope.loading= false;
-                $scope.form='';
                 SensorDetailNull();
                 $scope.edit='';
-                while(buildings.length > 0) {
-                    buildings.pop();
-                }
-                while(floorplans.length > 0) {
-                    floorplans.pop();
-                }
-                while(newbuildings.length > 0) {
-                    newbuildings.pop();
-                }
-                while(newfloorplans.length > 0) {
-                    newfloorplans.pop();
-                }
                 $scope.$apply();
                 alert(deviceName + ' successfully removed from '+ floorId + ' !');
             }, function(e) {

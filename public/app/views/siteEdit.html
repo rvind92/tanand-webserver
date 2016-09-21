@@ -25,7 +25,7 @@
         <div ng-show="fieldsdiv">
         <p>
         <label>New Name: </label><br/>&nbsp;
-            <input type="text" ng-model="form.sitename" name="latitude" placeholder="New name" style="text-align:center; width:200px;" autocomplete="off">
+            <input type="text" ng-model="form.sitename" name="sitename" placeholder="New name" style="text-align:center; width:200px;" autocomplete="off">
         </p>
 
         <p>
@@ -42,14 +42,17 @@
             <label>New Address: </label><br/>&nbsp;
             <input type="text" ng-model="form.address" name="address" placeholder="Address" style="text-align:center; width:200px;" autocomplete="off">
         </p>
+        <br/>
         </div>
 
         <button type="submit" ng-click="onSiteEdit()" class="btn btn-success" style="margin-right: 20px">Submit<span class="glyphicon glyphicon-ok" ng-show="fieldsdiv"></span></button>
 
-        <button type="submit" ng-click="onSiteDelete()" class="btn btn-danger" style="margin-right: 20px">Delete<span class="glyphicon glyphicon-remove"></span></button>
+        <button type="submit" ng-click="onSiteDelete()" class="btn btn-danger" style="margin-left:20px; margin-right: 20px">Delete<span class="glyphicon glyphicon-remove"></span></button>
         
         <button type="reset" class="btn btn-danger" style="margin-left: 20px">Cancel<span class="glyphicon glyphicon-remove"></span></button>
         
+        <p>&nbsp;</p>
+            
         </center>
         
         

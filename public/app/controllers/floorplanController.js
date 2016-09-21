@@ -46,13 +46,14 @@
             // console.log(metadata);
         }
 
-        console.log(file);
-
         $scope.updateBuildingSelect = function(value) {
             
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
+                while(buildings.length > 0) {
+                        buildings.pop();
+                }
                 snapshot.forEach(function(buildingKey) {
                     buildings.push({
                         ID: buildingKey.key,
@@ -89,6 +90,7 @@
         };
 
         $scope.reset = function() {
+            document.getElementById('file').value = "";
             document.getElementById('blah').src = "";
         };
 
@@ -111,7 +113,7 @@
                     while(buildings.length > 0) {
                         buildings.pop();
                     }
-                    document.getElementById('blah').src = "";
+                    $scope.reset();
                     $scope.form =null;
                     $scope.$apply();
                     alert("Success added floorplan!");

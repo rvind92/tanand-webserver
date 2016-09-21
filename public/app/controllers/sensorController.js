@@ -177,6 +177,13 @@
         context.globalAlpha = 1.0;
         context.beginPath();
         
+        function SensorDetailNull(){
+            $scope.form.macID = "";
+            $scope.form.sensorName = "";
+            $scope.form.sensorType = "";
+            $scope.form.sensorSubtype = "";
+        }
+        
         
         $scope.onSensorCreate = function() {
             $scope.loading= true;
@@ -201,14 +208,11 @@
 
              firebaseFactory.setSensor(siteKey, floorId, deviceId, deviceName, deviceType, deviceSubtype, xDevice, yDevice).then(function() {
                 context.clearRect(0,0,600,400);
+                context.drawImage(imgs,0,0, canvas.width, canvas.height);
+                $scope.x = "";
+                $scope.y = "";
                 $scope.loading= false;
-                $scope.form = "";
-                while(buildings.length > 0) {
-                    buildings.pop();
-                }
-                while(floorplans.length > 0) {
-                    floorplans.pop();
-                }
+                SensorDetailNull();
                 $scope.$apply();
                 alert(deviceName + ' successfully added!');
              }, function(e) {
