@@ -1,8 +1,8 @@
 (function() {
 
-	var SiteEditController = function($scope, $cookieStore, firebaseFactory) {
+    var SiteEditController = function($scope, $cookieStore, firebaseFactory) {
 
-		var sites = [];
+        var sites = [];
         var mapObj;
 
         $(document).ready(function() {
@@ -27,7 +27,7 @@
                     click: function() {
                         GMaps.geolocate({
                             success: function(position) {
-                                mapObj.setCenter(position.coords.latitude, position.coords.longitude);
+                                map.setCenter(position.coords.latitude, position.coords.longitude);
                             },
                             error: function(error) {
                                 alert('Geolocation failed: ' + error.message);
@@ -63,28 +63,28 @@
         });
 
         var sitesLoaded = firebase.database().ref('locationList');
-		sitesLoaded.on('value', function(snapshot) {
-			console.log('VALUE ACTIVE');
-			while(sites.length > 0) {
-					sites.pop();
-				}
-			snapshot.forEach(function(siteKey) {
-				sites.push({
-					name: siteKey.val().name,
+        sitesLoaded.on('value', function(snapshot) {
+            console.log('VALUE ACTIVE');
+            while(sites.length > 0) {
+                    sites.pop();
+                }
+            snapshot.forEach(function(siteKey) {
+                sites.push({
+                    name: siteKey.val().name,
                     ID : siteKey.key
-				});
-			});
+                });
+            });
             $scope.$apply();
-			console.log('This is: ' + JSON.stringify(sites));
+            console.log('This is: ' + JSON.stringify(sites));
 
-		}, function() {
-			// alert('No site(s) available at the moment.');
-		});
+        }, function() {
+            // alert('No site(s) available at the moment.');
+        });
 
-		$scope.site = {
-			site : null,
-			availableOptions: sites
-		};
+        $scope.site = {
+            site : null,
+            availableOptions: sites
+        };
 
         $scope.showHiddenFields = function(value) {
             $scope.fieldsdiv = true;
@@ -93,6 +93,10 @@
             siteInfo.on('value', function(snapshot) {
                 var site = snapshot.val();
                 $scope.siteInfo = "Current site info " + "\nNAME: " + site.name + "\nADDRESS: " + site.address + "\nLATITUDE: " + site.lat + "\nLONGITUDE: " + site.lng ;
+                $scope.form.sitename= site.name;
+                $scope.form.address= site.address;
+                $scope.form.latitude= site.lat;
+                $scope.form.longitude= site.lng;
             }, function(e) {
 
             });
@@ -102,7 +106,7 @@
         $scope.onSiteEdit = function() {
 
             var siteObj = $scope.form;
-			$scope.loading= true;
+            $scope.loading= true;
             console.log('THIS IS THE OBJECT: ' + JSON.stringify(siteObj));
 
             var siteKey = siteObj.site;
@@ -121,18 +125,18 @@
             if(siteName && siteKey && siteAddress && siteAddress && siteLat && siteLng) {
 
                 firebaseFactory.updateSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
-					$scope.loading= false;
-				$scope.$apply();
+                    $scope.loading= false;
+                $scope.$apply();
                     alert(siteName + 'successfully updated!');
                 }, function(e) {
-					$scope.loading= false;
-				$scope.$apply();
+                    $scope.loading= false;
+                $scope.$apply();
                     alert('This function cannot be performed at the moment!');
                 });
 
             } else {
-				$scope.loading= false;
-				$scope.$apply();
+                $scope.loading= false;
+                $scope.$apply();
                 alert('All fields must be filled!');
             }
 
@@ -147,29 +151,29 @@
 
         $scope.onSiteDelete = function() {
 
-        	var siteObj = $scope.form;
-//			$scope.loading= true;
-        	var siteKey = siteObj.site;
+            var siteObj = $scope.form;
+//          $scope.loading= true;
+            var siteKey = siteObj.site;
             var siteName = siteObj.sitename;
 
-        	firebaseFactory.deleteSite(siteKey).then(function() {
-				$scope.loading= false;
-				
-				$scope.form = '';
-//				$scope.$apply();
-        		alert("Site successfully deleted!");
-        	}, function(e) {
-				$scope.loading= false;
-//				$scope.$apply();
-        		alert(e);
-        	});
+            firebaseFactory.deleteSite(siteKey).then(function() {
+                $scope.loading= false;
+                
+                $scope.form = '';
+//              $scope.$apply();
+                alert("Site successfully deleted!");
+            }, function(e) {
+                $scope.loading= false;
+//              $scope.$apply();
+                alert(e);
+            });
 
-        	
+            
         }
     }
     
     SiteEditController.$inject = ['$scope', '$cookieStore', 'firebaseFactory'];
-	
-	angular.module('tanandApp').controller('SiteEditController', SiteEditController);
+    
+    angular.module('tanandApp').controller('SiteEditController', SiteEditController);
 
 }());

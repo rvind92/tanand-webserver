@@ -23,12 +23,13 @@
             });
         };
         
-        firebaseFunc.setFloorplan = function(siteKey, buildingKey, floorplanName, floorplanImgUrl) {
+        firebaseFunc.setFloorplan = function(siteKey, buildingKey, floorplanName, floorplanImgUrl,fileName) {
             const rootRef = firebase.database().ref().child('buildingList').child(siteKey).child(buildingKey);
             var floorplanRef = rootRef.child('floorplan').push(floorplanRef);
             return floorplanRef.set({
                 fpImg: floorplanImgUrl,
-                name: floorplanName
+                name: floorplanName,
+                fileName: fileName
             });
         };
         
@@ -87,12 +88,13 @@
             });
         };
 
-        firebaseFunc.updateFloorplan = function(siteKey, buildingKey, floorplanKey, floorplanName, floorplanImgUrl) {
+        firebaseFunc.updateFloorplan = function(siteKey, buildingKey, floorplanKey, floorplanName, floorplanImgUrl,fileName) {
             const rootRef = firebase.database().ref().child('buildingList').child(siteKey).child(buildingKey);
             var floorplanRef = rootRef.child('floorplan').child(floorplanKey);
             return floorplanRef.update({
                 fpImg: floorplanImgUrl,
-                name: floorplanName
+                name: floorplanName,
+                fileName: fileName
             });
         };
 

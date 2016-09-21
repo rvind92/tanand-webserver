@@ -27,8 +27,8 @@
                     <br/>
 
                     <label>Floorplan List: </label><br/>
-                    <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist, form.floorplanlist)">
-                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.ID}}">{{option.name}}</option>
+                    <select name="floorplanlist" style="width:200px; height:30px; border-radius: 5px" ng-model="form.floorplanlist" ng-change="floorplanImg(form.sitelist, form.buildinglist,form.floorplanlist)">
+                        <option ng-repeat="option in floorplanlist.availableOptions" value="{{option.ID }}">{{option.name}}</option>
                     </select>
                     <br/>
                     <br/>
@@ -62,9 +62,12 @@
 
                      <br/>
                      <br/>
-
-                     </div>
-
+                    <br/>
+                    <br/>
+                    <button type="submit" ng-click="onFloorplanDelete()" class="btn btn-warning" style="margin-right: 20px">Delete
+                        <span class="glyphicon glyphicon-remove-sign"></span>
+                    </button>
+                    </div>
             </div>
 
             

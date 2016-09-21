@@ -1,7 +1,8 @@
 (function() { 
 
     var FloorplanController = function($scope, firebaseFactory) {
-
+        
+        var buildings = [];
         var sites = [];
         var metadata;
         var file;
@@ -9,9 +10,9 @@
 
         var sitesLoaded = firebase.database().ref('locationList');
         sitesLoaded.on('value', function(snapshot) {
-			while(sites.length > 0) {
-					sites.pop();
-			}
+            while(sites.length > 0) {
+                    sites.pop();
+            }
             snapshot.forEach(function(siteKey) {
                 sites.push({
                     ID : siteKey.key,
@@ -48,7 +49,7 @@
         console.log(file);
 
         $scope.updateBuildingSelect = function(value) {
-            var buildings = [];
+            
             console.log(value + ' has been selected!');
             var buildingsLoaded = firebase.database().ref('buildingList').child(value);
             buildingsLoaded.on('value', function(snapshot) {
@@ -92,7 +93,7 @@
         };
 
         $scope.onFloorplanCreate = function() {
-			$scope.loading= true;
+            $scope.loading= true;
             var floorObj = $scope.form;
 
             var siteKey = floorObj.site;
@@ -103,20 +104,26 @@
 
             storageRef.child(siteKey + '/' + buildKey + '/' + floorName + '/' + file.name).put(file, metadata).then(function(snapshot) {
                 floorUrl = snapshot.metadata.downloadURLs[0];
+        
                 console.log('File available at', floorUrl);
-                firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl).then(function() {
-					$scope.loading= false;
-					$scope.$apply();
+                firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl, file.name).then(function() {
+                    $scope.loading= false;
+                    while(buildings.length > 0) {
+                        buildings.pop();
+                    }
+                    document.getElementById('blah').src = "";
+                    $scope.form =null;
+                    $scope.$apply();
                     alert("Success added floorplan!");
                     $scope.form = "";
                 }, function(e) {
-					$scope.loading= false;
-					$scope.$apply();
+                    $scope.loading= false;
+                    $scope.$apply();
                     // alert('This function cannot be performed at the moment!');
                 });
             }).catch(function(error) {
-				$scope.loading= false;
-				$scope.$apply();
+                $scope.loading= false;
+                $scope.$apply();
                 console.error('Upload failed:', error);
             });
 
