@@ -247,7 +247,9 @@
 //                console.log("This is image Width: " +$scope.imgWidth);
                 $scope.addData();
             };
-            img.onerror=function(){alert("image load failed");} 
+            img.onerror=function(){
+                //alert("image load failed");
+            } 
             img.src = floorPlanURL;
             $scope.hidecoor =true;
             $scope.sensordiv = true;

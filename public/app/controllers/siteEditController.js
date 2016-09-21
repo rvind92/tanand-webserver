@@ -127,7 +127,7 @@
                 firebaseFactory.updateSite(siteKey, siteAddress, siteLat, siteLng, siteName).then(function() {
                     $scope.loading= false;
                 $scope.$apply();
-                    alert(siteName + 'successfully updated!');
+                    alert(siteName + ' successfully updated!');
                 }, function(e) {
                     $scope.loading= false;
                 $scope.$apply();

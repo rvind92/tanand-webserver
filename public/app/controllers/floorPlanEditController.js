@@ -191,53 +191,45 @@
             } else {
                 var name =
                 firebase.database().ref('buildingList').child(siteKey).child(buildKey).child('floorplan').child(floorId);
-                name.on('value', function(snapshot) {
+                name.once('value', function(snapshot) {
                     fileName = snapshot.val().name;
                     imageName =snapshot.val().fileName;
-    
-                        firebaseFactory.deleteFloorplan(siteKey, buildKey, floorId).then(function() {
-                            console.log(imageName);
-                                console.log(fileName);
-                                console.log(floorName);
-                                console.log(fileName+'/'+imageName);
-                            var floorPlanDelete = storageRef.child(siteKey).child(buildKey).child(fileName+'/'+imageName);
-                            floorPlanDelete.delete().then(function() {
-                                
-                                storageRef.child(siteKey + '/' + buildKey + '/' + floorName + '/' + newImage).put(file, metadata).then(function(snapshot) {
-                                    floorUrl = snapshot.metadata.downloadURLs[0];
-                                    console.log('File available at', floorUrl);
-                                    
-                                    console.log(" THis is mid" + floorName)
-                                    firebaseFactory.setFloorplan(siteKey, buildKey, floorName, floorUrl, newImage).then(function() {
-                                        context.clearRect(0,0,600,400);
-                                        $scope.loading = false;
-                                        $scope.form =null;
-                                        while(buildings.length > 0) {
-                                            buildings.pop();
-                                        }
-                                        while(floorplans.length > 0) {
-                                            floorplans.pop();
-                                        }
-                                        $scope.reset();
-                                        $scope.$apply();
-                                        console.log("Success updated floorplan!");
-                                        
-                                    }, function(e) {
-                                        $scope.loading = false;
-                                        $scope.$apply();
-                                        alert('This function cannot be performed at the moment!');
-                                    });
-                                }).catch(function(error) {
-                                    $scope.loading= false;
+                    var floorPlanDelete = storageRef.child(siteKey).child(buildKey).child(fileName+'/'+imageName);
+                    floorPlanDelete.delete().then(function() {        
+                        storageRef.child(siteKey + '/' + buildKey + '/' + floorName + '/' + newImage).put(file, metadata).then(function(snapshot) {
+                        floorUrl = snapshot.metadata.downloadURLs[0];
+                        console.log('File available at', floorUrl);
+                        console.log(" THis is mid" + floorName)
+                            firebaseFactory.updateFloorplan(siteKey, buildKey,floorId, floorName, floorUrl, newImage).then(function() {
+                                    $scope.loading = false;
+                                    $scope.form =null;
+                                    while(buildings.length > 0) {
+                                        buildings.pop();
+                                    }
+                                    while(floorplans.length > 0) {
+                                        floorplans.pop();
+                                    }
+                                    context.clearRect(0,0,600,400);
+                                    imgs = "";
+                                    $scope.reset();
+                                    $scope.sensordiv = false;
                                     $scope.$apply();
-                                    console.error('Upload failed:', error);
-                                });
-                            }).catch(function(error) {
-                                
+                                    console.log("Success updated floorplan!");
+                                    
+                                }, function(e) {
+                                    $scope.loading = false;
+                                    $scope.$apply();
+                                    alert('This function cannot be performed at the moment!');
                             });
-                     }, function(e) {
-                        cosole.log(e);
-                     });
+                    }).catch(function(error) {
+                       $scope.loading= false;
+                        $scope.$apply();
+                        console.error('Upload failed:', error);
+                    });
+                    }).catch(function(error) {
+                                
+                });
+                  
                 }, function(e) {
                     
                     // alert('No building(s) available at the moment.');
@@ -263,6 +255,7 @@
                         var floorPlanDelete = storageRef.child(siteKey).child(buildingKey).child(fileName+'/'+imageName);
                         floorPlanDelete.delete().then(function() {
                             context.clearRect(0,0,600,400);
+                            //imgs = "";
                             $scope.loading= false;
                             $scope.form =null;
                             while(buildings.length > 0) {
